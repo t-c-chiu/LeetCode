@@ -20,9 +20,9 @@ public class HouseRobberIII {
 	
 	//      3
 	//     / \
-	//	  4   5
-	//	 / \   \
-	//	1   3   1
+	//    4   5
+	//   / \   \
+	//  1   3   1
 	private Map<TreeNode, Integer> cache = new HashMap<>();
 	
 	public int rob(TreeNode root) {

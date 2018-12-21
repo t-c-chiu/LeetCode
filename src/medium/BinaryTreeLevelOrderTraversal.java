@@ -17,7 +17,7 @@ public class BinaryTreeLevelOrderTraversal {
 			System.out.println(list);
 	}
 	
-	//	 3
+	//   3
 	//  / \
 	// 9  20
 	//   /  \
