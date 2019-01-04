@@ -15,10 +15,9 @@ public class ExcelSheetColumnNumber {
 	//	AA - 27
 	public int titleToNumber(String s) {
 		int result = 0;
-		char[] chars = s.toCharArray();
-		for (int i = 0; i < chars.length; i++) {
+		for (int i = 0; i < s.length(); i++) {
 			result *= 26;
-			result += chars[i] - 'A' + 1;
+			result += s.charAt(i) - 'A' + 1;
 		}
 		return result;
 	}
