@@ -9,7 +9,7 @@ public class TopKFrequentElements {
 
 	public static void main(String[] args) {
 		TopKFrequentElements topKFrequentElements = new TopKFrequentElements();
-		System.out.println(topKFrequentElements.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2));
+		System.out.println(topKFrequentElements.topKFrequent(new int[]{1, 1, 1, 2, 2,2, 3}, 2));
 		System.out.println(topKFrequentElements.topKFrequent(new int[]{1, 2}, 2));
 	}
 
