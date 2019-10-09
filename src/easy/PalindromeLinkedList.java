@@ -1,28 +1,14 @@
 package easy;
 
-import java.util.Stack;
-
 import util.ListNode;
 
 public class PalindromeLinkedList {
 	public static void main(String[] args) {
-		ListNode head = new ListNode(1);
-		head.next = new ListNode(2);
-		head.next.next = new ListNode(2);
-		head.next.next.next = new ListNode(1);
-
-		ListNode head2 = new ListNode(1);
-		head2.next = new ListNode(2);
-		head2.next.next = new ListNode(1);
-		System.out.println(new PalindromeLinkedList().isPalindrome(head));
-		System.out.println(new PalindromeLinkedList().isPalindrome(head2));
+		System.out.println(new PalindromeLinkedList().isPalindrome(ListNode.generateHead(new int[]{1, 2, 2, 1})));
+		System.out.println(new PalindromeLinkedList().isPalindrome(ListNode.generateHead(new int[]{1, 2, 3, 2, 1})));
 	}
-
+	
 	public boolean isPalindrome(ListNode head) {
-		if (head == null)
-			return true;
-
-		Stack<Integer> stack = new Stack<>();
 		ListNode slow = head;
 		ListNode fast = head;
 		while (fast != null) {
@@ -30,15 +16,28 @@ public class PalindromeLinkedList {
 				slow = slow.next;
 				break;
 			}
-			stack.push(slow.val);
 			slow = slow.next;
 			fast = fast.next.next;
 		}
+		slow = reverse(slow);
+		fast = head;
 		while (slow != null) {
-			if (stack.isEmpty() || stack.pop() != slow.val)
+			if (slow.val != fast.val)
 				return false;
 			slow = slow.next;
+			fast = fast.next;
 		}
 		return true;
+	}
+	
+	private ListNode reverse(ListNode head) {
+		ListNode prev = null;
+		while (head != null) {
+			ListNode next = head.next;
+			head.next = prev;
+			prev = head;
+			head = next;
+		}
+		return prev;
 	}
 }
