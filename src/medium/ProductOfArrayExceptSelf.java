@@ -3,7 +3,7 @@ package medium;
 public class ProductOfArrayExceptSelf {
 
 	public static void main(String[] args) {
-		for (int i : new ProductOfArrayExceptSelf().productExceptSelf(new int[]{1, 2, 3, 4}))
+		for (int i : new ProductOfArrayExceptSelf().productExceptSelf2(new int[]{1, 2, 3, 4}))
 			System.out.println(i);
 	}
 
