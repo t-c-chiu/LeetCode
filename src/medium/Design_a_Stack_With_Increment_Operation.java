@@ -1,0 +1,49 @@
+package medium;
+
+import java.util.Stack;
+
+public class Design_a_Stack_With_Increment_Operation {
+	
+	public static void main(String[] args) {
+	
+	}
+	
+	class CustomStack {
+		
+		private int maxSize;
+		private int[] inc;
+		private Stack<Integer> stack;
+		
+		public CustomStack(int maxSize) {
+			this.maxSize = maxSize;
+			inc = new int[maxSize];
+			stack = new Stack<>();
+		}
+		
+		public void push(int x) {
+			if (stack.size() < maxSize) {
+				stack.push(x);
+			}
+		}
+		
+		public int pop() {
+			int i = stack.size() - 1;
+			if (i < 0) {
+				return -1;
+			}
+			if (i > 0) {
+				inc[i - 1] += inc[i];
+			}
+			int res = stack.pop() + inc[i];
+			inc[i] = 0;
+			return res;
+		}
+		
+		public void increment(int k, int val) {
+			int i = Math.min(k, stack.size()) - 1;
+			if (i >= 0) {
+				inc[i] += val;
+			}
+		}
+	}
+}
