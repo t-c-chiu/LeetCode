@@ -16,14 +16,15 @@ public class LongestStringChain {
 		Arrays.sort(words, Comparator.comparingInt(String::length));
 		Map<String, Integer> map = new HashMap<>();
 		int res = 0;
-		for (String word : words) {
-			int best = 0;
-			for (int i = 0; i < word.length(); i++) {
-				String prev = word.substring(0, i) + word.substring(i + 1);
-				best = Math.max(best, map.getOrDefault(prev, 0) + 1);
+		for (int i = 0; i < words.length; i++) {
+			String word = words[i];
+			int longest = 1;
+			for (int j = 0; j < word.length(); j++) {
+				String prev = word.substring(0, j) + word.substring(j + 1);
+				longest = Math.max(longest, map.getOrDefault(prev, 0) + 1);
 			}
-			map.put(word, best);
-			res = Math.max(res, best);
+			map.put(word, longest);
+			res = Math.max(res, longest);
 		}
 		return res;
 	}
