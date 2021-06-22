@@ -1,31 +1,38 @@
 package medium;
 
+import java.util.*;
+
 public class NumberOfMatchingSubsequences {
+	
 	public static void main(String[] args) {
-		System.out.println(new NumberOfMatchingSubsequences().numMatchingSubseq("abcde", new String[]{"a", "bb", "acd", "ace"}));
+		int res = numMatchingSubseq("abcde", new String[]{"a", "bb", "acd", "ace"});
+		System.out.println(res);
 	}
 	
-	/**
-	 * Example :
-	 * Input:
-	 * S = "abcde"
-	 * words = ["a", "bb", "acd", "ace"]
-	 * Output: 3
-	 * Explanation: There are three words in words that are a subsequence of S: "a", "acd", "ace".
-	 */
-	public int numMatchingSubseq(String S, String[] words) {
-		int ans = 0;
-		out:
+	public static int numMatchingSubseq(String s, String[] words) {
+		int res = 0;
+		Map<Character, List<String>> map = new HashMap<>();
 		for (String word : words) {
-			int prev = -1, current;
-			for (char c : word.toCharArray()) {
-				current = S.indexOf(c, prev + 1);
-				if (current == -1 || current <= prev)
-					continue out;
-				prev = current;
-			}
-			ans++;
+			char start = word.charAt(0);
+			map.putIfAbsent(start, new ArrayList<>());
+			map.get(start).add(word);
 		}
-		return ans;
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			List<String> list = map.remove(c);
+			if (list != null) {
+				for (String word : list) {
+					if (word.length() == 1) {
+						res++;
+					} else {
+						word = word.substring(1);
+						char start = word.charAt(0);
+						map.putIfAbsent(start, new ArrayList<>());
+						map.get(start).add(word);
+					}
+				}
+			}
+		}
+		return res;
 	}
 }
