@@ -54,7 +54,7 @@ public class LargestSumOfAverages {
 //		}
 //		double res = 0;
 //		for (int i = start; i < n - k + 1; i++) {
-//			res = Math.max(res, avgs[start][i] + largestSumOfAverages(avgs, k - 1, i + 1, memo));
+//			res = Math.longest(res, avgs[start][i] + largestSumOfAverages(avgs, k - 1, i + 1, memo));
 //		}
 //		memo[start][n - 1][k] = res;
 //		return res;

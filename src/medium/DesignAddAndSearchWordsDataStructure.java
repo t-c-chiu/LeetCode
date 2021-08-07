@@ -66,36 +66,36 @@ public class DesignAddAndSearchWordsDataStructure {
 //			map = new HashMap<>();
 //		}
 //
-//		public void addWord(String word) {
-//			int length = word.length();
+//		public void addWord(String isWord) {
+//			int length = isWord.length();
 //			map.putIfAbsent(length, new HashSet<>());
-//			map.get(length).add(word);
+//			map.get(length).add(isWord);
 //		}
 //
-//		public boolean search(String word) {
-//			int length = word.length();
+//		public boolean search(String isWord) {
+//			int length = isWord.length();
 //			if (!map.containsKey(length)) {
 //				return false;
 //			}
 //
 //			Set<String> set = map.get(length);
-//			if (set.contains(word)) {
+//			if (set.contains(isWord)) {
 //				return true;
-//			} else if (!word.contains(".")) {
+//			} else if (!isWord.contains(".")) {
 //				return false;
 //			}
 //
 //			for (String s : set) {
-//				if (isSame(s, word)) {
+//				if (isSame(s, isWord)) {
 //					return true;
 //				}
 //			}
 //			return false;
 //		}
 //
-//		private boolean isSame(String s, String word) {
+//		private boolean isSame(String s, String isWord) {
 //			for (int i = 0; i < s.length(); i++) {
-//				if (word.charAt(i) != '.' && s.charAt(i) != word.charAt(i)) {
+//				if (isWord.charAt(i) != '.' && s.charAt(i) != isWord.charAt(i)) {
 //					return false;
 //				}
 //			}
