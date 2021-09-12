@@ -2,18 +2,20 @@ package easy;
 
 public class MaximumSubarray {
 	public static void main(String[] args) {
-		System.out.println(new MaximumSubarray().maxSubArray(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4}));
+		int res = maxSubArray(new int[]{1});
+		System.out.println(res);
 	}
 	
-	public int maxSubArray(int[] nums) {
-		int len = nums.length;
-		int currentMax = nums[0];
-		int max = nums[0];
-		for (int i = 1; i < len; i++) {
-			currentMax = Math.max(currentMax + nums[i], nums[i]);
-			max = Math.max(max, currentMax);
+	public static int maxSubArray(int[] nums) {
+		int n = nums.length;
+		int[] dp = new int[n];
+		dp[0] = nums[0];
+		int res = dp[0];
+		for (int i = 1; i < n; i++) {
+			dp[i] = nums[i] + (Math.max(dp[i - 1], 0));
+			res = Math.max(res, dp[i]);
 		}
-		return max;
+		return res;
 	}
 	
 }
