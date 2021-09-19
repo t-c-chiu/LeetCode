@@ -3,22 +3,20 @@ package medium;
 public class JumpGameII {
 	
 	public static void main(String[] args) {
-		int res = jump(new int[]{0});
+		int res = jump(new int[]{2, 3, 1, 1, 4});
 		System.out.println(res);
 	}
 	
 	public static int jump(int[] nums) {
-		int jumps = 0;
-		int farthest = 0;
-		int currentEnd = 0;
+		int jump = 0, farthest = 0, currentEnd = 0;
 		for (int i = 0; i < nums.length - 1; i++) {
 			farthest = Math.max(farthest, i + nums[i]);
 			if (i == currentEnd) {
-				jumps++;
+				jump++;
 				currentEnd = farthest;
 			}
 		}
-		return jumps;
+		return jump;
 	}
 
 //	public static int jump(int[] nums) {

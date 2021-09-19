@@ -9,27 +9,39 @@ public class MaxConsecutiveOnesIII {
 	}
 	
 	public int longestOnes(int[] nums, int k) {
-		int n = nums.length;
-		int left = 0;
-		int right = 0;
-		int res = 0;
-		while (right < n) {
-			while (right < n && k > 0) {
-				if (nums[right] == 0) {
-					k--;
+		int left = 0, right = 0;
+		while (right < nums.length) {
+			if (nums[right] == 0) {
+				k--;
+			}
+			if (k < 0) {
+				if (nums[left] == 0) {
+					k++;
 				}
-				right++;
-			}
-			while (right < n && nums[right] == 1) {
-				right++;
-			}
-			res = Math.max(res, right - left);
-			while (left < n && nums[left] == 1) {
 				left++;
 			}
-			left++;
-			k++;
+			right++;
 		}
-		return res;
+		return right - left;
 	}
+//	public int longestOnes(int[] nums, int k) {
+//		int left = 0;
+//		int right = 0;
+//		int res = 0;
+//		int zero = 0;
+//		while (right < nums.length) {
+//			if (nums[right] == 0) {
+//				zero++;
+//			}
+//			while (zero > k) {
+//				if (nums[left] == 0) {
+//					zero--;
+//				}
+//				left++;
+//			}
+//			res = Math.max(res, right - left + 1);
+//			right++;
+//		}
+//		return res;
+//	}
 }
