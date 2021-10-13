@@ -3,7 +3,7 @@ package medium;
 public class ImplementTrie {
 	
 	public static void main(String[] args) {
-		Trie trie = new ImplementTrie().new Trie();
+		Trie trie = new Trie();
 		trie.insert("abc");
 		System.out.println(trie.search("abc"));
 		System.out.println(trie.search("ab"));
@@ -12,48 +12,54 @@ public class ImplementTrie {
 		System.out.println(trie.search("acd"));
 	}
 	
-	class Trie {
-		private boolean isWord;
-		private Trie[] next;
+	static class Trie {
+		
+		TrieNode root;
 		
 		public Trie() {
-			next = new Trie[26];
+			root = new TrieNode();
 		}
 		
 		public void insert(String word) {
-			Trie trie = this;
-			for (char c : word.toCharArray()) {
-				int i = c - 'a';
-				Trie nextTrie = trie.next[i];
-				if (nextTrie == null) {
-					nextTrie = new Trie();
-					trie.next[i] = nextTrie;
+			TrieNode cur = root;
+			for (int i = 0; i < word.length(); i++) {
+				int j = word.charAt(i) - 'a';
+				if (cur.children[j] == null) {
+					cur.children[j] = new TrieNode();
 				}
-				trie = nextTrie;
+				cur = cur.children[j];
 			}
-			trie.isWord = true;
+			cur.isWord = true;
 		}
 		
 		public boolean search(String word) {
-			Trie trie = this;
-			for (char c : word.toCharArray()) {
-				Trie nextTrie = trie.next[c - 'a'];
-				if (nextTrie == null)
+			TrieNode cur = root;
+			for (int i = 0; i < word.length(); i++) {
+				int j = word.charAt(i) - 'a';
+				if (cur.children[j] == null) {
 					return false;
-				trie = nextTrie;
+				}
+				cur = cur.children[j];
 			}
-			return trie.isWord;
+			return cur.isWord;
 		}
 		
 		public boolean startsWith(String prefix) {
-			Trie trie = this;
-			for (char c : prefix.toCharArray()) {
-				Trie nextTrie = trie.next[c - 'a'];
-				if (nextTrie == null)
+			TrieNode cur = root;
+			for (int i = 0; i < prefix.length(); i++) {
+				int j = prefix.charAt(i) - 'a';
+				if (cur.children[j] == null) {
 					return false;
-				trie = nextTrie;
+				}
+				cur = cur.children[j];
 			}
 			return true;
 		}
+		
+		class TrieNode {
+			boolean isWord;
+			TrieNode[] children = new TrieNode[26];
+		}
 	}
+	
 }

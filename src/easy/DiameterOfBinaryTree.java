@@ -9,25 +9,24 @@ public class DiameterOfBinaryTree {
 		root.left.left = new TreeNode(2);
 		root.left.right = new TreeNode(3);
 		root.right = new TreeNode(4);
-		System.out.println(new DiameterOfBinaryTree().diameterOfBinaryTree(root));
+		System.out.println(diameterOfBinaryTree(root));
 		
 	}
 	
-	private int max;
+	static int max;
 	
-	public int diameterOfBinaryTree(TreeNode root) {
+	public static int diameterOfBinaryTree(TreeNode root) {
 		maxDepth(root);
 		return max;
 	}
 	
-	private int maxDepth(TreeNode root) {
-		if (root == null)
+	private static int maxDepth(TreeNode root) {
+		if (root == null) {
 			return 0;
-		
+		}
 		int left = maxDepth(root.left);
 		int right = maxDepth(root.right);
 		max = Math.max(max, left + right);
-		
 		return Math.max(left, right) + 1;
 	}
 }
