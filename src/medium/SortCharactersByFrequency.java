@@ -1,31 +1,39 @@
 package medium;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class SortCharactersByFrequency {
 	public static void main(String[] args) {
-		SortCharactersByFrequency sortCharactersByFrequency = new SortCharactersByFrequency();
-		System.out.println(sortCharactersByFrequency.frequencySort("tree"));
-		System.out.println(sortCharactersByFrequency.frequencySort("cccaaa"));
-		System.out.println(sortCharactersByFrequency.frequencySort("Aabb"));
+		System.out.println(frequencySort("tree"));
+		System.out.println(frequencySort("cccaaa"));
+		System.out.println(frequencySort("Aabb"));
 	}
-
-	public String frequencySort(String s) {
+	
+	public static String frequencySort(String s) {
 		Map<Character, Integer> map = new HashMap<>();
-		for (Character c : s.toCharArray()) {
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
 			map.put(c, map.getOrDefault(c, 0) + 1);
 		}
-
-		List<Map.Entry<Character, Integer>> list = new ArrayList<>(map.entrySet());
-		list = list.stream().sorted((o1, o2) -> o2.getValue() - o1.getValue()).collect(Collectors.toList());
+		
+		List<Character>[] bucket = new ArrayList[s.length() + 1];
+		for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+			Integer freq = entry.getValue();
+			if (bucket[freq] == null) {
+				bucket[freq] = new ArrayList<>();
+			}
+			bucket[freq].add(entry.getKey());
+		}
+		
 		StringBuilder builder = new StringBuilder();
-		for (Map.Entry<Character, Integer> entry : list) {
-			for (int i = 0; i < entry.getValue(); i++)
-				builder.append(entry.getKey());
+		for (int i = bucket.length - 1; i >= 0; i--) {
+			if (bucket[i] != null) {
+				for (Character c : bucket[i]) {
+					for (int j = 0; j < i; j++) {
+						builder.append(c);
+					}
+				}
+			}
 		}
 		return builder.toString();
 	}

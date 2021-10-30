@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Three_Sum {
+public class ThreeSum {
 	
 	public static void main(String[] args) {
-		Three_Sum test = new Three_Sum();
-		List<List<Integer>> res = test.threeSum(new int[]{-1, 0, 1, 2, -1, -4});
+		List<List<Integer>> res = threeSum(new int[]{-1, 0, 1, 2, -1, -4});
 		System.out.println(res);
 	}
 	
-	public List<List<Integer>> threeSum(int[] nums) {
+	public static List<List<Integer>> threeSum(int[] nums) {
 		List<List<Integer>> res = new ArrayList<>();
 		Arrays.sort(nums);
 		int length = nums.length;

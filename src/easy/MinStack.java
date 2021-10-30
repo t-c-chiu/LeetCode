@@ -13,34 +13,42 @@ public class MinStack {
 		System.out.println(minStack.top());
 		System.out.println(minStack.getMin());
 	}
-
-	private Stack<Integer> dataStack;
-	private Stack<Integer> minStack;
-
+	
+	Node head;
+	
 	public MinStack() {
-		dataStack = new Stack<>();
-		minStack = new Stack<>();
+	
 	}
-
+	
 	public void push(int x) {
-		dataStack.push(x);
-		if (minStack.isEmpty()) {
-			minStack.push(x);
+		if (head == null) {
+			head = new Node(x, x, null);
 		} else {
-			minStack.push(Math.min(x, minStack.peek()));
+			head = new Node(x, Math.min(x, head.min), head);
 		}
 	}
-
+	
 	public void pop() {
-		dataStack.pop();
-		minStack.pop();
+		head = head.next;
 	}
-
+	
 	public int top() {
-		return dataStack.peek();
+		return head.val;
 	}
-
+	
 	public int getMin() {
-		return minStack.peek();
+		return head.min;
+	}
+	
+	class Node {
+		int val;
+		int min;
+		Node next;
+		
+		public Node(int val, int min, Node next) {
+			this.val = val;
+			this.min = min;
+			this.next = next;
+		}
 	}
 }
