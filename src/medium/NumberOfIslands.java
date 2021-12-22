@@ -3,15 +3,14 @@ package medium;
 public class NumberOfIslands {
 	
 	public static void main(String[] args) {
-		NumberOfIslands test = new NumberOfIslands();
-		int ans = test.numIslands(new char[][]{
+		int ans = numIslands(new char[][]{
 				{'1', '1', '1'},
 				{'0', '1', '0'},
 				{'1', '1', '1'}
 		});
 		System.out.println(ans);
 		
-		ans = test.numIslands(new char[][]{
+		ans = numIslands(new char[][]{
 				{'1', '1', '0', '0', '0'},
 				{'1', '1', '0', '0', '0'},
 				{'0', '0', '1', '0', '0'},
@@ -20,38 +19,29 @@ public class NumberOfIslands {
 		System.out.println(ans);
 	}
 	
-	private int row;
-	private int column;
 	
-	/**
-	 * 遇到陸地 總島嶼數就+1
-	 * 然後把相鄰的陸地全部變海水 dfs
-	 */
-	public int numIslands(char[][] grid) {
-		int ans = 0;
-		row = grid.length;
-		if (row == 0)
-			return 0;
-		column = grid[0].length;
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < column; j++) {
+	public static int numIslands(char[][] grid) {
+		int res = 0;
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[i].length; j++) {
 				if (grid[i][j] == '1') {
-					ans++;
+					res++;
 					dfs(grid, i, j);
 				}
 			}
 		}
-		return ans;
+		return res;
 	}
 	
-	private void dfs(char[][] grid, int i, int j) {
-		if (i < 0 || j < 0 || i >= row || j >= column || grid[i][j] == '0')
+	private static void dfs(char[][] grid, int i, int j) {
+		if (i < 0 || i == grid.length || j < 0 || j == grid[i].length || grid[i][j] == '0') {
 			return;
+		}
 		
 		grid[i][j] = '0';
-		dfs(grid, i + 1, j);
-		dfs(grid, i - 1, j);
-		dfs(grid, i, j + 1);
-		dfs(grid, i, j - 1);
+		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+		for (int[] dir : dirs) {
+			dfs(grid, i + dir[0], j + dir[1]);
+		}
 	}
 }

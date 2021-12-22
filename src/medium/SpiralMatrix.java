@@ -33,7 +33,6 @@ public class SpiralMatrix {
 					res.add(matrix[rowEnd][i]);
 				}
 				rowEnd--;
-				
 			}
 			
 			if (colStart <= colEnd) {
