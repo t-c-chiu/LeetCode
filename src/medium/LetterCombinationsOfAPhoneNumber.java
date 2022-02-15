@@ -1,32 +1,31 @@
 package medium;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class LetterCombinationsOfAPhoneNumber {
 	
 	public static void main(String[] args) {
-		LetterCombinationsOfAPhoneNumber test = new LetterCombinationsOfAPhoneNumber();
-		test.letterCombinations("234").forEach(System.out::println);
+		List<String> res = letterCombinations("");
+		System.out.println(res);
 	}
 	
-	public List<String> letterCombinations(String digits) {
-		if (digits.length() == 0)
+	public static List<String> letterCombinations(String digits) {
+		if (digits.isEmpty()) {
 			return new ArrayList<>();
-		
-		String[] map = new String[]{"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-		List<String> res = new ArrayList<>();
-		res.add("");
-		for (int i = 0; i < digits.length(); i++) {
-			List<String> next = new ArrayList<>();
-			String letters = map[Character.getNumericValue(digits.charAt(i))];
-			for (String prevStr : res) {
-				for (int j = 0; j < letters.length(); j++) {
-					next.add(prevStr + letters.charAt(j));
-				}
-			}
-			res = next;
 		}
+		String[] map = new String[]{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+		List<String> res = new ArrayList<>();
+		backtrack(res, digits, 0, map, "");
 		return res;
+	}
+	
+	private static void backtrack(List<String> res, String digits, int i, String[] map, String temp) {
+		if (i == digits.length()) {
+			res.add(temp);
+			return;
+		}
+		for (Character c : map[digits.charAt(i) - '0'].toCharArray()) {
+			backtrack(res, digits, i + 1, map, temp + c);
+		}
 	}
 }

@@ -23,27 +23,15 @@ public class CandyCrush {
 	}
 	
 	public static int[][] candyCrush(int[][] board) {
-		while (crush(board)) {
-			gravity(board);
+		while (mark(board)) {
+			crush(board);
 		}
 		return board;
 	}
 	
-	private static boolean crush(int[][] board) {
+	private static boolean mark(int[][] board) {
+		boolean needCrush = false;
 		int m = board.length, n = board[0].length;
-		boolean isCrush = false;
-		for (int i = 0; i < m - 2; i++) {
-			for (int j = 0; j < n; j++) {
-				int num = Math.abs(board[i][j]);
-				if (num == 0) {
-					continue;
-				}
-				if (Math.abs(board[i + 1][j]) == num && Math.abs(board[i + 2][j]) == num) {
-					board[i][j] = board[i + 1][j] = board[i + 2][j] = -num;
-					isCrush = true;
-				}
-			}
-		}
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n - 2; j++) {
 				int num = Math.abs(board[i][j]);
@@ -51,15 +39,27 @@ public class CandyCrush {
 					continue;
 				}
 				if (Math.abs(board[i][j + 1]) == num && Math.abs(board[i][j + 2]) == num) {
+					needCrush = true;
 					board[i][j] = board[i][j + 1] = board[i][j + 2] = -num;
-					isCrush = true;
 				}
 			}
 		}
-		return isCrush;
+		for (int j = 0; j < n; j++) {
+			for (int i = 0; i < m - 2; i++) {
+				int num = Math.abs(board[i][j]);
+				if (num == 0) {
+					continue;
+				}
+				if (Math.abs(board[i + 1][j]) == num && Math.abs(board[i + 2][j]) == num) {
+					needCrush = true;
+					board[i][j] = board[i + 1][j] = board[i + 2][j] = -num;
+				}
+			}
+		}
+		return needCrush;
 	}
 	
-	private static void gravity(int[][] board) {
+	private static void crush(int[][] board) {
 		int m = board.length, n = board[0].length;
 		for (int j = 0; j < n; j++) {
 			int pos = m - 1;

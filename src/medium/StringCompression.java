@@ -3,35 +3,30 @@ package medium;
 public class StringCompression {
 	
 	public static void main(String[] args) {
-		int res = compress(new char[]{'a', 'a', 'b', 'b', 'c', 'c', 'd', 'e', 'e', 'a', 'a', 'z', 'a'});
+		char[] chars = {'a', 'a', 'b', 'b', 'c', 'c', 'c'};
+		int res = compress(chars);
 		System.out.println(res);
+		for (char c : chars) {
+			System.out.print(c + " ");
+		}
 	}
 	
 	public static int compress(char[] chars) {
-		char c = chars[0];
-		int count = 1;
-		int j = 0;
-		for (int i = 1; i < chars.length; i++) {
-			if (chars[i] == c) {
+		int i = 0, j = 0, n = chars.length;
+		while (i < n) {
+			char cur = chars[i];
+			int count = 0;
+			while (i < n && cur == chars[i]) {
 				count++;
-			} else {
-				chars[j++] = c;
-				j = appendCount(chars, j, count);
-				c = chars[i];
-				count = 1;
+				i++;
+			}
+			chars[j++] = cur;
+			if (count > 1) {
+				for (char digit : String.valueOf(count).toCharArray()) {
+					chars[j++] = digit;
+				}
 			}
 		}
-		chars[j++] = c;
-		return appendCount(chars, j, count);
-	}
-	
-	private static int appendCount(char[] chars, int i, int count) {
-		if (count > 1) {
-			String countStr = String.valueOf(count);
-			for (int k = 0; k < countStr.length(); k++) {
-				chars[i++] = countStr.charAt(k);
-			}
-		}
-		return i;
+		return j;
 	}
 }

@@ -5,35 +5,32 @@ import java.util.Arrays;
 public class SortColors {
 	
 	public static void main(String[] args) {
-		SortColors test = new SortColors();
-		int[] nums = {0, 2, 1, 2, 2, 0, 0, 2};
-		test.sortColors(nums);
+		int[] nums = new int[]{2, 0, 1};
+		sortColors(nums);
 		Arrays.stream(nums).forEach(System.out::print);
 	}
 	
-	public void sortColors(int[] nums) {
-		int len = nums.length;
-		if (len < 2)
-			return;
-		
-		int i = 0, low = 0, high = len - 1;
-		while (i <= high) {
-			if (nums[i] == 0) {
-				swap(nums, i, low);
+	public static void sortColors(int[] nums) {
+		int i = 0, l = 0, r = nums.length - 1;
+		while (i <= r) {
+			int num = nums[i];
+			if (num == 0) {
+				swap(nums, l, i);
+				l++;
 				i++;
-				low++;
-			} else if (nums[i] == 2) {
-				swap(nums, i, high);
-				high--;
+			} else if (num == 2) {
+				swap(nums, r, i);
+				r--;
 			} else {
 				i++;
 			}
 		}
 	}
 	
-	private void swap(int[] nums, int i, int j) {
+	private static void swap(int[] nums, int i, int j) {
 		int temp = nums[i];
 		nums[i] = nums[j];
 		nums[j] = temp;
 	}
+	
 }

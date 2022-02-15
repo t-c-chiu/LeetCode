@@ -1,13 +1,18 @@
 package medium;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ShortestWordDistanceII {
 	
 	public static void main(String[] args) {
 		WordDistance wordDistance = new WordDistance(new String[]{"practice", "makes", "perfect", "coding", "makes"});
-		wordDistance.shortest("coding", "practice"); // return 3
-		wordDistance.shortest("makes", "coding");    // return 1
+		int res = wordDistance.shortest("coding", "practice");// return 3
+		System.out.println(res);
+		res = wordDistance.shortest("makes", "coding");    // return 1
+		System.out.println(res);
 	}
 	
 	static class WordDistance {
@@ -24,23 +29,20 @@ public class ShortestWordDistanceII {
 		}
 		
 		public int shortest(String word1, String word2) {
-			List<Integer> word1Idx = map.get(word1);
-			List<Integer> word2Idx = map.get(word2);
-			int shortest = Integer.MAX_VALUE;
-			int i = 0;
-			int j = 0;
-			while (i < word1Idx.size() && j < word2Idx.size()) {
-				Integer i1 = word1Idx.get(i);
-				Integer i2 = word2Idx.get(j);
-				if (i1 < i2) {
-					shortest = Math.min(shortest, i2 - i1);
+			List<Integer> list1 = map.get(word1);
+			List<Integer> list2 = map.get(word2);
+			int res = Integer.MAX_VALUE, i = 0, j = 0;
+			while (i < list1.size() && j < list2.size()) {
+				int index1 = list1.get(i);
+				int index2 = list2.get(j);
+				res = Math.min(res, Math.abs(index1 - index2));
+				if (index1 < index2) {
 					i++;
 				} else {
-					shortest = Math.min(shortest, i1 - i2);
 					j++;
 				}
 			}
-			return shortest;
+			return res;
 		}
 	}
 }

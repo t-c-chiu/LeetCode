@@ -12,12 +12,11 @@ public class MaximumLengthOfPairChain {
 	
 	public static int findLongestChain(int[][] pairs) {
 		Arrays.sort(pairs, Comparator.comparingInt(o -> o[1]));
-		int res = 0;
-		int end = Integer.MIN_VALUE;
+		int res = 0, end = Integer.MIN_VALUE;
 		for (int[] pair : pairs) {
 			if (pair[0] > end) {
-				res++;
 				end = pair[1];
+				res++;
 			}
 		}
 		return res;

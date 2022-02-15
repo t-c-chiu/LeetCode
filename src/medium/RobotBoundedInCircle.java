@@ -8,77 +8,20 @@ public class RobotBoundedInCircle {
 	}
 	
 	public static boolean isRobotBounded(String instructions) {
-		Direction direction = new Direction(Direction.NORTH);
-		int[] xy = new int[2];
-		for (int i = 0; i < instructions.length(); i++) {
-			char c = instructions.charAt(i);
-			if (c == 'G') {
-				switch (direction.cur) {
-					case Direction.NORTH:
-						xy[0] -= 1;
-						break;
-					case Direction.SOUTH:
-						xy[0] += 1;
-						break;
-					case Direction.WEST:
-						xy[1] += 1;
-						break;
-					case Direction.EAST:
-						xy[1] -= 1;
-						break;
-				}
+		int i = 0, x = 0, y = 0;
+		int[][] dirs = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+		for (int j = 0; j < instructions.length(); j++) {
+			char c = instructions.charAt(j);
+			if (c == 'R') {
+				i = (i + 1) % 4;
 			} else if (c == 'L') {
-				direction.turnLeft();
+				i = (i + 3) % 4;
 			} else {
-				direction.turnRight();
+				x += dirs[i][0];
+				y += dirs[i][1];
 			}
 		}
-		return !direction.cur.equals(Direction.NORTH) || xy[0] == 0 && xy[1] == 0;
+		return x == 0 && y == 0 || i > 0;
 	}
 	
-	static class Direction {
-		private static final String EAST = "EAST";
-		private static final String WEST = "WEST";
-		private static final String NORTH = "NORTH";
-		private static final String SOUTH = "SOUTH";
-		
-		private String cur;
-		
-		Direction(String cur) {
-			this.cur = cur;
-		}
-		
-		void turnLeft() {
-			switch (cur) {
-				case EAST:
-					cur = NORTH;
-					return;
-				case WEST:
-					cur = SOUTH;
-					return;
-				case NORTH:
-					cur = WEST;
-					return;
-				case SOUTH:
-					cur = EAST;
-				
-			}
-		}
-		
-		void turnRight() {
-			switch (cur) {
-				case EAST:
-					cur = SOUTH;
-					return;
-				case WEST:
-					cur = NORTH;
-					return;
-				case NORTH:
-					cur = EAST;
-					return;
-				case SOUTH:
-					cur = WEST;
-			}
-		}
-	}
 }

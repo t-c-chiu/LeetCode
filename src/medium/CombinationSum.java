@@ -7,29 +7,29 @@ import java.util.List;
 public class CombinationSum {
 	
 	public static void main(String[] args) {
-		CombinationSum test = new CombinationSum();
-		System.out.println(test.combinationSum(new int[]{2, 3, 6, 7}, 7));
-		System.out.println(test.combinationSum(new int[]{2, 3, 5}, 8));
+		List<List<Integer>> res = combinationSum(new int[]{2, 3, 6, 7}, 7);
+		System.out.println(res);
 	}
 	
-	public List<List<Integer>> combinationSum(int[] candidates, int target) {
-		List<List<Integer>> res = new ArrayList<>();
+	public static List<List<Integer>> combinationSum(int[] candidates, int target) {
 		Arrays.sort(candidates);
-		backtrack(res, new ArrayList<>(), candidates, target, 0);
+		List<List<Integer>> res = new ArrayList<>();
+		backtrack(res, new ArrayList<>(), candidates, target, 0, 0);
 		return res;
 	}
 	
-	private void backtrack(List<List<Integer>> res, List<Integer> tmp, int[] candidates, int remain, int start) {
-		if (remain < 0)
+	private static void backtrack(List<List<Integer>> res, List<Integer> temp, int[] candidates, int target, int sum, int start) {
+		if (sum == target) {
+			res.add(new ArrayList<>(temp));
 			return;
-		else if (remain == 0)
-			res.add(new ArrayList<>(tmp));
-		else {
-			for (int i = start; i < candidates.length; i++) {
-				tmp.add(candidates[i]);
-				backtrack(res, tmp, candidates, remain - candidates[i], i);
-				tmp.remove(tmp.size() - 1);
+		}
+		for (int i = start; i < candidates.length; i++) {
+			if (sum + candidates[i] > target) {
+				return;
 			}
+			temp.add(candidates[i]);
+			backtrack(res, temp, candidates, target, sum + candidates[i], i);
+			temp.remove(temp.size() - 1);
 		}
 	}
 }

@@ -1,54 +1,65 @@
 package medium;
 
+import java.util.PriorityQueue;
+
 public class KthLargestElementInAnArray {
 	
 	public static void main(String[] args) {
-		KthLargestElementInAnArray test = new KthLargestElementInAnArray();
-		int res = test.findKthLargest(new int[]{3, 2, 1, 5, 6, 4}, 2);
+		int res = findKthLargest(new int[]{3, 2, 1, 5, 6, 4}, 2);
 		System.out.println(res);
 	}
 	
-	public int findKthLargest(int[] nums, int k) {
-		int left = 0, right = nums.length - 1;
-		while (true) {
-			int pos = partition(nums, left, right);
-			if (pos + 1 == k)
-				return nums[pos];
-			else if (pos + 1 > k)
-				right = pos - 1;
-			else
-				left = pos + 1;
-		}
-	}
-	
-	private int partition(int[] nums, int left, int right) {
-		int pivot = left;
-		while (left <= right) {
-			while (left <= right && nums[left] >= nums[pivot])
-				left++;
-			while (left <= right && nums[right] < nums[pivot])
-				right--;
-			if (left > right)
+	public static int findKthLargest(int[] nums, int k) {
+		int start = 0, end = nums.length - 1;
+		k = nums.length - k;
+		while (start < end) {
+			int pivot = partition(nums, start, end);
+			if (pivot < k) {
+				start = pivot + 1;
+			} else if (pivot > k) {
+				end = pivot - 1;
+			} else {
 				break;
-			swap(nums, left, right);
+			}
 		}
-		swap(nums, pivot, right);
-		return right;
+		return nums[k];
 	}
 	
-	private void swap(int[] nums, int l, int r) {
-		int tmp = nums[l];
-		nums[l] = nums[r];
-		nums[r] = tmp;
+	private static int partition(int[] nums, int start, int end) {
+		int pivot = start;
+		while (start <= end) {
+			while (start <= end && nums[start] <= nums[pivot]) {
+				start++;
+			}
+			while (start <= end && nums[end] > nums[pivot]) {
+				end--;
+			}
+			if (start > end) {
+				break;
+			}
+			swap(nums, start, end);
+		}
+		swap(nums, pivot, end);
+		return end;
+	}
+	
+	private static void swap(int[] nums, int start, int end) {
+		int temp = nums[start];
+		nums[start] = nums[end];
+		nums[end] = temp;
 	}
 
-//	public int findKthLargest(int[] nums, int k) {
-//		PriorityQueue<Integer> queue = new PriorityQueue<>();
+//	public static int findKthLargest(int[] nums, int k) {
+//		PriorityQueue<Integer> pq = new PriorityQueue<>();
 //		for (int num : nums) {
-//			queue.add(num);
-//			if (queue.size() > k)
-//				queue.poll();
+//			if (pq.size() < k) {
+//				pq.offer(num);
+//			} else if (pq.peek() < num) {
+//				pq.poll();
+//				pq.offer(num);
+//			}
 //		}
-//		return queue.poll();
+//		return pq.poll();
 //	}
+	
 }

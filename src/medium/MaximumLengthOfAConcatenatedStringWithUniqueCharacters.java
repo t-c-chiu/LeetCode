@@ -9,37 +9,30 @@ public class MaximumLengthOfAConcatenatedStringWithUniqueCharacters {
 		System.out.println(res);
 	}
 	
+	static int res = 0;
+	
 	public static int maxLength(List<String> arr) {
-		List<String> list = new ArrayList<>();
-		list.add("");
-		for (String s : arr) {
-			if (!isUnique(s)) {
-				continue;
-			}
-			List<String> temp = new ArrayList<>();
-			for (String prevStr : list) {
-				String newStr = prevStr + s;
-				if (!isUnique(newStr)) {
-					continue;
-				}
-				temp.add(newStr);
-			}
-			list.addAll(temp);
-		}
-		int res = 0;
-		for (String s : list) {
-			res = Math.max(res, s.length());
-		}
+		backtrack(arr, 0, "");
 		return res;
 	}
 	
+	private static void backtrack(List<String> arr, int start, String temp) {
+		if (isUnique(temp)) {
+			res = Math.max(res, temp.length());
+		} else {
+			return;
+		}
+		for (int i = start; i < arr.size(); i++) {
+			backtrack(arr, i + 1, temp + arr.get(i));
+		}
+	}
+	
 	private static boolean isUnique(String s) {
-		boolean[] used = new boolean[26];
+		Set<Character> set = new HashSet<>();
 		for (char c : s.toCharArray()) {
-			if (used[c - 'a']) {
+			if (!set.add(c)) {
 				return false;
 			}
-			used[c - 'a'] = true;
 		}
 		return true;
 	}

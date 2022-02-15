@@ -5,25 +5,27 @@ import java.util.List;
 
 public class GenerateParentheses {
 	public static void main(String[] args) {
-		System.out.println(new GenerateParentheses().generateParenthesis(4));
+		List<String> res = generateParenthesis(3);
+		System.out.println(res);
 	}
 	
-	private List<String> result = new ArrayList<>();
 	
-	public List<String> generateParenthesis(int n) {
-		helper(0, 0, n, "");
-		return result;
+	public static List<String> generateParenthesis(int n) {
+		List<String> res = new ArrayList<>();
+		backtrack(res, 0, 0, n, "");
+		return res;
 	}
 	
-	private void helper(int left, int right, int n, String string) {
-		if (left == n && right == n) {
-			result.add(string);
+	private static void backtrack(List<String> res, int open, int close, int n, String temp) {
+		if (temp.length() == n * 2) {
+			res.add(temp);
 			return;
 		}
-		if (left > n || right > n || right > left)
-			return;
-		
-		helper(left + 1, right, n, string.concat("("));
-		helper(left, right + 1, n, string.concat(")"));
+		if (open < n) {
+			backtrack(res, open + 1, close, n, temp + '(');
+		}
+		if (close < open) {
+			backtrack(res, open, close + 1, n, temp + ')');
+		}
 	}
 }

@@ -2,24 +2,21 @@ package medium;
 
 public class FindTheDuplicateNumber {
 	public static void main(String[] args) {
-		FindTheDuplicateNumber findTheDuplicateNumber = new FindTheDuplicateNumber();
-//		System.out.println(findTheDuplicateNumber.findDuplicate(new int[]{1, 3, 4, 2, 2}));
-		System.out.println(findTheDuplicateNumber.findDuplicate(new int[]{3, 2, 3, 1, 4}));
+		int res = findDuplicate(new int[]{1, 2, 3, 4, 2});
+		System.out.println(res);
 	}
 	
-	public int findDuplicate(int[] nums) {
-		int left = 1, right = nums.length;
-		while (left < right) {
-			int count = 0, mid = (right + left) / 2;
-			for (int num : nums) {
-				if (num <= mid)
-					count++;
-			}
-			if (count <= mid)
-				left = mid + 1;
-			else
-				right = mid;
+	public static int findDuplicate(int[] nums) {
+		int slow = nums[0], fast = nums[nums[0]];
+		while (slow != fast) {
+			slow = nums[slow];
+			fast = nums[nums[fast]];
 		}
-		return left;
+		fast = 0;
+		while (slow != fast) {
+			fast = nums[fast];
+			slow = nums[slow];
+		}
+		return slow;
 	}
 }

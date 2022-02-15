@@ -1,8 +1,5 @@
 package medium;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class ExpressiveWords {
 	
 	public static void main(String[] args) {
@@ -21,29 +18,28 @@ public class ExpressiveWords {
 	}
 	
 	private static boolean isStretchy(String s, String word) {
-		int i = 0;
-		int j = 0;
+		int i = 0, j = 0;
 		while (i < s.length() && j < word.length()) {
 			if (s.charAt(i) != word.charAt(j)) {
 				return false;
 			}
-			int c1 = getRepeatedChars(i, s);
-			int c2 = getRepeatedChars(j, word);
-			if (c1 < 3 && c1 != c2 || c2 >= 3 && c1 < c2) {
+			int len1 = getRepeatedChars(s, i);
+			int len2 = getRepeatedChars(word, j);
+			if (len1 < len2 || len1 < 3 && len1 != len2) {
 				return false;
 			}
-			i += c1;
-			j += c2;
+			i += len1;
+			j += len2;
 		}
 		return i == s.length() && j == word.length();
 	}
 	
-	private static int getRepeatedChars(int start, String s) {
-		for (int i = start + 1; i < s.length(); i++) {
-			if (s.charAt(i) != s.charAt(start)) {
-				return i - start;
-			}
+	private static int getRepeatedChars(String s, int i) {
+		int count = 1;
+		while (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
+			i++;
+			count++;
 		}
-		return s.length() - start;
+		return count;
 	}
 }

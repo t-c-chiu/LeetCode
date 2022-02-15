@@ -1,5 +1,9 @@
 package medium;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class PartitionToKEqualSumSubsets {
 	
 	public static void main(String[] args) {
@@ -15,25 +19,25 @@ public class PartitionToKEqualSumSubsets {
 		if (sum % k != 0) {
 			return false;
 		}
-		return dfs(nums, 0, 0, sum / k, k, new boolean[nums.length]);
+		Arrays.sort(nums);
+		return backtrack(nums, sum / k, k, 0, nums.length - 1, new boolean[nums.length]);
 	}
 	
-	private static boolean dfs(int[] nums, int start, int sum, int target, int round, boolean[] visited) {
+	private static boolean backtrack(int[] nums, int target, int round, int sum, int start, boolean[] used) {
 		if (round == 0) {
 			return true;
 		}
 		if (sum == target) {
-			return dfs(nums, 0, 0, target, round - 1, visited);
+			return backtrack(nums, target, round - 1, 0, nums.length - 1, used);
 		}
-		for (int i = start; i < nums.length; i++) {
-			if (visited[i] || sum + nums[i] > target) {
-				continue;
+		for (int i = start; i >= 0; i--) {
+			if (!used[i] && sum + nums[i] <= target) {
+				used[i] = true;
+				if (backtrack(nums, target, round, sum + nums[i], i - 1, used)) {
+					return true;
+				}
+				used[i] = false;
 			}
-			visited[i] = true;
-			if (dfs(nums, i + 1, sum + nums[i], target, round, visited)) {
-				return true;
-			}
-			visited[i] = false;
 		}
 		return false;
 	}

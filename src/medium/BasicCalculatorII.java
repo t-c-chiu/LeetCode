@@ -12,33 +12,36 @@ public class BasicCalculatorII {
 	public static int calculate(String s) {
 		Stack<Integer> stack = new Stack<>();
 		int n = s.length();
-		int curNum = 0;
-		char operation = '+';
+		int res = 0;
+		int num = 0;
+		char sign = '+';
 		for (int i = 0; i < n; i++) {
 			char c = s.charAt(i);
 			if (Character.isDigit(c)) {
-				curNum = curNum * 10 + (c - '0');
+				num = num * 10 + (c - '0');
 			}
 			if (!Character.isDigit(c) && !Character.isWhitespace(c) || i == n - 1) {
-				switch (operation) {
+				switch (sign) {
 					case '+':
-						stack.push(curNum);
+						stack.push(num);
 						break;
 					case '-':
-						stack.push(-curNum);
+						stack.push(-num);
 						break;
 					case '*':
-						stack.push(stack.pop() * curNum);
+						stack.push(stack.pop() * num);
 						break;
 					case '/':
-						stack.push(stack.pop() / curNum);
+						stack.push(stack.pop() / num);
 						break;
 				}
-				operation = c;
-				curNum = 0;
+				sign = c;
+				num = 0;
 			}
 		}
-		
-		return stack.stream().mapToInt(i -> i).sum();
+		for (Integer i : stack) {
+			res += i;
+		}
+		return res;
 	}
 }

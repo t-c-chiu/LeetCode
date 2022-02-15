@@ -18,22 +18,22 @@ public class SmallestCommonRegion {
 	public static String findSmallestRegion(List<List<String>> regions, String region1, String region2) {
 		Map<String, String> map = new HashMap<>();
 		for (List<String> region : regions) {
+			String parent = region.get(0);
 			for (int i = 1; i < region.size(); i++) {
-				map.put(region.get(i), region.get(0));
+				map.put(region.get(i), parent);
 			}
 		}
-		
-		Set<String> find = new HashSet<>();
+		Set<String> set = new HashSet<>();
 		while (region1 != null) {
-			find.add(region1);
+			set.add(region1);
 			region1 = map.get(region1);
 		}
 		while (region2 != null) {
-			if (find.contains(region2)) {
+			if (set.contains(region2)) {
 				return region2;
 			}
 			region2 = map.get(region2);
 		}
-		return "";
+		return null;
 	}
 }

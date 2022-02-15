@@ -4,21 +4,18 @@ import java.util.*;
 
 public class GroupAnagrams {
 	public static void main(String[] args) {
-		GroupAnagrams test = new GroupAnagrams();
-		final List<List<String>> ans =
-				test.groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"});
-		System.out.println(ans);
+		List<List<String>> res = groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"});
+		System.out.println(res);
 	}
 	
-	public List<List<String>> groupAnagrams(String[] strs) {
+	public static List<List<String>> groupAnagrams(String[] strs) {
 		Map<String, List<String>> map = new HashMap<>();
 		for (String str : strs) {
 			char[] chars = str.toCharArray();
 			Arrays.sort(chars);
-			String sortedStr = new String(chars);
-			if (!map.containsKey(sortedStr))
-				map.put(sortedStr, new ArrayList<>());
-			map.get(sortedStr).add(str);
+			String key = new String(chars);
+			map.putIfAbsent(key, new ArrayList<>());
+			map.get(key).add(str);
 		}
 		return new ArrayList<>(map.values());
 	}

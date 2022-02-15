@@ -16,26 +16,23 @@ public class IntervalListIntersections {
 	}
 	
 	public static int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
-		int i = 0, j = 0;
 		List<int[]> list = new ArrayList<>();
+		int i = 0, j = 0;
 		while (i < firstList.length && j < secondList.length) {
-			int[] A = firstList[i], B = secondList[j];
-			int start = Math.max(A[0], B[0]);
-			int end = Math.min(A[1], B[1]);
+			int[] arr1 = firstList[i];
+			int[] arr2 = secondList[j];
+			int start = Math.max(arr1[0], arr2[0]);
+			int end = Math.min(arr1[1], arr2[1]);
 			if (start <= end) {
 				list.add(new int[]{start, end});
 			}
-			if (A[1] == end) {
+			if (arr1[1] == end) {
 				i++;
 			}
-			if (B[1] == end) {
+			if (arr2[1] == end) {
 				j++;
 			}
 		}
-		int[][] res = new int[list.size()][2];
-		for (int k = 0; k < list.size(); k++) {
-			res[k] = list.get(k);
-		}
-		return res;
+		return list.toArray(new int[list.size()][2]);
 	}
 }

@@ -11,7 +11,7 @@ public class ReorderList {
 	}
 	
 	public static void reorderList(ListNode head) {
-		ListNode slow = head, fast = head, prev = null;
+		ListNode prev = null, slow = head, fast = head;
 		while (fast != null && fast.next != null) {
 			prev = slow;
 			slow = slow.next;
@@ -25,6 +25,17 @@ public class ReorderList {
 		merge(head, rightHead);
 	}
 	
+	private static ListNode reverse(ListNode node) {
+		ListNode prev = null, cur = node, next;
+		while (cur != null) {
+			next = cur.next;
+			cur.next = prev;
+			prev = cur;
+			cur = next;
+		}
+		return prev;
+	}
+	
 	private static void merge(ListNode l1, ListNode l2) {
 		while (l1 != null) {
 			ListNode n1 = l1.next;
@@ -36,16 +47,5 @@ public class ReorderList {
 			l1 = n1;
 			l2 = n2;
 		}
-	}
-	
-	private static ListNode reverse(ListNode node) {
-		ListNode prev = null, cur = node, next;
-		while (cur != null) {
-			next = cur.next;
-			cur.next = prev;
-			prev = cur;
-			cur = next;
-		}
-		return prev;
 	}
 }

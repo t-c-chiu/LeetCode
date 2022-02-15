@@ -1,39 +1,33 @@
 package medium;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Permutations {
 	
 	public static void main(String[] args) {
-		for (List<Integer> list : new Permutations().permute(new int[]{1, 2, 3})) {
-			System.out.println(list);
-		}
+		List<List<Integer>> res = permute(new int[]{1, 2, 3});
+		System.out.println(res);
 	}
 	
-	private List<List<Integer>> result = new LinkedList<>();
-	
-	public List<List<Integer>> permute(int[] nums) {
-		List<Integer> temp = new LinkedList<>();
-		helper(nums, temp);
-		return result;
+	public static List<List<Integer>> permute(int[] nums) {
+		List<List<Integer>> res = new ArrayList<>();
+		backtrack(res, new ArrayList<>(), nums);
+		return res;
 	}
 	
-	private void helper(int[] nums, List<Integer> temp) {
+	private static void backtrack(List<List<Integer>> res, List<Integer> temp, int[] nums) {
 		if (temp.size() == nums.length) {
-			List<Integer> list = new LinkedList<>(temp);
-			result.add(list);
-		} else {
-			for (int i = 0; i < nums.length; i++) {
-				int num = nums[i];
-				if (temp.contains(num)) {
-					continue;
-				}
-				temp.add(num);
-				helper(nums, temp);
-				temp.remove(temp.size() - 1);
+			res.add(new ArrayList<>(temp));
+			return;
+		}
+		for (int i = 0; i < nums.length; i++) {
+			if (temp.contains(nums[i])) {
+				continue;
 			}
+			temp.add(nums[i]);
+			backtrack(res, temp, nums);
+			temp.remove(temp.size() - 1);
 		}
 	}
-	
 }
