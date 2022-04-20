@@ -6,15 +6,15 @@ public class SumOfNodesWithEvenValuedGrandparent {
 	
 	public static void main(String[] args) {
 		TreeNode root = TreeNode.generateRoot(new Integer[]{6, 7, 8, 2, 7, 1, 3, 9, null, 1, 4, null, null, null, 5});
-		int res = new SumOfNodesWithEvenValuedGrandparent().sumEvenGrandparent(root);
+		int res = sumEvenGrandparent(root);
 		System.out.println(res);
 	}
 	
-	public int sumEvenGrandparent(TreeNode root) {
+	public static int sumEvenGrandparent(TreeNode root) {
 		return helper(root, null, null);
 	}
 	
-	private int helper(TreeNode current, TreeNode parent, TreeNode grandParent) {
+	private static int helper(TreeNode current, TreeNode parent, TreeNode grandParent) {
 		if (current == null) {
 			return 0;
 		}
@@ -22,28 +22,37 @@ public class SumOfNodesWithEvenValuedGrandparent {
 		return sum + helper(current.left, current, parent) + helper(current.right, current, parent);
 	}
 
-//	public int sumEvenGrandparent(TreeNode root) {
+//	public static int sumEvenGrandparent(TreeNode root) {
 //		if (root == null) {
 //			return 0;
 //		}
-//		int grandChildrenSum = 0;
+//		int sum = 0;
 //		if (root.val % 2 == 0) {
-//			grandChildrenSum = getChildrenSum(root.left) + getChildrenSum(root.right);
+//			sum = sum(root);
 //		}
-//		return grandChildrenSum + sumEvenGrandparent(root.left) + sumEvenGrandparent(root.right);
+//		return sum + sumEvenGrandparent(root.left) + sumEvenGrandparent(root.right);
 //	}
 //
-//	private int getChildrenSum(TreeNode node) {
-//		if (node == null) {
-//			return 0;
+//	private static int sum(TreeNode node) {
+//		int sum = 0;
+//		TreeNode left = node.left;
+//		if (left != null) {
+//			if (left.left != null) {
+//				sum += left.left.val;
+//			}
+//			if (left.right != null) {
+//				sum += left.right.val;
+//			}
 //		}
-//		int childrenSum = 0;
-//		if (node.left != null) {
-//			childrenSum += node.left.val;
+//		TreeNode right = node.right;
+//		if (right != null) {
+//			if (right.left != null) {
+//				sum += right.left.val;
+//			}
+//			if (right.right != null) {
+//				sum += right.right.val;
+//			}
 //		}
-//		if (node.right != null) {
-//			childrenSum += node.right.val;
-//		}
-//		return childrenSum;
+//		return sum;
 //	}
 }

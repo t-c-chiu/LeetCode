@@ -10,7 +10,7 @@ public class InorderSuccessorInBST {
 	public static void main(String[] args) {
 		TreeNode root = TreeNode.generateRoot(new Integer[]{5, 3, 6, 2, 4, null, null, 1,null});
 		assert root != null;
-		TreeNode res = inorderSuccessor(root, root.right);
+		TreeNode res = inorderSuccessor(root, root.left.left);
 		System.out.println(res);
 	}
 	

@@ -11,10 +11,10 @@ public class MajorityElementII {
 	}
 	
 	public static List<Integer> majorityElement(int[] nums) {
-		int count1 = 0;
-		int count2 = 0;
 		int candidate1 = 0;
 		int candidate2 = 0;
+		int count1 = 0;
+		int count2 = 0;
 		for (int num : nums) {
 			if (num == candidate1) {
 				count1++;
@@ -31,7 +31,6 @@ public class MajorityElementII {
 				count2--;
 			}
 		}
-		
 		count1 = 0;
 		count2 = 0;
 		for (int num : nums) {
@@ -41,9 +40,8 @@ public class MajorityElementII {
 				count2++;
 			}
 		}
-		
-		List<Integer> res = new ArrayList<>();
 		int k = nums.length / 3;
+		List<Integer> res = new ArrayList<>();
 		if (count1 > k) {
 			res.add(candidate1);
 		}

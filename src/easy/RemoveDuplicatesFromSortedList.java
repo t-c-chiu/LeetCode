@@ -3,27 +3,38 @@ package easy;
 import util.ListNode;
 
 public class RemoveDuplicatesFromSortedList {
-
+	
 	public static void main(String[] args) {
-		ListNode head = new ListNode(1);
-		head.next = new ListNode(1);
-		head.next.next = new ListNode(2);
-		head.next.next.next = new ListNode(3);
-		head.next.next.next.next = new ListNode(3);
-		new RemoveDuplicatesFromSortedList().deleteDuplicates(head);
+		ListNode res = deleteDuplicates(ListNode.generateHead(new int[]{1, 1, 2, 3, 3}));
+		System.out.println(res);
+	}
+	
+	public static ListNode deleteDuplicates(ListNode head) {
+		ListNode node = head;
+		while (node != null) {
+			ListNode next = node.next;
+			if (next != null && node.val == next.val) {
+				node.next = next.next;
+			} else {
+				node = node.next;
+			}
+		}
+		return head;
 	}
 
-	// 1 -> 1 -> 2 -> 3 -> 3
-	// 1 -> 2 -> 3
-	public ListNode deleteDuplicates(ListNode head) {
-		ListNode newHead = head;
-		while (head != null) {
-			ListNode next = head.next;
-			if (next != null && head.val == next.val)
-				head.next = next.next;
-			else
-				head = head.next;
-		}
-		return newHead;
-	}
+//	public static ListNode deleteDuplicates(ListNode head) {
+//		if (head == null) {
+//			return null;
+//		}
+//		ListNode slow = head, fast = head;
+//		while (fast != null) {
+//			if (slow.val != fast.val) {
+//				slow.next = fast;
+//				slow = slow.next;
+//			}
+//			fast = fast.next;
+//		}
+//		slow.next = null;
+//		return head;
+//	}
 }

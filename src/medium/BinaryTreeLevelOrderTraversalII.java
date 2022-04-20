@@ -2,19 +2,17 @@ package medium;
 
 import util.TreeNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
-public class BinaryTreeLevelOrderTraversal {
+public class BinaryTreeLevelOrderTraversalII {
+	
 	public static void main(String[] args) {
-		List<List<Integer>> res = levelOrder(TreeNode.generateRoot(new Integer[]{3, 9, 20, null, null, 15, 7}));
+		List<List<Integer>> res = levelOrderBottom(TreeNode.generateRoot(new Integer[]{3, 9, 20, null, null, 15, 7}));
 		System.out.println(res);
 	}
 	
-	public static List<List<Integer>> levelOrder(TreeNode root) {
-		List<List<Integer>> res = new ArrayList<>();
+	public static List<List<Integer>> levelOrderBottom(TreeNode root) {
+		List<List<Integer>> res = new LinkedList<>();
 		if (root == null) {
 			return res;
 		}
@@ -33,9 +31,8 @@ public class BinaryTreeLevelOrderTraversal {
 					queue.offer(poll.right);
 				}
 			}
-			res.add(list);
+			res.add(0, list);
 		}
 		return res;
 	}
-	
 }

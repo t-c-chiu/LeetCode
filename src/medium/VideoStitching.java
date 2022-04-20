@@ -8,11 +8,12 @@ public class VideoStitching {
 	public static void main(String[] args) {
 		int res = new VideoStitching().videoStitching(new int[][]{
 				{0, 2},
-				{3, 5},
-				{4, 8},
-				{6, 8},
-				{7, 9}
-		}, 9);
+				{4, 6},
+				{8, 10},
+				{1, 9},
+				{1, 5},
+				{5, 9}
+		}, 10);
 		System.out.println(res);
 	}
 	

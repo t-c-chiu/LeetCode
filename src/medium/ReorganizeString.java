@@ -8,23 +8,24 @@ public class ReorganizeString {
 	}
 	
 	public static String reorganizeString(String s) {
-		int length = s.length();
 		int[] count = new int[26];
+		int len = s.length();
 		int max = 0;
 		int maxIndex = 0;
-		for (int i = 0; i < length; i++) {
-			char c = s.charAt(i);
-			count[c - 'a']++;
-			if (count[c - 'a'] > max) {
-				max = count[c - 'a'];
-				maxIndex = c - 'a';
+		for (int i = 0; i < len; i++) {
+			int j = s.charAt(i) - 'a';
+			count[j]++;
+			if (count[j] > max) {
+				max = count[j];
+				maxIndex = j;
 			}
 		}
 		
-		if (max > (length + 1) / 2) {
+		if (count[maxIndex] > (len + 1) / 2) {
 			return "";
 		}
-		char[] res = new char[length];
+		
+		char[] res = new char[len];
 		int i = 0;
 		while (count[maxIndex] > 0) {
 			res[i] = (char) (maxIndex + 'a');
@@ -33,7 +34,7 @@ public class ReorganizeString {
 		}
 		for (int j = 0; j < count.length; j++) {
 			while (count[j] > 0) {
-				if (i >= res.length) {
+				if (i >= len) {
 					i = 1;
 				}
 				res[i] = (char) (j + 'a');
