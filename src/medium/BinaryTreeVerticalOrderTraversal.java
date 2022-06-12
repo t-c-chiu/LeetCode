@@ -7,7 +7,7 @@ import java.util.*;
 public class BinaryTreeVerticalOrderTraversal {
 	
 	public static void main(String[] args) {
-		List<List<Integer>> res = verticalOrder(util.TreeNode.generateRoot(new Integer[]{3, 9, 8, 4, 0, 1, 7, null, null, null, 2, 5}));
+		List<List<Integer>> res = verticalOrder(TreeNode.generateRoot(new Integer[]{3, 9, 8, 4, 0, 1, 7, null, null, null, 2, 5}));
 		System.out.println(res);
 	}
 	

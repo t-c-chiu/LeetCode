@@ -3,14 +3,14 @@ package medium;
 public class OnesAndZeroes {
 	
 	public static void main(String[] args) {
-		findMaxForm(new String[]{"10", "0001", "111001", "1", "0"}, 5, 3);
+		int res = findMaxForm(new String[]{"10", "0001", "111001", "1", "0"}, 5, 3);
+		System.out.println(res);
 	}
 	
-	static public int findMaxForm(String[] strs, int m, int n) {
-		int dp[][] = new int[m + 1][n + 1];
+	public static int findMaxForm(String[] strs, int m, int n) {
+		int[][] dp = new int[m + 1][n + 1];
 		for (String str : strs) {
-			int zero = 0;
-			int one = 0;
+			int zero = 0, one = 0;
 			for (int i = 0; i < str.length(); i++) {
 				if (str.charAt(i) == '0') {
 					zero++;
@@ -26,5 +26,4 @@ public class OnesAndZeroes {
 		}
 		return dp[m][n];
 	}
-	
 }

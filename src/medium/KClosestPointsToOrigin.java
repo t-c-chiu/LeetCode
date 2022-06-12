@@ -15,16 +15,15 @@ public class KClosestPointsToOrigin {
 	}
 	
 	public static int[][] kClosest(int[][] points, int k) {
-		int[][] res = new int[k][2];
-		PriorityQueue<int[]> pq = new PriorityQueue<>((p1, p2) -> (p2[0] * p2[0] + p2[1] * p2[1]) - (p1[0] * p1[0] + p1[1] * p1[1]));
+		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[0] * o[0] + o[1] * o[1]));
 		for (int[] point : points) {
 			pq.offer(point);
-			if (pq.size() > k) {
-				pq.poll();
-			}
 		}
-		for (int i = 0; i < k; i++) {
-			res[i] = pq.poll();
+		int[][] res = new int[k][2];
+		int i = 0;
+		while (!pq.isEmpty() && k > 0) {
+			res[i++] = pq.poll();
+			k--;
 		}
 		return res;
 	}

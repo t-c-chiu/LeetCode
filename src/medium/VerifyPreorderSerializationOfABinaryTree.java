@@ -2,23 +2,20 @@ package medium;
 
 public class VerifyPreorderSerializationOfABinaryTree {
 	public static void main(String[] args) {
-		VerifyPreorderSerializationOfABinaryTree verifyPreorderSerializationOfABinaryTree = new VerifyPreorderSerializationOfABinaryTree();
-		System.out.println(verifyPreorderSerializationOfABinaryTree.isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#"));
-		System.out.println(verifyPreorderSerializationOfABinaryTree.isValidSerialization("1,#"));
-		System.out.println(verifyPreorderSerializationOfABinaryTree.isValidSerialization("9,#,#,1"));
+		System.out.println(isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#"));
+		System.out.println(isValidSerialization("1,#"));
+		System.out.println(isValidSerialization("9,#,#,1"));
 	}
-
-	public boolean isValidSerialization(String preorder) {
+	
+	public static boolean isValidSerialization(String preorder) {
 		int capacity = 1;
-		boolean isChildAllowed = true;
-		for (String s : preorder.split(",")) {
-			if (!isChildAllowed)
+		for (String node : preorder.split(",")) {
+			if (--capacity < 0) {
 				return false;
-			if ("#".equals(s)) {
-				if (--capacity == 0)
-					isChildAllowed = false;
-			} else
-				capacity++;
+			}
+			if (!"#".equals(node)) {
+				capacity += 2;
+			}
 		}
 		return capacity == 0;
 	}

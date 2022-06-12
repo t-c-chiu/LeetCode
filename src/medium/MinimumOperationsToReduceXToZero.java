@@ -1,6 +1,8 @@
 package medium;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MinimumOperationsToReduceXToZero {
 	
@@ -10,25 +12,21 @@ public class MinimumOperationsToReduceXToZero {
 	}
 	
 	public static int minOperations(int[] nums, int x) {
-		int n = nums.length;
 		int target = Arrays.stream(nums).sum() - x;
 		if (target == 0) {
-			return n;
+			return nums.length;
 		}
-		
-		int left = 0;
 		int sum = 0;
-		int res = Integer.MAX_VALUE;
-		for (int right = 0; right < n; right++) {
-			sum += nums[right];
-			while (sum > target && left <= right) {
-				sum -= nums[left];
-				left++;
+		int res = -1;
+		Map<Integer, Integer> preSum = new HashMap<>();
+		preSum.put(0, -1);
+		for (int i = 0; i < nums.length; i++) {
+			sum += nums[i];
+			if (preSum.containsKey(sum - target)) {
+				res = Math.max(res, i - preSum.get(sum - target));
 			}
-			if (sum == target) {
-				res = Math.min(res, n - (right - left + 1));
-			}
+			preSum.put(sum, i);
 		}
-		return res == Integer.MAX_VALUE ? -1 : res;
+		return res == -1 ? -1 : nums.length - res;
 	}
 }

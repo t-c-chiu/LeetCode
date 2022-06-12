@@ -10,19 +10,17 @@ public class MaximumProductOfWordLengths {
 	}
 	
 	public static int maxProduct(String[] words) {
-		int n = words.length;
-		int[] value = new int[n];
+		int n = words.length, res = 0;
+		int[] mask = new int[n];
 		for (int i = 0; i < n; i++) {
 			String word = words[i];
 			for (int j = 0; j < word.length(); j++) {
-				value[i] |= 1 << (word.charAt(j) - 'a');
+				mask[i] |= 1 << (word.charAt(j) - 'a');
 			}
 		}
-		
-		int res = 0;
 		for (int i = 0; i < n; i++) {
 			for (int j = i + 1; j < n; j++) {
-				if ((value[i] & value[j]) == 0) {
+				if ((mask[i] & mask[j]) == 0) {
 					res = Math.max(res, words[i].length() * words[j].length());
 				}
 			}

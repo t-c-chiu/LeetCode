@@ -12,12 +12,10 @@ public class CheckIfAStringContainsAllBinaryCodesOfSizeK {
 	}
 	
 	public static boolean hasAllCodes(String s, int k) {
-		double expectedSize = Math.pow(2, k);
 		Set<String> set = new HashSet<>();
-		for (int i = k; i <= s.length() && set.size() < expectedSize; i++) {
-			set.add(s.substring(i - k, i));
+		for (int i = 0; i + k <= s.length(); i++) {
+			set.add(s.substring(i, i + k));
 		}
-		return set.size() == expectedSize;
+		return set.size() == Math.pow(2, k);
 	}
-	
 }

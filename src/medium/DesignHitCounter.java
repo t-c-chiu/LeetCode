@@ -22,21 +22,32 @@ public class DesignHitCounter {
 	
 	static class HitCounter {
 		
-		Queue<Integer> queue;
+		int[] timestamps;
+		int[] hits;
 		
 		public HitCounter() {
-			queue = new LinkedList<>();
+			timestamps = new int[300];
+			hits = new int[300];
 		}
 		
 		public void hit(int timestamp) {
-			queue.offer(timestamp);
+			int index = timestamp % 300;
+			if (timestamps[index] != timestamp) {
+				timestamps[index] = timestamp;
+				hits[index] = 1;
+			} else {
+				hits[index]++;
+			}
 		}
 		
 		public int getHits(int timestamp) {
-			while (!queue.isEmpty() && queue.peek() < timestamp - 299) {
-				queue.poll();
+			int count = 0;
+			for (int i = 0; i < 300; i++) {
+				if (timestamp - timestamps[i] < 300) {
+					count += hits[i];
+				}
 			}
-			return queue.size();
+			return count;
 		}
 	}
 }
