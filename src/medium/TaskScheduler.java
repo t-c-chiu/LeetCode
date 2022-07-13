@@ -3,9 +3,7 @@ package medium;
 public class TaskScheduler {
 	
 	public static void main(String[] args) {
-		TaskScheduler test = new TaskScheduler();
-		int res = test.leastInterval(
-				new char[]{'A', 'A', 'A', 'B', 'B', 'B', 'C', 'C', 'C', 'D', 'D', 'E', 'E'}, 5);
+		int res = leastInterval(new char[]{'A', 'A', 'A', 'B', 'B', 'B'}, 2);
 		System.out.println(res);
 	}
 	
@@ -16,25 +14,23 @@ public class TaskScheduler {
 	// n = 5, partCount = 2, emptySlot = 6, availableTasks = 4, idles = 2
 	// A B C _ _ _ A B C _ _ _ A B C
 	// A B C D E _ A B C D E _ A B C
-	public int leastInterval(char[] tasks, int n) {
-		int[] counter = new int[26];
+	public static int leastInterval(char[] tasks, int n) {
+		int[] count = new int[26];
 		int max = 0, maxCount = 0;
-		for (char task : tasks) {
-			int c = task - 'A';
-			counter[c]++;
-			if (max == counter[c])
-				maxCount++;
-			else if (max < counter[c]) {
-				max = counter[c];
+		for (char c : tasks) {
+			int i = c - 'A';
+			count[i]++;
+			if (count[i] > max) {
+				max = count[i];
 				maxCount = 1;
+			} else if (count[i] == max) {
+				maxCount++;
 			}
 		}
-		
-		int partCount = max - 1;
-		int partLength = n - (maxCount - 1);
-		int emptySlot = partCount * partLength;
-		int availableTasks = tasks.length - max * maxCount;
-		int idles = Math.max(0, emptySlot - availableTasks);
-		return tasks.length + idles;
+		int part = max - 1;
+		int emptySlots = (n - maxCount + 1) * part;
+		int remainingTasks = tasks.length - (max * maxCount);
+		int idle = Math.max(0, emptySlots - remainingTasks);
+		return tasks.length + idle;
 	}
 }

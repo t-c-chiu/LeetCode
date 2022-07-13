@@ -10,7 +10,7 @@ public class RandomPickWithWeight {
 		int threeCount = 0;
 		for (int i = 0; i < 100; i++) {
 			int j = solution.pickIndex();
-			if (j == 1) {
+			if (j == 0) {
 				oneCount++;
 			} else {
 				threeCount++;
@@ -20,8 +20,9 @@ public class RandomPickWithWeight {
 	}
 	
 	static class Solution {
-		int preSum[];
-		int sum;
+		
+		int[] preSum;
+		int sum = 0;
 		
 		public Solution(int[] w) {
 			int n = w.length;
@@ -32,20 +33,18 @@ public class RandomPickWithWeight {
 			}
 		}
 		
-		
 		public int pickIndex() {
 			int target = new Random().nextInt(sum) + 1;
-			int low = 0;
-			int high = preSum.length;
-			while (low < high) {
-				int mid = low + (high - low) / 2;
+			int lo = 0, hi = preSum.length;
+			while (lo < hi) {
+				int mid = (lo + hi) / 2;
 				if (preSum[mid] < target) {
-					low = mid + 1;
+					lo = mid + 1;
 				} else {
-					high = mid;
+					hi = mid;
 				}
 			}
-			return low;
+			return lo;
 		}
 	}
 }

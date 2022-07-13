@@ -16,52 +16,42 @@ public class ShortestPathToGetFood {
 	}
 	
 	public static int getFood(char[][] grid) {
-		int n = grid.length;
-		int m = grid[0].length;
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
+		int m = grid.length, n = grid[0].length;
+		Queue<int[]> q = new LinkedList<>();
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
 				if (grid[i][j] == '*') {
-					Queue<int[]> queue = new LinkedList<>();
-					queue.offer(new int[]{i, j});
-					boolean[][] visited = new boolean[n][m];
-					visited[i][j] = true;
-					return bfs(grid, queue, visited);
+					grid[i][j] = 'X';
+					q.offer(new int[]{i, j});
+					return bfs(grid, m, n, q);
 				}
 			}
 		}
 		return -1;
 	}
 	
-	private static int bfs(char[][] grid, Queue<int[]> queue, boolean[][] visited) {
-		int res = 0;
-		while (!queue.isEmpty()) {
-			int size = queue.size();
-			for (int i = 0; i < size; i++) {
-				int[] cell = queue.poll();
-				int r = cell[0];
-				int c = cell[1];
-				if (grid[r][c] == '#') {
-					return res;
+	private static int bfs(char[][] grid, int m, int n, Queue<int[]> q) {
+		int res = 1;
+		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+		while (!q.isEmpty()) {
+			for (int k = q.size(); k > 0; k--) {
+				int[] cur = q.poll();
+				int x = cur[0], y = cur[1];
+				for (int[] dir : dirs) {
+					int newX = x + dir[0];
+					int newY = y + dir[1];
+					if (newX < 0 || newX == m || newY < 0 || newY == n || grid[newX][newY] == 'X') {
+						continue;
+					}
+					if (grid[newX][newY] == '#') {
+						return res;
+					}
+					grid[newX][newY] = 'X';
+					q.offer(new int[]{newX, newY});
 				}
-				addAdjacentCells(grid, queue, visited, r, c);
 			}
 			res++;
 		}
 		return -1;
 	}
-	
-	private static void addAdjacentCells(char[][] grid, Queue<int[]> queue, boolean[][] visited, int r, int c) {
-		int[][] dirs = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-		for (int[] dir : dirs) {
-			int newR = r + dir[0];
-			int newC = c + dir[1];
-			if (newR < 0 || newC < 0 || newR >= grid.length || newC >= grid[0].length
-					|| visited[newR][newC] || grid[newR][newC] == 'X') {
-				continue;
-			}
-			visited[newR][newC] = true;
-			queue.offer(new int[]{newR, newC});
-		}
-	}
-	
 }

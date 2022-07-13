@@ -8,14 +8,15 @@ public class FlipStringToMonotoneIncreasing {
 	}
 	
 	public static int minFlipsMonoIncr(String s) {
-		int flip = 0, oneCounts = 0;
+		int oneCount = 0, flip = 0;
 		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) == '1') {
-				oneCounts++;
+			char c = s.charAt(i);
+			if (c == '1') {
+				oneCount++;
 			} else {
 				flip++;
 			}
-			flip = Math.min(flip, oneCounts);
+			flip = Math.min(oneCount, flip);
 		}
 		return flip;
 	}

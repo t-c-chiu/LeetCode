@@ -10,18 +10,17 @@ public class ConvertSortedArrayToBinarySearchTree {
 	}
 	
 	public static TreeNode sortedArrayToBST(int[] nums) {
-		return sortedArrayToBST(nums, 0, nums.length - 1);
+		return helper(nums, 0, nums.length - 1);
 	}
 	
-	private static TreeNode sortedArrayToBST(int[] nums, int left, int right) {
-		if (left > right) {
+	private static TreeNode helper(int[] nums, int lo, int hi) {
+		if (lo > hi) {
 			return null;
 		}
-		
-		int mid = (left + right) / 2;
-		TreeNode root = new TreeNode(nums[mid]);
-		root.left = sortedArrayToBST(nums, left, mid - 1);
-		root.right = sortedArrayToBST(nums, mid + 1, right);
-		return root;
+		int mid = (lo + hi) / 2;
+		TreeNode node = new TreeNode(nums[mid]);
+		node.left = helper(nums, lo, mid - 1);
+		node.right = helper(nums, mid + 1, hi);
+		return node;
 	}
 }

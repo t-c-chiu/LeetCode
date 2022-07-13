@@ -5,43 +5,40 @@ import java.util.Stack;
 public class BasicCalculator {
 	
 	public static void main(String[] args) {
-		int res = calculate("(1+(4+5+2)-3)+(6+8)");
+		int res = calculate("2147483647");
 		System.out.println(res);
 	}
 	
 	public static int calculate(String s) {
 		Stack<Integer> stack = new Stack<>();
-		int res = 0;
-		int num = 0;
-		int sign = 1;
-		for (int i = 0; i < s.length(); i++) {
+		int sign = 1, res = 0, n = s.length(), i = 0;
+		while (i < n) {
 			char c = s.charAt(i);
 			if (Character.isDigit(c)) {
-				num = num * 10 + (c - '0');
-			} else if (c == '+') {
-				res += sign * num;
-				sign = 1;
-				num = 0;
-			} else if (c == '-') {
-				res += sign * num;
-				sign = -1;
-				num = 0;
-			} else if (c == '(') {
-				stack.push(res);
-				stack.push(sign);
-				sign = 1;
-				res = 0;
-			} else if (c == ')') {
-				res += sign * num;
-				num = 0;
-				res *= stack.pop();
-				res += stack.pop();
+				int num = 0;
+				while (i < n && Character.isDigit(s.charAt(i))) {
+					num = num * 10 + (s.charAt(i) - '0');
+					i++;
+				}
+				res += num * sign;
+			} else {
+				if (c == '+') {
+					sign = 1;
+				} else if (c == '-') {
+					sign = -1;
+				} else if (c == '(') {
+					stack.push(res);
+					stack.push(sign);
+					res = 0;
+					sign = 1;
+				} else if (c == ')') {
+					res *= stack.pop();
+					res += stack.pop();
+				}
+				i++;
 			}
-		}
-		if (num > 0) {
-			res += sign * num;
 		}
 		return res;
 	}
-	
 }
+

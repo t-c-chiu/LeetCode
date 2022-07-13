@@ -7,99 +7,63 @@ public class DesignAddAndSearchWordsDataStructure {
 		wordDictionary.addWord("bad");
 		wordDictionary.addWord("dad");
 		wordDictionary.addWord("mad");
-		wordDictionary.search("pad"); // return False
-		wordDictionary.search("bad"); // return True
-		wordDictionary.search(".ad"); // return True
-		wordDictionary.search("b.."); // return True
+		boolean res = wordDictionary.search("pad"); // return False
+		System.out.println(res);
+		res = wordDictionary.search("bad"); // return True
+		System.out.println(res);
+		res = wordDictionary.search(".ad"); // return True
+		System.out.println(res);
+		res = wordDictionary.search("b.."); // return True
+		System.out.println(res);
 	}
 	
 	static class WordDictionary {
-		TrieNode root = new TrieNode();
+		
+		TrieNode root;
+		
+		public WordDictionary() {
+			root = new TrieNode();
+		}
 		
 		public void addWord(String word) {
-			TrieNode node = root;
+			TrieNode cur = root;
 			for (int i = 0; i < word.length(); i++) {
-				int idx = word.charAt(i) - 'a';
-				if (node.children[idx] == null) {
-					node.children[idx] = new TrieNode();
+				int j = word.charAt(i) - 'a';
+				if (cur.next[j] == null) {
+					cur.next[j] = new TrieNode();
 				}
-				node = node.children[idx];
+				cur = cur.next[j];
 			}
-			node.isWord = true;
+			cur.isWord = true;
 		}
 		
 		public boolean search(String word) {
-			return search(word, root, 0);
+			return search(root, word, 0);
 		}
 		
-		private boolean search(String word, TrieNode node, int index) {
-			if (index == word.length()) {
-				return node.isWord;
+		private boolean search(TrieNode root, String word, int i) {
+			if (i == word.length()) {
+				return root.isWord;
 			}
-			if (word.charAt(index) != '.') {
-				int idx = word.charAt(index) - 'a';
-				return node.children[idx] != null
-						&& search(word, node.children[idx], index + 1);
-			} else {
-				for (TrieNode child : node.children) {
-					if (child != null) {
-						if (search(word, child, index + 1)) {
+			char c = word.charAt(i);
+			if (c == '.') {
+				for (TrieNode next : root.next) {
+					if (next != null) {
+						if (search(next, word, i + 1)) {
 							return true;
 						}
 					}
 				}
+			} else {
+				int j = c - 'a';
+				return root.next[j] != null && search(root.next[j], word, i + 1);
 			}
 			return false;
 		}
+		
+		class TrieNode {
+			TrieNode[] next = new TrieNode[26];
+			boolean isWord;
+		}
 	}
-	
-	static class TrieNode {
-		TrieNode[] children = new TrieNode[26];
-		boolean isWord = false;
-	}
-
-//	static class WordDictionary {
-//
-//		Map<Integer, Set<String>> map;
-//
-//		public WordDictionary() {
-//			map = new HashMap<>();
-//		}
-//
-//		public void addWord(String isWord) {
-//			int length = isWord.length();
-//			map.putIfAbsent(length, new HashSet<>());
-//			map.get(length).add(isWord);
-//		}
-//
-//		public boolean search(String isWord) {
-//			int length = isWord.length();
-//			if (!map.containsKey(length)) {
-//				return false;
-//			}
-//
-//			Set<String> set = map.get(length);
-//			if (set.contains(isWord)) {
-//				return true;
-//			} else if (!isWord.contains(".")) {
-//				return false;
-//			}
-//
-//			for (String s : set) {
-//				if (isSame(s, isWord)) {
-//					return true;
-//				}
-//			}
-//			return false;
-//		}
-//
-//		private boolean isSame(String s, String isWord) {
-//			for (int i = 0; i < s.length(); i++) {
-//				if (isWord.charAt(i) != '.' && s.charAt(i) != isWord.charAt(i)) {
-//					return false;
-//				}
-//			}
-//			return true;
-//		}
-//	}
 }

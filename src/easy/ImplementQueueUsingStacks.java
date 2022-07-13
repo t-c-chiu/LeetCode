@@ -1,12 +1,10 @@
 package easy;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class ImplementQueueUsingStacks {
 	public static void main(String[] args) {
-		MyQueue queue = new ImplementQueueUsingStacks().new MyQueue();
+		MyQueue queue = new MyQueue();
 		queue.push(1);
 		queue.push(2);
 		queue.push(3);
@@ -14,49 +12,42 @@ public class ImplementQueueUsingStacks {
 		System.out.println(queue.pop());
 		System.out.println(queue.empty());
 	}
-
-	class MyQueue {
-		private Stack<Integer> stack;
-
-		/**
-		 * Initialize your data structure here.
-		 */
+	
+	static class MyQueue {
+		
+		Stack<Integer> input;
+		Stack<Integer> output;
+		
 		public MyQueue() {
-			stack = new Stack<>();
+			input = new Stack<>();
+			output = new Stack<>();
 		}
-
-		/**
-		 * Push element x to the back of queue.
-		 */
+		
 		public void push(int x) {
-			List<Integer> list = new ArrayList<>();
-			while (!stack.isEmpty()) {
-				list.add(stack.pop());
-			}
-			stack.push(x);
-			for (int i = list.size() - 1; i >= 0; i--)
-				stack.push(list.get(i));
+			input.push(x);
 		}
-
-		/**
-		 * Removes the element from in front of queue and returns that element.
-		 */
+		
 		public int pop() {
-			return stack.pop();
+			fillOutput();
+			return output.pop();
 		}
-
-		/**
-		 * Get the front element.
-		 */
+		
+		private void fillOutput() {
+			if (output.isEmpty()) {
+				while (!input.isEmpty()) {
+					output.push(input.pop());
+				}
+			}
+		}
+		
 		public int peek() {
-			return stack.peek();
+			fillOutput();
+			return output.peek();
 		}
-
-		/**
-		 * Returns whether the queue is empty.
-		 */
+		
 		public boolean empty() {
-			return stack.isEmpty();
+			return input.isEmpty() && output.isEmpty();
 		}
 	}
+	
 }

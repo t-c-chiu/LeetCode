@@ -1,65 +1,52 @@
 package easy;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import util.TreeNode;
+
+import java.util.Stack;
 
 public class SymmetricTree {
 	public static void main(String[] args) {
-		TreeNode root = new TreeNode(1);
-		root.left = new TreeNode(2);
-		root.left.left = new TreeNode(3);
-		root.left.right = new TreeNode(4);
-		root.right = new TreeNode(2);
-		root.right.left = new TreeNode(4);
-		root.right.right = new TreeNode(3);
-		System.out.println(new SymmetricTree().isSymmetric(root));
+		boolean res = isSymmetric(TreeNode.generateRoot(new Integer[]{1, 2, 2, 3, 4, 4, 3}));
+		System.out.println(res);
 	}
-
-	private List<Integer> leftVals = new ArrayList<>();
-	private List<Integer> rightVals = new ArrayList<>();
-
-	public boolean isSymmetric(TreeNode root) {
-		if (root == null)
+	
+	public static boolean isSymmetric(TreeNode root) {
+		if (root == null) {
 			return true;
-		storeLeft(root.left);
-		storeRight(root.right);
-		if (leftVals.size() != rightVals.size())
-			return false;
-		for (int i = 0; i < leftVals.size(); i++) {
-			if (leftVals.get(i) != rightVals.get(i))
+		}
+		Stack<TreeNode> stack = new Stack<>();
+		stack.push(root.left);
+		stack.push(root.right);
+		while (!stack.isEmpty()) {
+			TreeNode n1 = stack.pop();
+			TreeNode n2 = stack.pop();
+			if (n1 == null && n2 == null) {
+				continue;
+			}
+			if (n1 == null || n2 == null || n1.val != n2.val) {
 				return false;
+			}
+			stack.push(n1.left);
+			stack.push(n2.right);
+			stack.push(n1.right);
+			stack.push(n2.left);
 		}
 		return true;
 	}
-
-	private void storeLeft(TreeNode left) {
-		if (left == null) {
-			leftVals.add(null);
-			return;
-		}
-		storeLeft(left.left);
-		storeLeft(left.right);
-		leftVals.add(left.val);
-	}
-
-	private void storeRight(TreeNode right) {
-		if (right == null) {
-			rightVals.add(null);
-			return;
-		}
-		storeRight(right.right);
-		storeRight(right.left);
-		rightVals.add(right.val);
-	}
-
-	private boolean isMirror(TreeNode t1, TreeNode t2) {
-		if (t1 == null && t2 == null)
-			return true;
-		if (t1 == null || t2 == null)
-			return false;
-
-		return t1.val == t2.val && isMirror(t1.left, t2.right) && isMirror(t1.right, t2.left);
-	}
+//	public static boolean isSymmetric(TreeNode root) {
+//		if (root == null) {
+//			return true;
+//		}
+//		return helper(root.left, root.right);
+//	}
+//
+//	private static boolean helper(TreeNode left, TreeNode right) {
+//		if (left == null && right == null) {
+//			return true;
+//		}
+//		if (left == null || right == null || left.val != right.val) {
+//			return false;
+//		}
+//		return helper(left.left, right.right) && helper(left.right, right.left);
+//	}
 }

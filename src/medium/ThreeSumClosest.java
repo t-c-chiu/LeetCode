@@ -11,15 +11,14 @@ public class ThreeSumClosest {
 	
 	public static int threeSumClosest(int[] nums, int target) {
 		Arrays.sort(nums);
-		int n = nums.length, res = 0, diff = Integer.MAX_VALUE;
-		for (int i = 0; i < n - 2; i++) {
+		int res = 0, diff = Integer.MAX_VALUE, n = nums.length;
+		for (int i = 0; i < n; i++) {
 			int l = i + 1, r = n - 1;
 			while (l < r) {
-				int sum = nums[i] + nums[l] + nums[r];
-				int newDiff = Math.abs(sum - target);
+				int sum = nums[i] + nums[l] + nums[r], newDiff = Math.abs(sum - target);
 				if (newDiff < diff) {
-					diff = newDiff;
 					res = sum;
+					diff = newDiff;
 				}
 				if (sum == target) {
 					return sum;

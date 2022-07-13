@@ -3,35 +3,48 @@ package medium;
 public class DecodeWays {
 	
 	public static void main(String[] args) {
-		DecodeWays test = new DecodeWays();
-		int res = test.numDecodings("226");
+		int res = numDecodings("226");
 		System.out.println(res);
 	}
 	
-	/**
-	 * 1 -> A -> 1way
-	 * 12 -> AB, L -> 2ways
-	 * 122 = 1 + 22 or 12 + 2 = 1way + 2ways = 3ways -> AV, ABB, LB
-	 * 1221 = 12 + 21 or 122 + 1 = 2ways + 3ways = 5ways -> ABU, LU, AVA, ABBA, LBA
-	 */
-	public int numDecodings(String s) {
-		if (s.isEmpty() || s.charAt(0) == '0') {
+	public static int numDecodings(String s) {
+		if (s.charAt(0) == '0') {
 			return 0;
 		}
-		int n = s.length();
-		int[] dp = new int[n + 1];
-		dp[0] = 1;
-		dp[1] = s.charAt(0) != '0' ? 1 : 0;
+		int n = s.length(), prev = 1, cur = 1;
 		for (int i = 1; i < n; i++) {
-			int curDigit = s.charAt(i) - '0';
-			if (curDigit != 0) {
-				dp[i + 1] += dp[i];
+			char prevChar = s.charAt(i - 1);
+			char curChar = s.charAt(i);
+			int temp = 0;
+			if (curChar != '0') {
+				temp += cur;
 			}
-			int lastTwoDigits = (s.charAt(i - 1) - '0') * 10 + curDigit;
-			if (lastTwoDigits >= 10 && lastTwoDigits <= 26) {
-				dp[i + 1] += dp[i - 1];
+			if (prevChar == '1' || prevChar == '2' && curChar <= '6') {
+				temp += prev;
 			}
+			prev = cur;
+			cur = temp;
 		}
-		return dp[n];
+		return cur;
 	}
+
+//	public static int numDecodings(String s) {
+//		if (s.charAt(0) == '0') {
+//			return 0;
+//		}
+//		int n = s.length();
+//		int[] dp = new int[n + 1];
+//		dp[0] = dp[1] = 1;
+//		for (int i = 1; i < n; i++) {
+//			char prev = s.charAt(i - 1);
+//			char cur = s.charAt(i);
+//			if (cur != '0') {
+//				dp[i + 1] = dp[i];
+//			}
+//			if (prev == '1' || prev == '2' && cur <= '6') {
+//				dp[i + 1] += dp[i - 1];
+//			}
+//		}
+//		return dp[n];
+//	}
 }

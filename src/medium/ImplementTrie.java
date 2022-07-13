@@ -14,52 +14,52 @@ public class ImplementTrie {
 	
 	static class Trie {
 		
-		TrieNode root;
+		TrieNode head;
 		
 		public Trie() {
-			root = new TrieNode();
+			head = new TrieNode();
 		}
 		
 		public void insert(String word) {
-			TrieNode cur = root;
+			TrieNode cur = head;
 			for (int i = 0; i < word.length(); i++) {
 				int j = word.charAt(i) - 'a';
-				if (cur.children[j] == null) {
-					cur.children[j] = new TrieNode();
+				if (cur.next[j] == null) {
+					cur.next[j] = new TrieNode();
 				}
-				cur = cur.children[j];
+				cur = cur.next[j];
 			}
 			cur.isWord = true;
 		}
 		
 		public boolean search(String word) {
-			TrieNode cur = root;
+			TrieNode cur = head;
 			for (int i = 0; i < word.length(); i++) {
 				int j = word.charAt(i) - 'a';
-				if (cur.children[j] == null) {
+				if (cur.next[j] == null) {
 					return false;
 				}
-				cur = cur.children[j];
+				cur = cur.next[j];
 			}
 			return cur.isWord;
 		}
 		
 		public boolean startsWith(String prefix) {
-			TrieNode cur = root;
+			TrieNode cur = head;
 			for (int i = 0; i < prefix.length(); i++) {
 				int j = prefix.charAt(i) - 'a';
-				if (cur.children[j] == null) {
+				if (cur.next[j] == null) {
 					return false;
 				}
-				cur = cur.children[j];
+				cur = cur.next[j];
 			}
 			return true;
 		}
 		
 		class TrieNode {
+			
+			TrieNode[] next = new TrieNode[26];
 			boolean isWord;
-			TrieNode[] children = new TrieNode[26];
 		}
 	}
-	
 }

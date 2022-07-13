@@ -11,32 +11,34 @@ public class DecodeString {
 	}
 	
 	public static String decodeString(String s) {
+		Stack<String> stringStack = new Stack<>();
 		Stack<Integer> countStack = new Stack<>();
-		Stack<String> resStack = new Stack<>();
-		String res = "";
 		int i = 0;
+		String res = "";
 		while (i < s.length()) {
-			if (Character.isDigit(s.charAt(i))) {
+			char c = s.charAt(i);
+			if (Character.isDigit(c)) {
 				int count = 0;
-				while (Character.isDigit(s.charAt(i))) {
+				while (i < s.length() && Character.isDigit(s.charAt(i))) {
 					count = count * 10 + s.charAt(i) - '0';
 					i++;
 				}
 				countStack.push(count);
-			} else if (s.charAt(i) == '[') {
-				resStack.push(res);
+			} else if (Character.isLetter(c)) {
+				res += c;
+				i++;
+			} else if (c == '[') {
+				stringStack.push(res);
 				res = "";
 				i++;
-			} else if (s.charAt(i) == ']') {
-				StringBuilder temp = new StringBuilder(resStack.pop());
-				int n = countStack.pop();
-				for (int j = 0; j < n; j++) {
-					temp.append(res);
-				}
-				res = temp.toString();
-				i++;
 			} else {
-				res += s.charAt(i++);
+				int times = countStack.pop();
+				StringBuilder sb = new StringBuilder(stringStack.pop());
+				for (int j = 0; j < times; j++) {
+					sb.append(res);
+				}
+				res = sb.toString();
+				i++;
 			}
 		}
 		return res;

@@ -18,14 +18,15 @@ public class PacificAtlanticWaterFlow {
 	public static List<List<Integer>> pacificAtlantic(int[][] heights) {
 		List<List<Integer>> res = new ArrayList<>();
 		int m = heights.length, n = heights[0].length;
-		boolean[][] pacific = new boolean[m][n], atlantic = new boolean[m][n];
+		boolean[][] pacific = new boolean[m][n];
+		boolean[][] atlantic = new boolean[m][n];
 		for (int i = 0; i < m; i++) {
-			dfs(heights, pacific, i, 0, 0);
-			dfs(heights, atlantic, i, n - 1, 0);
+			dfs(pacific, heights, i, 0, m, n, 0);
+			dfs(atlantic, heights, i, n - 1, m, n, 0);
 		}
 		for (int j = 0; j < n; j++) {
-			dfs(heights, pacific, 0, j, 0);
-			dfs(heights, atlantic, m - 1, j, 0);
+			dfs(pacific, heights, 0, j, m, n, 0);
+			dfs(atlantic, heights, m - 1, j, m, n, 0);
 		}
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -37,15 +38,15 @@ public class PacificAtlanticWaterFlow {
 		return res;
 	}
 	
-	private static void dfs(int[][] heights, boolean[][] visited, int i, int j, int height) {
-		if (i < 0 || i == heights.length || j < 0 || j == heights[i].length || visited[i][j] || heights[i][j] < height) {
+	private static void dfs(boolean[][] ocean, int[][] heights, int i, int j, int m, int n, int pre) {
+		if (i < 0 || i == m || j < 0 || j == n || ocean[i][j] || heights[i][j] < pre) {
 			return;
 		}
-		visited[i][j] = true;
-		dfs(heights, visited, i + 1, j, heights[i][j]);
-		dfs(heights, visited, i - 1, j, heights[i][j]);
-		dfs(heights, visited, i, j + 1, heights[i][j]);
-		dfs(heights, visited, i, j - 1, heights[i][j]);
+		ocean[i][j] = true;
+		dfs(ocean, heights, i - 1, j, m, n, heights[i][j]);
+		dfs(ocean, heights, i + 1, j, m, n, heights[i][j]);
+		dfs(ocean, heights, i, j - 1, m, n, heights[i][j]);
+		dfs(ocean, heights, i, j + 1, m, n, heights[i][j]);
 	}
 	
 }

@@ -15,32 +15,27 @@ public class FindMedianFromDataStream {
 	
 	
 	static class MedianFinder {
-		private PriorityQueue<Integer> small;
-		private PriorityQueue<Integer> large;
-		private boolean even;
+		
+		PriorityQueue<Integer> small;
+		PriorityQueue<Integer> big;
 		
 		public MedianFinder() {
-			small = new PriorityQueue<>(Comparator.reverseOrder());
-			large = new PriorityQueue<>();
-			even = true;
+			small = new PriorityQueue<>(Comparator.comparingInt(o -> -o));
+			big = new PriorityQueue<>();
 		}
 		
 		public double findMedian() {
-			if (even)
-				return (small.peek() + large.peek()) / 2.0;
-			else
-				return small.peek();
+			return small.size() == big.size() ? (small.peek() + big.peek()) / 2d : small.peek();
 		}
 		
 		public void addNum(int num) {
-			if (even) {
-				large.offer(num);
-				small.offer(large.poll());
+			if (small.size() == big.size()) {
+				big.offer(num);
+				small.offer(big.poll());
 			} else {
 				small.offer(num);
-				large.offer(small.poll());
+				big.offer(small.poll());
 			}
-			even = !even;
 		}
 		
 		public void addAndPrint(int num) {

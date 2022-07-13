@@ -1,7 +1,5 @@
 package medium;
 
-import java.util.PriorityQueue;
-
 public class KthLargestElementInAnArray {
 	
 	public static void main(String[] args) {
@@ -10,14 +8,14 @@ public class KthLargestElementInAnArray {
 	}
 	
 	public static int findKthLargest(int[] nums, int k) {
-		int start = 0, end = nums.length - 1;
-		k = nums.length - k;
-		while (start < end) {
-			int pivot = partition(nums, start, end);
+		int n = nums.length, lo = 0, hi = n - 1;
+		k = n - k;
+		while (lo <= hi) {
+			int pivot = partition(nums, lo, hi);
 			if (pivot < k) {
-				start = pivot + 1;
+				lo = pivot + 1;
 			} else if (pivot > k) {
-				end = pivot - 1;
+				hi = pivot - 1;
 			} else {
 				break;
 			}
@@ -25,22 +23,22 @@ public class KthLargestElementInAnArray {
 		return nums[k];
 	}
 	
-	private static int partition(int[] nums, int start, int end) {
-		int pivot = start;
-		while (start <= end) {
-			while (start <= end && nums[start] <= nums[pivot]) {
-				start++;
+	private static int partition(int[] nums, int lo, int hi) {
+		int pivot = lo;
+		while (lo <= hi) {
+			while (lo <= hi && nums[lo] <= nums[pivot]) {
+				lo++;
 			}
-			while (start <= end && nums[end] > nums[pivot]) {
-				end--;
+			while (lo <= hi && nums[pivot] < nums[hi]) {
+				hi--;
 			}
-			if (start > end) {
+			if (lo > hi) {
 				break;
 			}
-			swap(nums, start, end);
+			swap(nums, lo, hi);
 		}
-		swap(nums, pivot, end);
-		return end;
+		swap(nums, pivot, hi);
+		return hi;
 	}
 	
 	private static void swap(int[] nums, int start, int end) {

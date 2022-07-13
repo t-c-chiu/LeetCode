@@ -12,20 +12,20 @@ public class GenerateParentheses {
 	
 	public static List<String> generateParenthesis(int n) {
 		List<String> res = new ArrayList<>();
-		backtrack(res, 0, 0, n, "");
+		helper(res, "", n, 0, 0);
 		return res;
 	}
 	
-	private static void backtrack(List<String> res, int open, int close, int n, String temp) {
+	private static void helper(List<String> res, String temp, int n, int open, int close) {
 		if (temp.length() == n * 2) {
 			res.add(temp);
-			return;
 		}
 		if (open < n) {
-			backtrack(res, open + 1, close, n, temp + '(');
+			helper(res, temp + "(", n, open + 1, close);
 		}
 		if (close < open) {
-			backtrack(res, open, close + 1, n, temp + ')');
+			helper(res, temp + ")", n, open, close + 1);
 		}
 	}
+	
 }

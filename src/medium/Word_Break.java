@@ -1,28 +1,30 @@
 package medium;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Word_Break {
 	
 	public static void main(String[] args) {
-		Word_Break test = new Word_Break();
-		boolean res = test.wordBreak("applepenapple", Arrays.asList("apple", "pen"));
+		boolean res = wordBreak("applepenapple", Arrays.asList("apple", "pen"));
 		System.out.println(res);
 	}
 	
-	// dp[i] = whether s(0, i) can be segmented
-	public boolean wordBreak(String s, List<String> wordDict) {
-		int length = s.length();
-		boolean[] dp = new boolean[length + 1];
+	public static boolean wordBreak(String s, List<String> wordDict) {
+		Set<String> set = new HashSet<>(wordDict);
+		int n = s.length();
+		boolean[] dp = new boolean[n + 1];
 		dp[0] = true;
-		for (int i = 1; i <= length; i++) {
-			for (int j = 0; j < i; j++) {
-				if (dp[j] && wordDict.contains(s.substring(j, i))) {
+		for (int i = 1; i <= n; i++) {
+			for (int j = i - 1; j >= 0; j--) {
+				if (dp[j] && set.contains(s.substring(j, i))) {
 					dp[i] = true;
+					break;
 				}
 			}
 		}
-		return dp[length];
+		return dp[n];
 	}
 }

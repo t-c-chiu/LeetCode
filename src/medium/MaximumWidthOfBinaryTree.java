@@ -2,41 +2,38 @@ package medium;
 
 import util.TreeNode;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class MaximumWidthOfBinaryTree {
 	
 	public static void main(String[] args) {
-		int res = widthOfBinaryTree(TreeNode.generateRoot(new Integer[]{1, 1, 1, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, null, 1, 1, null, 1, null, 1, null, 1, null, 1, null}));
+		int res = widthOfBinaryTree(TreeNode.generateRoot(new Integer[]{1, 3, 2, 5, null, null, 9, 6, null, 7}));
 		System.out.println(res);
 	}
 	
-	/**
-	 * list.get(i)[0] = the smallest order at level i
-	 * list.get(i)[1] = the largest order at level i
-	 */
 	public static int widthOfBinaryTree(TreeNode root) {
-		List<long[]> list = new ArrayList<>();
-		dfs(root, 1, 0, list);
-		long res = 0;
-		for (long[] lr : list) {
-			res = Math.max(res, lr[1] - lr[0] + 1);
+		int res = 0;
+		Deque<TreeNode> deque = new ArrayDeque<>();
+		root.val = 0;
+		deque.offerLast(root);
+		while (!deque.isEmpty()) {
+			res = Math.max(res, deque.peekLast().val - deque.peekFirst().val + 1);
+			for (int i = deque.size(); i > 0; i--) {
+				TreeNode cur = deque.pollFirst();
+				TreeNode left = cur.left;
+				TreeNode right = cur.right;
+				if (left != null) {
+					left.val = cur.val * 2;
+					deque.offerLast(left);
+				}
+				if (right != null) {
+					right.val = cur.val * 2 + 1;
+					deque.offerLast(right);
+				}
+			}
 		}
-		return (int) res;
+		return res;
 	}
 	
-	private static void dfs(TreeNode node, long order, int level, List<long[]> list) {
-		if (node == null) {
-			return;
-		}
-		if (list.size() == level) {
-			list.add(new long[]{order, order});
-		}
-		long[] lr = list.get(level);
-		lr[0] = Math.min(lr[0], order);
-		lr[1] = Math.max(lr[1], order);
-		dfs(node.left, order * 2 - 1, level + 1, list);
-		dfs(node.right, order * 2, level + 1, list);
-	}
 }

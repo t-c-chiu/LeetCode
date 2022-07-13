@@ -1,10 +1,5 @@
 package medium;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 public class NumberOfConnectedComponentsInAnUndirectedGraph {
 	
 	public static void main(String[] args) {
@@ -18,59 +13,55 @@ public class NumberOfConnectedComponentsInAnUndirectedGraph {
 	}
 	
 	public static int countComponents(int n, int[][] edges) {
-		Map<Integer, Set<Integer>> map = new HashMap<>();
+		int[] p = new int[n];
 		for (int i = 0; i < n; i++) {
-			map.put(i, new HashSet<>());
+			p[i] = i;
 		}
 		for (int[] edge : edges) {
-			map.get(edge[0]).add(edge[1]);
-			map.get(edge[1]).add(edge[0]);
-		}
-		boolean[] visited = new boolean[n];
-		int res = 0;
-		for (int i = 0; i < n; i++) {
-			if (!visited[i]) {
-				visited[i] = true;
-				dfs(map, visited, i);
-				res++;
+			int p1 = find(p, edge[0]);
+			int p2 = find(p, edge[1]);
+			if (p1 != p2) {
+				p[p1] = p2;
+				n--;
 			}
 		}
-		return res;
+		return n;
 	}
 	
-	private static void dfs(Map<Integer, Set<Integer>> map, boolean[] visited, int i) {
-		Set<Integer> set = map.get(i);
-		for (Integer next : set) {
-			if (!visited[next]) {
-				visited[next] = true;
-				dfs(map, visited, next);
-			}
+	private static int find(int[] p, int i) {
+		if (p[i] != i) {
+			p[i] = find(p, p[i]);
 		}
+		return p[i];
 	}
-
 //	public static int countComponents(int n, int[][] edges) {
-//		int[] parent = new int[n];
+//		Map<Integer, List<Integer>> g = new HashMap<>();
 //		for (int i = 0; i < n; i++) {
-//			parent[i] = i;
+//			g.put(i, new ArrayList<>());
 //		}
-//
 //		for (int[] edge : edges) {
-//			int p1 = findParent(parent, edge[0]);
-//			int p2 = findParent(parent, edge[1]);
-//			if (p1 == p2) {
-//				continue;
-//			}
-//			parent[p1] = p2;
-//			n--;
+//			g.get(edge[0]).add(edge[1]);
+//			g.get(edge[1]).add(edge[0]);
 //		}
-//		return n;
+//		int res = 0;
+//		Set<Integer> seen = new HashSet<>();
+//		for (int i = 0; i < n; i++) {
+//			if (!seen.contains(i)) {
+//				dfs(i, g, seen);
+//				res++;
+//			}
+//		}
+//		return res;
 //	}
 //
-//	private static int findParent(int[] parent, int i) {
-//		if (parent[i] == i) {
-//			return i;
+//	private static void dfs(int i, Map<Integer, List<Integer>> g, Set<Integer> seen) {
+//		seen.add(i);
+//		for (Integer next : g.get(i)) {
+//			if (!seen.contains(next)) {
+//				dfs(next, g, seen);
+//			}
 //		}
-//		parent[i] = findParent(parent, parent[i]);
-//		return parent[i];
 //	}
+
+
 }

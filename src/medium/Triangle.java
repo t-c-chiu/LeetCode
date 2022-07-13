@@ -6,29 +6,40 @@ import java.util.List;
 public class Triangle {
 	
 	public static void main(String[] args) {
-		Triangle test = new Triangle();
-		final int ans = test.minimumTotal(Arrays.asList(
+		int res = minimumTotal(Arrays.asList(
 				Arrays.asList(-1),
 				Arrays.asList(2, 3),
 				Arrays.asList(1, -1, -3)
 		));
-		System.out.println(ans);
+		System.out.println(res);
 	}
 	
-	//    0
-	//   0 1
-	//  0 1 2
-	// 0 1 2 3
-	// 用DP解, 存從下到上經過該位置最小的路徑
-	public int minimumTotal(List<List<Integer>> triangle) {
-		final int size = triangle.size();
-		Integer[] dp = triangle.get(size - 1).toArray(new Integer[]{});
-		for (int i = size - 2; i >= 0; i--) {
-			final List<Integer> row = triangle.get(i);
+	public static int minimumTotal(List<List<Integer>> triangle) {
+		int n = triangle.size();
+		for (int i = n - 2; i >= 0; i--) {
+			List<Integer> row = triangle.get(i);
+			List<Integer> prev = triangle.get(i + 1);
 			for (int j = 0; j < row.size(); j++) {
-				dp[j] = Math.min(dp[j], dp[j + 1]) + row.get(j);
+				row.set(j, row.get(j) + Math.min(prev.get(j), prev.get(j + 1)));
 			}
 		}
-		return dp[0];
+		return triangle.get(0).get(0);
 	}
+//	public static int minimumTotal(List<List<Integer>> triangle) {
+//		for (int i = 1; i < triangle.size(); i++) {
+//			List<Integer> prev = triangle.get(i - 1);
+//			List<Integer> list = triangle.get(i);
+//			int n = list.size();
+//			list.set(0, list.get(0) + prev.get(0));
+//			for (int j = 1; j < n - 1; j++) {
+//				list.set(j, list.get(j) + Math.min(prev.get(j - 1), prev.get(j)));
+//			}
+//			list.set(n - 1, list.get(n - 1) + prev.get(prev.size() - 1));
+//		}
+//		int res = Integer.MAX_VALUE;
+//		for (Integer sum : triangle.get(triangle.size() - 1)) {
+//			res = Math.min(res, sum);
+//		}
+//		return res;
+//	}
 }

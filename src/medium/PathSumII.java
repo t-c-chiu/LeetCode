@@ -14,32 +14,24 @@ public class PathSumII {
 	
 	public static List<List<Integer>> pathSum(TreeNode root, int targetSum) {
 		List<List<Integer>> res = new ArrayList<>();
-		pathSum(root, targetSum, res, new ArrayList<>());
+		helper(res, root, targetSum, new ArrayList<>());
 		return res;
 	}
 	
-	private static void pathSum(TreeNode node, int targetSum, List<List<Integer>> res, List<Integer> path) {
+	private static void helper(List<List<Integer>> res, TreeNode node, int targetSum, List<Integer> temp) {
 		if (node == null) {
 			return;
 		}
-		
-		path.add(node.val);
-		if (targetSum == node.val && isLeaf(node)) {
-			res.add(new ArrayList<>(path));
-			return;
+		int val = node.val;
+		temp.add(val);
+		targetSum -= val;
+		if (targetSum == 0 && isLeaf(node)) {
+			res.add(new ArrayList<>(temp));
 		}
-		
-		if (node.left != null) {
-			pathSum(node.left, targetSum - node.val, res, path);
-			path.remove(path.size() - 1);
-		}
-		
-		if (node.right != null) {
-			pathSum(node.right, targetSum - node.val, res, path);
-			path.remove(path.size() - 1);
-		}
+		helper(res, node.left, targetSum, temp);
+		helper(res, node.right, targetSum, temp);
+		temp.remove(temp.size() - 1);
 	}
-	
 	
 	private static boolean isLeaf(TreeNode node) {
 		return node != null && node.left == null && node.right == null;

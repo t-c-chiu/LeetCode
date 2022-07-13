@@ -1,8 +1,6 @@
 package medium;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
 
 public class MeetingRoomsII {
 	
@@ -18,14 +16,34 @@ public class MeetingRoomsII {
 	}
 	
 	public static int minMeetingRooms(int[][] intervals) {
-		Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
-		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
-		for (int[] interval : intervals) {
-			if (!pq.isEmpty() && pq.peek()[1] <= interval[0]) {
-				pq.poll();
-			}
-			pq.offer(interval);
+		int n = intervals.length, res = 0;
+		int[] start = new int[n], end = new int[n];
+		for (int i = 0; i < n; i++) {
+			start[i] = intervals[i][0];
+			end[i] = intervals[i][1];
 		}
-		return pq.size();
+		Arrays.sort(start);
+		Arrays.sort(end);
+		for (int i = 0, endIdx = 0; i < n; i++) {
+			if (start[i] < end[endIdx]) {
+				res++;
+			} else {
+				endIdx++;
+			}
+		}
+		return res;
 	}
+//	public static int minMeetingRooms(int[][] intervals) {
+//		Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
+//		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
+//		pq.offer(intervals[0]);
+//		for (int i = 1; i < intervals.length; i++) {
+//			int[] interval = intervals[i];
+//			if (pq.peek()[1] <= interval[0]) {
+//				pq.poll();
+//			}
+//			pq.offer(interval);
+//		}
+//		return pq.size();
+//	}
 }

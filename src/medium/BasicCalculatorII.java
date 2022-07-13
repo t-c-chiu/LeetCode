@@ -11,17 +11,15 @@ public class BasicCalculatorII {
 	
 	public static int calculate(String s) {
 		Stack<Integer> stack = new Stack<>();
-		int n = s.length();
-		int res = 0;
-		int num = 0;
-		char sign = '+';
+		int num = 0, n = s.length();
+		char op = '+';
 		for (int i = 0; i < n; i++) {
 			char c = s.charAt(i);
 			if (Character.isDigit(c)) {
-				num = num * 10 + (c - '0');
+				num = num * 10 + c - '0';
 			}
 			if (!Character.isDigit(c) && !Character.isWhitespace(c) || i == n - 1) {
-				switch (sign) {
+				switch (op) {
 					case '+':
 						stack.push(num);
 						break;
@@ -33,15 +31,11 @@ public class BasicCalculatorII {
 						break;
 					case '/':
 						stack.push(stack.pop() / num);
-						break;
 				}
-				sign = c;
 				num = 0;
+				op = c;
 			}
 		}
-		for (Integer i : stack) {
-			res += i;
-		}
-		return res;
+		return stack.stream().mapToInt(i -> i).sum();
 	}
 }

@@ -2,48 +2,43 @@ package medium;
 
 import util.TreeNode;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class InorderSuccessorInBST {
 	
 	public static void main(String[] args) {
-		TreeNode root = TreeNode.generateRoot(new Integer[]{5, 3, 6, 2, 4, null, null, 1,null});
+		TreeNode root = TreeNode.generateRoot(new Integer[]{10, 5, 15, 3, 8, null, null, 2, 4});
 		assert root != null;
 		TreeNode res = inorderSuccessor(root, root.left.left);
 		System.out.println(res);
 	}
 	
 	public static TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-		TreeNode successor = null;
+		TreeNode res = null;
 		while (root != null) {
-			if (root.val <= p.val) {
+			if (p.val >= root.val) {
 				root = root.right;
 			} else {
-				successor = root;
+				res = root;
 				root = root.left;
 			}
 		}
-		return successor;
+		return res;
 	}
 
-//	public static TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-//		Queue<TreeNode> queue = new LinkedList<>();
-//		build(queue, root);
-//		while (!queue.isEmpty()) {
-//			if (queue.poll() == p) {
-//				return queue.peek();
-//			}
-//		}
-//		return null;
-//	}
+//	static TreeNode prev;
+//	static TreeNode res;
 //
-//	private static void build(Queue<TreeNode> queue, TreeNode node) {
-//		if (node == null) {
-//			return;
+//	public static TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+//		if (root == null) {
+//			return null;
 //		}
-//		build(queue, node.left);
-//		queue.offer(node);
-//		build(queue, node.right);
+//		inorderSuccessor(root.left, p);
+//		if (prev == p) {
+//			res = root;
+//		}
+//		prev = root;
+//		inorderSuccessor(root.right, p);
+//		return res;
 //	}
+
+
 }

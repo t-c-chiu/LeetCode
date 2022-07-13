@@ -13,24 +13,20 @@ public class SwapNodesInPairs {
 		if (head == null || head.next == null) {
 			return head;
 		}
-		
 		ListNode next = head.next;
 		head.next = swapPairs(next.next);
 		next.next = head;
 		return next;
 	}
-
 //	public static ListNode swapPairs(ListNode head) {
-//		ListNode dummy = new ListNode(0);
+//		ListNode dummy = new ListNode(0), prev = dummy, cur = head;
 //		dummy.next = head;
-//		ListNode pre = dummy;
-//		while (pre.next != null && pre.next.next != null) {
-//			ListNode cur = pre.next;
-//			ListNode next = cur.next;
-//			cur.next = next.next;
-//			next.next = cur;
-//			pre.next = next;
-//			pre = cur;
+//		while (cur != null && cur.next != null) {
+//			prev.next = cur.next;
+//			cur.next = prev.next.next;
+//			prev.next.next = cur;
+//			prev = cur;
+//			cur = cur.next;
 //		}
 //		return dummy.next;
 //	}

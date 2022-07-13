@@ -11,21 +11,19 @@ public class FurthestBuildingYouCanReach {
 	
 	
 	public static int furthestBuilding(int[] heights, int bricks, int ladders) {
+		int n = heights.length;
 		PriorityQueue<Integer> pq = new PriorityQueue<>();
-		for (int i = 1; i < heights.length; i++) {
+		for (int i = 1; i < n; i++) {
 			if (heights[i] > heights[i - 1]) {
 				pq.offer(heights[i] - heights[i - 1]);
-			}
-			if (pq.size() > ladders) {
-				int smallestGap = pq.poll();
-				if (bricks >= smallestGap) {
-					bricks -= smallestGap;
-				} else {
+				if (pq.size() > ladders) {
+					bricks -= pq.poll();
+				}
+				if (bricks < 0) {
 					return i - 1;
 				}
 			}
 		}
-		return heights.length - 1;
+		return n - 1;
 	}
-	
 }

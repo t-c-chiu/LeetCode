@@ -10,7 +10,7 @@ public class MedianOfTwoSortedArrays {
 	/**
 	 * 1 3 5 | 8 9
 	 * 2 10 | 11 13
-	 *
+	 * <p>
 	 * 1 3 5 8 | 9
 	 * 2 | 10 11 13
 	 */
@@ -20,11 +20,9 @@ public class MedianOfTwoSortedArrays {
 		if (len1 > len2) {
 			return findMedianSortedArrays(nums2, nums1);
 		}
-		
-		int start = 0;
-		int end = len1;
-		while (start <= end) {
-			int partition1 = (start + end) / 2;
+		int lo = 0, hi = len1 - 1;
+		while (lo <= hi) {
+			int partition1 = (lo + hi) / 2;
 			int partition2 = (len1 + len2 + 1) / 2 - partition1;
 			int left1Max = partition1 == 0 ? Integer.MIN_VALUE : nums1[partition1 - 1];
 			int left2Max = partition2 == 0 ? Integer.MIN_VALUE : nums2[partition2 - 1];
@@ -36,10 +34,11 @@ public class MedianOfTwoSortedArrays {
 				} else {
 					return Math.max(left1Max, left2Max);
 				}
-			} else if (left1Max > right2Min) {
-				end = partition1 - 1;
+			}
+			if (left1Max > right2Min) {
+				hi = partition1 - 1;
 			} else if (left2Max > right1Min) {
-				start = partition1 + 1;
+				lo = partition1 + 1;
 			}
 		}
 		return -1;

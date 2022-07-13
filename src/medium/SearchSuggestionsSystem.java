@@ -18,18 +18,15 @@ public class SearchSuggestionsSystem {
 		for (String product : products) {
 			buildTrie(root, product);
 		}
-		
-		TrieNode cur = root;
 		for (int i = 0; i < searchWord.length(); i++) {
 			int j = searchWord.charAt(i) - 'a';
-			TrieNode next = cur.next[j];
-			if (next == null) {
+			if (root.next[j] == null) {
 				break;
+			} else {
+				res.add(root.next[j].suggested);
+				root = root.next[j];
 			}
-			res.add(next.suggested);
-			cur = next;
 		}
-		
 		for (int i = res.size(); i < searchWord.length(); i++) {
 			res.add(new ArrayList<>());
 		}
@@ -39,16 +36,14 @@ public class SearchSuggestionsSystem {
 	private static void buildTrie(TrieNode root, String product) {
 		TrieNode cur = root;
 		for (int i = 0; i < product.length(); i++) {
-			char c = product.charAt(i);
-			int j = c - 'a';
+			int j = product.charAt(i) - 'a';
 			if (cur.next[j] == null) {
 				cur.next[j] = new TrieNode();
 			}
-			TrieNode next = cur.next[j];
-			if (next.suggested.size() < 3) {
-				next.suggested.add(product);
+			if (cur.next[j].suggested.size() < 3) {
+				cur.next[j].suggested.add(product);
 			}
-			cur = next;
+			cur = cur.next[j];
 		}
 	}
 	

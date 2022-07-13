@@ -10,26 +10,21 @@ public class TopKFrequentWords {
 	}
 	
 	public static List<String> topKFrequent(String[] words, int k) {
-		Map<String, Integer> count = new HashMap<>();
-		for (int i = 0; i < words.length; i++) {
-			count.put(words[i], count.getOrDefault(words[i], 0) + 1);
+		Map<String, Integer> map = new HashMap<>();
+		for (String word : words) {
+			map.put(word, map.getOrDefault(word, 0) + 1);
 		}
-		
-		TreeMap<Integer, PriorityQueue<String>> map = new TreeMap<>();
-		for (Map.Entry<String, Integer> entry : count.entrySet()) {
-			String word = entry.getKey();
-			Integer freq = entry.getValue();
-			map.putIfAbsent(freq, new PriorityQueue<>());
-			map.get(freq).offer(word);
-		}
-		
-		List<String> res = new ArrayList<>();
-		while (k > 0) {
-			PriorityQueue<String> queue = map.pollLastEntry().getValue();
-			while (k > 0 && !queue.isEmpty()) {
-				res.add(queue.poll());
-				k--;
+		PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(
+				(a, b) -> a.getValue().equals(b.getValue()) ? b.getKey().compareTo(a.getKey()) : a.getValue() - b.getValue());
+		for (Map.Entry<String, Integer> entry : map.entrySet()) {
+			pq.offer(entry);
+			if (pq.size() > k) {
+				pq.poll();
 			}
+		}
+		List<String> res = new ArrayList<>();
+		while (!pq.isEmpty()) {
+			res.add(0, pq.poll().getKey());
 		}
 		return res;
 	}

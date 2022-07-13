@@ -10,18 +10,14 @@ public class ContiguousArray {
 		System.out.println(res);
 	}
 	
-	// 0 -1 -2 -1 0 1 0 -1 0 1
 	public static int findMaxLength(int[] nums) {
-		int res = 0, count = 0;
 		Map<Integer, Integer> map = new HashMap<>();
 		map.put(0, -1);
+		int sum = 0, res = 0;
 		for (int i = 0; i < nums.length; i++) {
-			count += nums[i] == 0 ? -1 : 1;
-			if (map.containsKey(count)) {
-				res = Math.max(res, i - map.get(count));
-			} else {
-				map.put(count, i);
-			}
+			sum += nums[i] == 0 ? -1 : 1;
+			map.putIfAbsent(sum, i);
+			res = Math.max(res, i - map.get(sum));
 		}
 		return res;
 	}

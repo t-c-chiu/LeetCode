@@ -5,7 +5,7 @@ import util.ListNode;
 public class ReorderList {
 	
 	public static void main(String[] args) {
-		ListNode head = ListNode.generateHead(new int[]{1, 2, 3, 4, 5});
+		ListNode head = ListNode.generateHead(new int[]{1, 2, 3, 4, 5, 6});
 		reorderList(head);
 		System.out.println(head);
 	}
@@ -21,8 +21,18 @@ public class ReorderList {
 			return;
 		}
 		prev.next = null;
-		ListNode rightHead = reverse(slow);
-		merge(head, rightHead);
+		slow = reverse(slow);
+		ListNode left = head, right = slow;
+		while (left != null) {
+			ListNode leftNext = left.next;
+			ListNode rightNext = right.next;
+			left.next = right;
+			if (leftNext != null) {
+				right.next = leftNext;
+			}
+			left = leftNext;
+			right = rightNext;
+		}
 	}
 	
 	private static ListNode reverse(ListNode node) {
@@ -34,18 +44,5 @@ public class ReorderList {
 			cur = next;
 		}
 		return prev;
-	}
-	
-	private static void merge(ListNode l1, ListNode l2) {
-		while (l1 != null) {
-			ListNode n1 = l1.next;
-			ListNode n2 = l2.next;
-			l1.next = l2;
-			if (n1 != null) {
-				l2.next = n1;
-			}
-			l1 = n1;
-			l2 = n2;
-		}
 	}
 }

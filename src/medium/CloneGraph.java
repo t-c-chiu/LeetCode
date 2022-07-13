@@ -15,22 +15,22 @@ public class CloneGraph {
 	}
 	
 	public static Node cloneGraph(Node node) {
+		Map<Integer, Node> map = new HashMap<>();
+		return cloneGraph(node, map);
+	}
+	
+	private static Node cloneGraph(Node node, Map<Integer, Node> map) {
 		if (node == null) {
 			return null;
 		}
-		return cloneGraph(new HashMap<>(), node);
-	}
-	
-	private static Node cloneGraph(Map<Integer, Node> map, Node node) {
 		int val = node.val;
 		if (map.containsKey(val)) {
 			return map.get(val);
 		}
-		
 		Node newNode = new Node(val);
 		map.put(val, newNode);
 		for (Node neighbor : node.neighbors) {
-			newNode.neighbors.add(cloneGraph(map, neighbor));
+			newNode.neighbors.add(cloneGraph(neighbor, map));
 		}
 		return newNode;
 	}
@@ -41,7 +41,7 @@ public class CloneGraph {
 		
 		public Node() {
 			val = 0;
-			neighbors = new ArrayList<Node>();
+			neighbors = new ArrayList<>();
 		}
 		
 		public Node(int _val) {

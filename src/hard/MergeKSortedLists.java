@@ -21,26 +21,22 @@ public class MergeKSortedLists {
 	 * 2 6
 	 */
 	public static ListNode mergeKLists(ListNode[] lists) {
-		PriorityQueue<ListNode> queue = new PriorityQueue<>(Comparator.comparingInt(o -> o.val));
-		for (ListNode node : lists) {
-			if (node != null) {
-				queue.offer(node);
+		ListNode dummy = new ListNode(0);
+		ListNode cur = dummy;
+		PriorityQueue<ListNode> pq = new PriorityQueue<>(Comparator.comparingInt(node -> node.val));
+		for (ListNode list : lists) {
+			if (list != null) {
+				pq.offer(list);
 			}
 		}
-		if (queue.isEmpty()) {
-			return null;
-		}
-		
-		ListNode head = new ListNode(0);
-		ListNode cur = head;
-		while (!queue.isEmpty()) {
-			ListNode node = queue.poll();
-			cur.next = node;
-			cur = node;
-			if (node.next != null) {
-				queue.offer(node.next);
+		while (!pq.isEmpty()) {
+			ListNode poll = pq.poll();
+			cur.next = poll;
+			cur = cur.next;
+			if (poll.next != null) {
+				pq.offer(poll.next);
 			}
 		}
-		return head.next;
+		return dummy.next;
 	}
 }

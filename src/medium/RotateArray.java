@@ -18,13 +18,27 @@ public class RotateArray {
 		reverse(nums, k, n - 1);
 	}
 	
-	private static void reverse(int[] nums, int l, int r) {
-		while (l < r) {
-			int temp = nums[l];
-			nums[l] = nums[r];
-			nums[r] = temp;
-			l++;
-			r--;
+	private static void reverse(int[] nums, int start, int end) {
+		while (start < end) {
+			int temp = nums[start];
+			nums[start] = nums[end];
+			nums[end] = temp;
+			start++;
+			end--;
 		}
 	}
+//	public static void rotate(int[] nums, int k) {
+//		int n = nums.length, i = 0;
+//		k %= n;
+//		int[] res = new int[n];
+//		for (int j = n - k; j < n; j++) {
+//			res[i++] = nums[j];
+//		}
+//		for (int j = 0; j < n - k; j++) {
+//			res[i++] = nums[j];
+//		}
+//		for (int j = 0; j < n; j++) {
+//			nums[j] = res[j];
+//		}
+//	}
 }

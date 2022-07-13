@@ -13,7 +13,6 @@ public class SortList {
 		if (head == null || head.next == null) {
 			return head;
 		}
-		
 		ListNode prev = null, slow = head, fast = head;
 		while (fast != null && fast.next != null) {
 			prev = slow;

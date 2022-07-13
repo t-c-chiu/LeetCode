@@ -3,7 +3,6 @@ package medium;
 import util.TreeNode;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class AllNodesDistanceKInBinaryTree {
 	
@@ -14,40 +13,79 @@ public class AllNodesDistanceKInBinaryTree {
 	}
 	
 	public static List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-		Map<TreeNode, List<TreeNode>> map = new HashMap<>();
-		buildGraph(root, null, map);
-		
-		Queue<TreeNode> queue = new LinkedList<>();
-		Set<TreeNode> visited = new HashSet<>();
-		queue.offer(target);
-		visited.add(target);
-		while (!queue.isEmpty() && k > 0) {
-			int size = queue.size();
-			for (int i = 0; i < size; i++) {
-				TreeNode node = queue.poll();
-				for (TreeNode next : map.get(node)) {
-					if (!visited.contains(next)) {
-						visited.add(next);
-						queue.offer(next);
-					}
-				}
-			}
-			k--;
-		}
-		return queue.stream().map(t -> t.val).collect(Collectors.toList());
+		Map<TreeNode, Integer> map = new HashMap<>();
+		buildMap(root, target, map);
+		List<Integer> res = new ArrayList<>();
+		dfs(res, root, map, k, 0);
+		return res;
 	}
 	
-	private static void buildGraph(TreeNode node, TreeNode parent, Map<TreeNode, List<TreeNode>> map) {
+	private static void dfs(List<Integer> res, TreeNode node, Map<TreeNode, Integer> map, int k, int length) {
 		if (node == null) {
 			return;
 		}
-		map.putIfAbsent(node, new ArrayList<>());
-		if (parent != null) {
-			map.get(node).add(parent);
-			map.get(parent).add(node);
+		if (map.containsKey(node)) {
+			length = map.get(node);
 		}
-		buildGraph(node.left, node, map);
-		buildGraph(node.right, node, map);
+		if (length == k) {
+			res.add(node.val);
+		}
+		dfs(res, node.left, map, k, length + 1);
+		dfs(res, node.right, map, k, length + 1);
 	}
 	
+	private static int buildMap(TreeNode node, TreeNode target, Map<TreeNode, Integer> map) {
+		if (node == null) {
+			return -1;
+		}
+		if (node == target) {
+			map.put(node, 0);
+			return 0;
+		}
+		int left = buildMap(node.left, target, map);
+		if (left >= 0) {
+			map.put(node, left + 1);
+			return left + 1;
+		}
+		int right = buildMap(node.right, target, map);
+		if (right >= 0) {
+			map.put(node, right + 1);
+			return right + 1;
+		}
+		return -1;
+	}
+//	public static List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+//		Map<TreeNode, Set<TreeNode>> g = new HashMap<>();
+//		buildGraph(g, root, null);
+//		Queue<TreeNode> q = new LinkedList<>();
+//		q.offer(target);
+//		while (!q.isEmpty() && k > 0) {
+//			for (int i = q.size(); i > 0; i--) {
+//				TreeNode cur = q.poll();
+//				for (TreeNode next : g.get(cur)) {
+//					g.get(next).remove(cur);
+//					q.offer(next);
+//				}
+//			}
+//			k--;
+//		}
+//		List<Integer> res = new ArrayList<>();
+//		while (!q.isEmpty()) {
+//			res.add(q.poll().val);
+//		}
+//		return res;
+//	}
+//
+//	private static void buildGraph(Map<TreeNode, Set<TreeNode>> g, TreeNode node, TreeNode parent) {
+//		if (node == null) {
+//			return;
+//		}
+//		g.put(node, new HashSet<>());
+//		if (parent != null) {
+//			g.get(parent).add(node);
+//			g.get(node).add(parent);
+//		}
+//		buildGraph(g, node.left, node);
+//		buildGraph(g, node.right, node);
+//	}
 }

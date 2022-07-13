@@ -1,28 +1,31 @@
 package medium;
 
+import java.util.Arrays;
+
 public class PartitionEqualSubsetSum {
 	
 	public static void main(String[] args) {
-		PartitionEqualSubsetSum test = new PartitionEqualSubsetSum();
-		System.out.println(test.canPartition(new int[]{1, 5, 11, 5}));
+		System.out.println(canPartition(new int[]{1, 5, 11, 5}));
 	}
 	
-	// 這題的問題是, nums中有沒有subset的總和是sum/2
-	public boolean canPartition(int[] nums) {
-		int sum = 0;
-		for (int num : nums)
-			sum += num;
-		if (sum % 2 == 1)
+	public static boolean canPartition(int[] nums) {
+		int sum = Arrays.stream(nums).sum();
+		if (sum % 2 == 1) {
 			return false;
+		}
 		sum /= 2;
-		// dp[i] = nums中是否存在subset使其和為i
-		boolean[] dp = new boolean[sum + 1];
-		dp[0] = true;
-		for (int num : nums) {
-			for (int i = sum; i >= num; i--) {
-				dp[i] = dp[i] || dp[i - num];
+		int n = nums.length;
+		boolean[][] dp = new boolean[n + 1][sum + 1];
+		dp[0][0] = true;
+		for (int i = 1; i <= n; i++) {
+			int num = nums[i - 1];
+			for (int j = 1; j <= sum; j++) {
+				dp[i][j] = dp[i - 1][j];
+				if (j >= num) {
+					dp[i][j] = dp[i][j] || dp[i - 1][j - num];
+				}
 			}
 		}
-		return dp[sum];
+		return dp[n][sum];
 	}
 }

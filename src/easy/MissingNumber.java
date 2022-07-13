@@ -1,7 +1,5 @@
 package easy;
 
-import java.util.Arrays;
-
 public class MissingNumber {
 	
 	public static void main(String[] args) {
@@ -10,8 +8,10 @@ public class MissingNumber {
 	}
 	
 	public static int missingNumber(int[] nums) {
-		int n = nums.length;
-		int sum = Arrays.stream(nums).sum();
-		return n * (n + 1) / 2 - sum;
+		int res = 0, n = nums.length;
+		for (int i = 0; i < n; i++) {
+			res ^= i ^ nums[i];
+		}
+		return res ^ n;
 	}
 }

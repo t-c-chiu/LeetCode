@@ -6,30 +6,31 @@ import java.util.Stack;
 public class AsteroidCollision {
 	
 	public static void main(String[] args) {
-		int[] res = asteroidCollision(new int[]{-2,-2,1,-2});
-		Arrays.stream(res).forEach(System.out::println);
+		int[] res = asteroidCollision(new int[]{-2, -2, 1, -2});
+		System.out.println(Arrays.toString(res));
 	}
 	
 	public static int[] asteroidCollision(int[] asteroids) {
 		Stack<Integer> stack = new Stack<>();
-		for (int asteroid : asteroids) {
-			if (stack.isEmpty() || stack.peek() < 0 || asteroid > 0) {
-				stack.add(asteroid);
-				continue;
-			}
-			
-			while (!stack.isEmpty() && stack.peek() > 0 && stack.peek() < -asteroid) {
-				stack.pop();
-			}
-			if (stack.isEmpty() || stack.peek() < 0) {
-				stack.push(asteroid);
-			} else if (stack.peek() == -asteroid) {
-				stack.pop();
+		for (int i = 0; i < asteroids.length; i++) {
+			int num = asteroids[i];
+			if (num > 0) {
+				stack.push(num);
+			} else {
+				while (!stack.isEmpty() && stack.peek() > 0 && stack.peek() < -num) {
+					stack.pop();
+				}
+				if (!stack.isEmpty() && stack.peek() == -num) {
+					stack.pop();
+				} else if (stack.isEmpty() || stack.peek() < 0) {
+					stack.push(num);
+				}
 			}
 		}
 		int[] res = new int[stack.size()];
-		for (int i = 0; i < res.length; i++) {
-			res[i] = stack.get(i);
+		int i = 0;
+		for (Integer num : stack) {
+			res[i++] = num;
 		}
 		return res;
 	}

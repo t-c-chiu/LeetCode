@@ -11,31 +11,26 @@ public class LongestConsecutiveSequence {
 	}
 	
 	public static int longestConsecutive(int[] nums) {
-		if (nums.length == 0) {
-			return 0;
-		}
-		
 		Set<Integer> set = new HashSet<>();
+		int res = 0;
 		for (int num : nums) {
 			set.add(num);
 		}
-		
-		int res = 1;
 		for (int num : nums) {
-			if (set.remove(num)) {
-				int i = num;
-				int sum = 1;
-				while (set.remove(--i)) {
-					sum++;
-				}
-				
-				i = num;
-				while (set.remove(++i)) {
-					sum++;
-				}
-				
-				res = Math.max(res, sum);
+			if (!set.contains(num)) {
+				continue;
 			}
+			int len = 0, i = num;
+			while (set.contains(i)) {
+				set.remove(i--);
+				len++;
+			}
+			i = num + 1;
+			while (set.contains(i)) {
+				set.remove(i++);
+				len++;
+			}
+			res = Math.max(res, len);
 		}
 		return res;
 	}

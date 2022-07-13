@@ -1,9 +1,5 @@
 package medium;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.TreeMap;
-
 public class DesignHitCounter {
 	
 	public static void main(String[] args) {
@@ -50,4 +46,5 @@ public class DesignHitCounter {
 			return count;
 		}
 	}
+	
 }

@@ -3,41 +3,59 @@ package easy;
 public class BackspaceStringCompare {
 	
 	public static void main(String[] args) {
-		BackspaceStringCompare test = new BackspaceStringCompare();
-		System.out.println(test.backspaceCompare("ab#c", "ad#c"));
-		System.out.println(test.backspaceCompare("ab##", "c#d#"));
-		System.out.println(test.backspaceCompare("a##c", "#a#c"));
-		System.out.println(test.backspaceCompare("a#c", "b"));
+		System.out.println(backspaceCompare("bxj##tw", "bxo#j##tw"));
+		System.out.println(backspaceCompare("ab##", "c#d#"));
+		System.out.println(backspaceCompare("a##c", "#a#c"));
+		System.out.println(backspaceCompare("a#c", "b"));
 		
 	}
 	
-	public boolean backspaceCompare(String S, String T) {
-		int i = S.length() - 1, j = T.length() - 1;
+	public static boolean backspaceCompare(String s, String t) {
+		int i = s.length() - 1, j = t.length() - 1;
 		while (true) {
-			for (int back = 0; i >= 0 && (back > 0 || S.charAt(i) == '#'); i--)
-				back += S.charAt(i) == '#' ? 1 : -1;
-			for (int back = 0; j >= 0 && (back > 0 || T.charAt(j) == '#'); j--)
-				back += T.charAt(j) == '#' ? 1 : -1;
-			if (i >= 0 && j >= 0 && S.charAt(i) == T.charAt(j)) {
+			int skip = 0;
+			while (i >= 0 && (s.charAt(i) == '#' || skip > 0)) {
+				skip += s.charAt(i) == '#' ? 1 : -1;
+				i--;
+			}
+			skip = 0;
+			while (j >= 0 && (t.charAt(j) == '#' || skip > 0)) {
+				skip += t.charAt(j) == '#' ? 1 : -1;
+				j--;
+			}
+			if (i >= 0 && j >= 0 && s.charAt(i) == t.charAt(j)) {
 				i--;
 				j--;
-			} else
-				return i == -1 && j == -1;
+			} else {
+				break;
+			}
 		}
+		return i == -1 && j == -1;
 	}
-	
-	private String modify(String string) {
-		int index = 0;
-		while (index < string.length()) {
-			if (string.charAt(index) == '#') {
-				if (index == 0)
-					string = string.substring(index + 1);
-				else
-					string = string.substring(0, index - 1) + string.substring(index + 1);
-				index = 0;
-			} else
-				index++;
-		}
-		return string;
-	}
+
+//	public static boolean backspaceCompare(String s, String t) {
+//		Stack<Character> st1 = new Stack<>(), st2 = new Stack<>();
+//		for (int i = 0; i < s.length(); i++) {
+//			char c = s.charAt(i);
+//			if (c != '#') {
+//				st1.push(c);
+//			} else if (!st1.isEmpty()) {
+//				st1.pop();
+//			}
+//		}
+//		for (int i = 0; i < t.length(); i++) {
+//			char c = t.charAt(i);
+//			if (c != '#') {
+//				st2.push(c);
+//			} else if (!st2.isEmpty()) {
+//				st2.pop();
+//			}
+//		}
+//		while (!st1.isEmpty() && !st2.isEmpty()) {
+//			if (st1.pop() != st2.pop()) {
+//				return false;
+//			}
+//		}
+//		return st1.isEmpty() && st2.isEmpty();
+//	}
 }

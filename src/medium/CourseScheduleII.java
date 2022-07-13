@@ -10,35 +10,34 @@ public class CourseScheduleII {
 	}
 	
 	public static int[] findOrder(int numCourses, int[][] prerequisites) {
-		List<Integer>[] graph = new ArrayList[numCourses];
-		int[] indegree = new int[numCourses];
+		Map<Integer, List<Integer>> graph = new HashMap<>();
+		Map<Integer, Integer> inDegree = new HashMap<>();
 		for (int i = 0; i < numCourses; i++) {
-			graph[i] = new ArrayList<>();
+			graph.put(i, new ArrayList<>());
+			inDegree.put(i, 0);
 		}
-		for (int[] prerequisite : prerequisites) {
-			int pre = prerequisite[1];
-			int post = prerequisite[0];
-			graph[pre].add(post);
-			indegree[post]++;
+		for (int[] pre : prerequisites) {
+			graph.get(pre[1]).add(pre[0]);
+			inDegree.put(pre[0], inDegree.get(pre[0]) + 1);
 		}
-		int[] res = new int[numCourses];
-		Queue<Integer> queue = new LinkedList<>();
-		int count = 0;
-		for (int i = 0; i < indegree.length; i++) {
-			if (indegree[i] == 0) {
-				queue.offer(i);
+		Queue<Integer> q = new LinkedList<>();
+		for (Integer course : inDegree.keySet()) {
+			if (inDegree.get(course) == 0) {
+				q.offer(course);
 			}
 		}
-		while (!queue.isEmpty()) {
-			int course = queue.poll();
-			res[count++] = course;
-			List<Integer> posts = graph[course];
-			for (int post : posts) {
-				if (--indegree[post] == 0) {
-					queue.offer(post);
+		int i = 0;
+		int[] res = new int[numCourses];
+		while (!q.isEmpty()) {
+			Integer course = q.poll();
+			res[i++] = course;
+			for (Integer next : graph.get(course)) {
+				inDegree.put(next, inDegree.get(next) - 1);
+				if (inDegree.get(next) == 0) {
+					q.offer(next);
 				}
 			}
 		}
-		return count == numCourses ? res : new int[]{};
+		return i == numCourses ? res : new int[0];
 	}
 }

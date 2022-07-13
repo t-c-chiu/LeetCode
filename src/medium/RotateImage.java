@@ -1,16 +1,17 @@
 package medium;
 
+import java.util.Arrays;
+
 public class RotateImage {
 	
 	public static void main(String[] args) {
-		RotateImage test = new RotateImage();
 		int[][] matrix = new int[][]{
 				{1, 2, 3},
 				{4, 5, 6},
 				{7, 8, 9}
 		};
-		test.rotate(matrix);
-		test.printMatrix(matrix);
+		rotate(matrix);
+		Arrays.stream(matrix).forEach(row -> System.out.println(Arrays.toString(row)));
 		
 		matrix = new int[][]{
 				{5, 1, 9, 11},
@@ -18,40 +19,33 @@ public class RotateImage {
 				{13, 3, 6, 7},
 				{15, 14, 12, 16}
 		};
-		test.rotate(matrix);
-		test.printMatrix(matrix);
+		rotate(matrix);
+		Arrays.stream(matrix).forEach(row -> System.out.println(Arrays.toString(row)));
 	}
 	
-	
-	//  [1,2,3]    [7,2,1]    [7,4,1]
-	//  [4,5,6] -> [4,5,6] -> [8,5,2]
-	//  [7,8,9]    [9,8,3]    [9,6,3]
-	
-	// {5, 1, 9, 11},
-	// {2, 4, 8, 10},
-	// {13, 3, 6, 7},
-	// {15, 14, 12, 16}
-	
-	// 一次轉4格
-	public void rotate(int[][] matrix) {
+	/***
+	 * 1 2 3    1 4 7    7 4 1
+	 * 4 5 6 -> 2 5 8 -> 8 5 2
+	 * 7 8 9    3 6 9    9 6 3
+	 */
+	public static void rotate(int[][] matrix) {
 		int n = matrix.length;
-		for (int i = 0; i < n / 2; i++) {
-			for (int j = i; j < n - 1 - i; j++) {
-				int tmp = matrix[i][j];
-				matrix[i][j] = matrix[n - 1 - j][i];
-				matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j];
-				matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i];
-				matrix[j][n - 1 - i] = tmp;
+		for (int i = 0; i < n; i++) {
+			for (int j = i + 1; j < n; j++) {
+				int temp = matrix[i][j];
+				matrix[i][j] = matrix[j][i];
+				matrix[j][i] = temp;
 			}
 		}
-	}
-	
-	private void printMatrix(int[][] matrix) {
-		for (int[] ints : matrix) {
-			for (int i : ints) {
-				System.out.print(i + ",");
+		for (int i = 0; i < n; i++) {
+			int l = 0, r = n - 1;
+			while (l < r) {
+				int temp = matrix[i][l];
+				matrix[i][l] = matrix[i][r];
+				matrix[i][r] = temp;
+				l++;
+				r--;
 			}
-			System.out.println();
 		}
 	}
 }

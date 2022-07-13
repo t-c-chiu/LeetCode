@@ -1,69 +1,43 @@
 package hard;
 
+import java.util.Stack;
+
 public class TrappingRainWater {
 	
 	public static void main(String[] args) {
-		int res = trap(new int[]{4, 2, 3});
+		int res = trap(new int[]{5, 2, 1, 2, 1, 5});
 		System.out.println(res);
 	}
 	
 	public static int trap(int[] height) {
-		int length = height.length;
-		if (length < 3) {
-			return 0;
-		}
-		
-		int[] leftHighestIdx = new int[length];
-		leftHighestIdx[0] = 0;
-		for (int i = 1; i < length; i++) {
-			if (height[i - 1] >= height[leftHighestIdx[i - 1]]) {
-				leftHighestIdx[i] = i - 1;
-			} else {
-				leftHighestIdx[i] = leftHighestIdx[i - 1];
+		Stack<Integer> stack = new Stack<>();
+		int res = 0;
+		for (int i = 0; i < height.length; i++) {
+			while (!stack.isEmpty() && height[stack.peek()] < height[i]) {
+				int cur = stack.pop();
+				if (!stack.isEmpty()) {
+					int left = stack.peek();
+					res += (Math.min(height[left], height[i]) - height[cur]) * (i - left - 1);
+				}
 			}
+			stack.push(i);
 		}
-		int[] rightHighestIdx = new int[length];
-		rightHighestIdx[length - 1] = length - 1;
-		for (int i = length - 2; i >= 0; i--) {
-			if (height[i + 1] >= height[rightHighestIdx[i + 1]]) {
-				rightHighestIdx[i] = i + 1;
-			} else {
-				rightHighestIdx[i] = rightHighestIdx[i + 1];
-			}
-		}
-		int highest = 0;
-		for (int i = 1; i < length; i++) {
-			if (height[i] > height[highest]) {
-				highest = i;
-			}
-		}
-		return trapLeftWater(highest, height, leftHighestIdx) + trapRightWater(highest, height, rightHighestIdx);
+		return res;
 	}
+//	public static int trap(int[] height) {
+//		Stack<Integer> stack = new Stack<>();
+//		int res = 0;
+//		for (int i = 0; i < height.length; i++) {
+//			while (!stack.isEmpty() && height[stack.peek()] < height[i]) {
+//				int base = height[stack.pop()];
+//				if (!stack.isEmpty()) {
+//					res += (Math.min(height[stack.peek()], height[i]) - base) * (i - stack.peek() - 1);
+//				}
+//			}
+//			stack.push(i);
+//		}
+//		return res;
+//	}
 	
-	private static int trapLeftWater(int highest, int[] height, int[] leftHighestIdx) {
-		int leftHighest = leftHighestIdx[highest];
-		if (highest == leftHighest) {
-			return 0;
-		}
-		
-		int sum = 0;
-		for (int i = leftHighest + 1; i < highest; i++) {
-			sum += height[leftHighest] - height[i];
-		}
-		return sum + trapLeftWater(leftHighest, height, leftHighestIdx);
-	}
-	
-	private static int trapRightWater(int highest, int[] height, int[] rightHighestIdx) {
-		int rightHighest = rightHighestIdx[highest];
-		if (highest == rightHighest) {
-			return 0;
-		}
-		
-		int sum = 0;
-		for (int i = highest + 1; i < rightHighest; i++) {
-			sum += height[rightHighest] - height[i];
-		}
-		return sum + trapRightWater(rightHighest, height, rightHighestIdx);
-	}
 	
 }

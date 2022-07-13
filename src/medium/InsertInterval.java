@@ -20,12 +20,10 @@ public class InsertInterval {
 		if (n == 0) {
 			return new int[][]{newInterval};
 		}
-		
 		List<int[]> list = new ArrayList<>();
 		int i = 0;
 		while (i < n && intervals[i][1] < newInterval[0]) {
-			list.add(intervals[i]);
-			i++;
+			list.add(intervals[i++]);
 		}
 		while (i < n && intervals[i][0] <= newInterval[1]) {
 			newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
@@ -34,10 +32,8 @@ public class InsertInterval {
 		}
 		list.add(newInterval);
 		while (i < n) {
-			list.add(intervals[i]);
-			i++;
+			list.add(intervals[i++]);
 		}
-		
 		int[][] res = new int[list.size()][2];
 		for (int j = 0; j < res.length; j++) {
 			res[j] = list.get(j);
