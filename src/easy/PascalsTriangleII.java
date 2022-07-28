@@ -1,8 +1,6 @@
 package easy;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PascalsTriangleII {
@@ -13,17 +11,13 @@ public class PascalsTriangleII {
 	}
 	
 	public static List<Integer> getRow(int rowIndex) {
-		List<Integer> res = List.of(1);
-		int i = 0;
-		while (i < rowIndex) {
-			List<Integer> temp = new ArrayList<>();
-			temp.add(1);
-			for (int j = 0; j < res.size() - 1; j++) {
-				temp.add(res.get(j) + res.get(j + 1));
+		List<Integer> res = new ArrayList<>();
+		res.add(1);
+		for (int i = 0; i < rowIndex; i++) {
+			res.add(1);
+			for (int j = i; j >= 1; j--) {
+				res.set(j, res.get(j) + res.get(j - 1));
 			}
-			temp.add(1);
-			res = temp;
-			i++;
 		}
 		return res;
 	}

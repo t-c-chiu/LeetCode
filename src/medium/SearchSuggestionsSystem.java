@@ -12,39 +12,35 @@ public class SearchSuggestionsSystem {
 	}
 	
 	public static List<List<String>> suggestedProducts(String[] products, String searchWord) {
-		List<List<String>> res = new ArrayList<>();
 		Arrays.sort(products);
 		TrieNode root = new TrieNode();
 		for (String product : products) {
-			buildTrie(root, product);
-		}
-		for (int i = 0; i < searchWord.length(); i++) {
-			int j = searchWord.charAt(i) - 'a';
-			if (root.next[j] == null) {
-				break;
-			} else {
-				res.add(root.next[j].suggested);
-				root = root.next[j];
+			TrieNode cur = root;
+			for (int i = 0; i < product.length(); i++) {
+				int j = product.charAt(i) - 'a';
+				if (cur.next[j] == null) {
+					cur.next[j] = new TrieNode();
+				}
+				cur = cur.next[j];
+				if (cur.suggested.size() < 3) {
+					cur.suggested.add(product);
+				}
 			}
 		}
-		for (int i = res.size(); i < searchWord.length(); i++) {
+		List<List<String>> res = new ArrayList<>();
+		TrieNode cur = root;
+		for (int i = 0; i < searchWord.length(); i++) {
+			int j = searchWord.charAt(i) - 'a';
+			if (cur.next[j] == null) {
+				break;
+			}
+			cur = cur.next[j];
+			res.add(cur.suggested);
+		}
+		while (res.size() < searchWord.length()) {
 			res.add(new ArrayList<>());
 		}
 		return res;
-	}
-	
-	private static void buildTrie(TrieNode root, String product) {
-		TrieNode cur = root;
-		for (int i = 0; i < product.length(); i++) {
-			int j = product.charAt(i) - 'a';
-			if (cur.next[j] == null) {
-				cur.next[j] = new TrieNode();
-			}
-			if (cur.next[j].suggested.size() < 3) {
-				cur.next[j].suggested.add(product);
-			}
-			cur = cur.next[j];
-		}
 	}
 	
 	static class TrieNode {

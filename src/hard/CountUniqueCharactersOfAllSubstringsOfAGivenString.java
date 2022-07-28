@@ -1,32 +1,34 @@
 package hard;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class CountUniqueCharactersOfAllSubstringsOfAGivenString {
 	
 	public static void main(String[] args) {
-		int res = uniqueLetterString("ABCA");
+		int res = uniqueLetterString("LEETCODE");
 		System.out.println(res);
 	}
 	
 	public static int uniqueLetterString(String s) {
-		int[][] index = new int[26][2];
-		for (int i = 0; i < index.length; i++) {
-			Arrays.fill(index[i], -1);
-		}
-		int n = s.length();
-		int res = 0;
+		int res = 0, n = s.length();
+		// [i][0] = lastlast, [i][1]= last;
+		int[][] last = new int[26][2];
+		Arrays.fill(last, new int[]{-1, -1});
 		for (int i = 0; i < n; i++) {
 			int j = s.charAt(i) - 'A';
-			res += (i - index[j][1]) * (index[j][1] - index[j][0]);
-			index[j] = new int[]{index[j][1], i};
+			int prev = last[j][0];
+			int cur = last[j][1];
+			res += (cur - prev) * (i - cur);
+			last[j] = new int[]{cur, i};
 		}
-		for (int i = 0; i < index.length; i++) {
-			res += (n - index[i][1]) * (index[i][1] - index[i][0]);
+		for (int[] info : last) {
+			int prev = info[0];
+			int cur = info[1];
+			res += (cur - prev) * (n - cur);
 		}
 		return res;
 	}
-	
+
 //	public static int uniqueLetterString(String s) {
 //		int res = 0, n = s.length();
 //		Map<Character, List<Integer>> map = new HashMap<>();

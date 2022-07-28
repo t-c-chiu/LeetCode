@@ -21,8 +21,8 @@ public class PartitionList {
 			}
 			head = head.next;
 		}
-		rightTail.next = null;
 		leftTail.next = rightHead.next;
+		rightTail.next = null;
 		return leftHead.next;
 	}
 }

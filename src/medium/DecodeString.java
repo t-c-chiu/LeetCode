@@ -11,36 +11,35 @@ public class DecodeString {
 	}
 	
 	public static String decodeString(String s) {
-		Stack<String> stringStack = new Stack<>();
 		Stack<Integer> countStack = new Stack<>();
+		Stack<String> resStack = new Stack<>();
+		StringBuilder res = new StringBuilder();
 		int i = 0;
-		String res = "";
 		while (i < s.length()) {
 			char c = s.charAt(i);
 			if (Character.isDigit(c)) {
-				int count = 0;
-				while (i < s.length() && Character.isDigit(s.charAt(i))) {
-					count = count * 10 + s.charAt(i) - '0';
+				int num = 0;
+				while (Character.isDigit(s.charAt(i))) {
+					num = num * 10 + s.charAt(i) - '0';
 					i++;
 				}
-				countStack.push(count);
-			} else if (Character.isLetter(c)) {
-				res += c;
-				i++;
-			} else if (c == '[') {
-				stringStack.push(res);
-				res = "";
-				i++;
+				countStack.push(num);
 			} else {
-				int times = countStack.pop();
-				StringBuilder sb = new StringBuilder(stringStack.pop());
-				for (int j = 0; j < times; j++) {
-					sb.append(res);
+				if (Character.isLetter(c)) {
+					res.append(c);
+				} else if (c == '[') {
+					resStack.push(res.toString());
+					res = new StringBuilder();
+				} else if (c == ']') {
+					StringBuilder temp = new StringBuilder(resStack.pop());
+					for (int j = countStack.pop(); j > 0; j--) {
+						temp.append(res);
+					}
+					res = temp;
 				}
-				res = sb.toString();
 				i++;
 			}
 		}
-		return res;
+		return res.toString();
 	}
 }

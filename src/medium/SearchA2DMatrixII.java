@@ -8,29 +8,26 @@ public class SearchA2DMatrixII {
 				{3, 6, 9, 16, 22},
 				{10, 13, 14, 17, 24},
 				{18, 21, 23, 26, 30}};
-		SearchA2DMatrixII searchA2DMatrixII = new SearchA2DMatrixII();
-//		System.out.println(searchA2DMatrixII.searchMatrix(matrix, 5));
-		System.out.println(searchA2DMatrixII.searchMatrix(matrix, 20));
-		System.out.println(searchA2DMatrixII.searchMatrix(matrix, 16));
-		System.out.println(searchA2DMatrixII.searchMatrix(matrix, 31));
-		System.out.println(searchA2DMatrixII.searchMatrix(matrix, 0));
-		System.out.println(searchA2DMatrixII.searchMatrix(matrix, 12));
-		System.out.println(searchA2DMatrixII.searchMatrix(matrix, 13));
-		System.out.println(searchA2DMatrixII.searchMatrix(matrix, 24));
+		System.out.println(searchMatrix(matrix, 20));
+		System.out.println(searchMatrix(matrix, 16));
+		System.out.println(searchMatrix(matrix, 31));
+		System.out.println(searchMatrix(matrix, 0));
+		System.out.println(searchMatrix(matrix, 12));
+		System.out.println(searchMatrix(matrix, 13));
+		System.out.println(searchMatrix(matrix, 24));
 	}
-
-	public boolean searchMatrix(int[][] matrix, int target) {
-		if (matrix.length == 0)
-			return false;
-		int row = 0, col = matrix[0].length - 1;
-		while (row < matrix.length && col >= 0) {
+	
+	public static boolean searchMatrix(int[][] matrix, int target) {
+		int row = matrix.length - 1, col = 0;
+		while (row >= 0 && col < matrix[0].length) {
 			int num = matrix[row][col];
-			if (num == target)
+			if (num == target) {
 				return true;
-			if (num > target)
-				col--;
-			else
-				row++;
+			} else if (num < target) {
+				col++;
+			} else {
+				row--;
+			}
 		}
 		return false;
 	}

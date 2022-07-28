@@ -3,21 +3,25 @@ package medium;
 public class FlipStringToMonotoneIncreasing {
 	
 	public static void main(String[] args) {
-		int res = minFlipsMonoIncr("00011000");
+		int res = minFlipsMonoIncr("010110");
 		System.out.println(res);
 	}
 	
 	public static int minFlipsMonoIncr(String s) {
-		int oneCount = 0, flip = 0;
+		int oneCount = 0, flipCount = 0;
 		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			if (c == '1') {
-				oneCount++;
+			if (s.charAt(i) == '0') {
+				if (oneCount == 0) {
+					continue;
+				}
+				flipCount++;
 			} else {
-				flip++;
+				oneCount++;
 			}
-			flip = Math.min(oneCount, flip);
+			if (flipCount > oneCount) {
+				flipCount = oneCount;
+			}
 		}
-		return flip;
+		return flipCount;
 	}
 }

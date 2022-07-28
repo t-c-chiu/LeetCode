@@ -1,6 +1,7 @@
 package medium;
 
-import java.util.TreeMap;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit {
 	
@@ -10,18 +11,45 @@ public class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit {
 	}
 	
 	public static int longestSubarray(int[] nums, int limit) {
-		TreeMap<Integer, Integer> treeMap = new TreeMap<>();
-		int res = 0, l = 0;
-		for (int r = 0; r < nums.length; r++) {
-			treeMap.put(nums[r], treeMap.getOrDefault(nums[r], 0) + 1);
-			while (treeMap.lastKey() - treeMap.firstKey() > limit) {
-				treeMap.put(nums[l], treeMap.getOrDefault(nums[l], 0) - 1);
-				treeMap.remove(nums[l], 0);
+		Deque<Integer> max = new ArrayDeque<>();
+		Deque<Integer> min = new ArrayDeque<>();
+		int res = 0;
+		for (int r = 0, l = 0; r < nums.length; r++) {
+			int num = nums[r];
+			while (!max.isEmpty() && max.peekLast() < num) {
+				max.pollLast();
+			}
+			while (!min.isEmpty() && min.peekLast() > num) {
+				min.pollLast();
+			}
+			max.offerLast(num);
+			min.offerLast(num);
+			while (max.peekFirst() - min.peekFirst() > limit) {
+				if (max.peekFirst() == nums[l]) {
+					max.pollFirst();
+				}
+				if (min.peekFirst() == nums[l]) {
+					min.pollFirst();
+				}
 				l++;
 			}
 			res = Math.max(res, r - l + 1);
 		}
 		return res;
 	}
+//	public static int longestSubarray(int[] nums, int limit) {
+//		TreeMap<Integer, Integer> map = new TreeMap<>();
+//		int res = 0;
+//		for (int r = 0, l = 0; r < nums.length; r++) {
+//			map.put(nums[r], map.getOrDefault(nums[r], 0) + 1);
+//			while (map.lastKey() - map.firstKey() > limit) {
+//				map.put(nums[l], map.get(nums[l]) - 1);
+//				map.remove(nums[l], 0);
+//				l++;
+//			}
+//			res = Math.max(res, r - l + 1);
+//		}
+//		return res;
+//	}
 	
 }

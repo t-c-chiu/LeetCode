@@ -8,33 +8,27 @@ public class PermutationInString {
 	}
 	
 	public static boolean checkInclusion(String s1, String s2) {
-		int s1Len = s1.length();
-		int s2Len = s2.length();
-		if (s1Len > s2Len) {
+		int m = s1.length(), n = s2.length();
+		if (m > n) {
 			return false;
 		}
-		
 		int[] count = new int[26];
-		for (int i = 0; i < s1Len; i++) {
+		for (int i = 0; i < m; i++) {
 			count[s1.charAt(i) - 'a']++;
-			count[s2.charAt(i) - 'a']--;
 		}
-		
-		if (isAllZero(count)) {
-			return true;
-		}
-		
-		for (int i = s1Len; i < s2Len; i++) {
-			count[s2.charAt(i) - 'a']--;
-			count[s2.charAt(i - s1Len) - 'a']++;
-			if (isAllZero(count)) {
+		for (int r = 0, l = 0; r < n; r++) {
+			count[s2.charAt(r) - 'a']--;
+			if (r - l == m) {
+				count[s2.charAt(l++) - 'a']++;
+			}
+			if (r - l + 1 == m && check(count)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	private static boolean isAllZero(int[] count) {
+	private static boolean check(int[] count) {
 		for (int i : count) {
 			if (i != 0) {
 				return false;

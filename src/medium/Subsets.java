@@ -12,15 +12,15 @@ public class Subsets {
 	
 	public static List<List<Integer>> subsets(int[] nums) {
 		List<List<Integer>> res = new ArrayList<>();
-		backtrack(res, new ArrayList<>(), nums, 0);
+		helper(res, nums, 0, new ArrayList<>());
 		return res;
 	}
 	
-	private static void backtrack(List<List<Integer>> res, List<Integer> temp, int[] nums, int start) {
+	private static void helper(List<List<Integer>> res, int[] nums, int start, List<Integer> temp) {
 		res.add(new ArrayList<>(temp));
 		for (int i = start; i < nums.length; i++) {
 			temp.add(nums[i]);
-			backtrack(res, temp, nums, i + 1);
+			helper(res, nums, i + 1, temp);
 			temp.remove(temp.size() - 1);
 		}
 	}

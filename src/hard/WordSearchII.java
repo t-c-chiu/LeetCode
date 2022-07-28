@@ -15,7 +15,6 @@ public class WordSearchII {
 	}
 	
 	public static List<String> findWords(char[][] board, String[] words) {
-		List<String> res = new ArrayList<>();
 		TrieNode root = new TrieNode();
 		for (String word : words) {
 			TrieNode cur = root;
@@ -28,33 +27,30 @@ public class WordSearchII {
 			}
 			cur.word = word;
 		}
-		int m = board.length, n = board[0].length;
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				dfs(res, board, i, j, m, n, root);
+		List<String> res = new ArrayList<>();
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				dfs(board, i, j, res, root);
 			}
 		}
 		return res;
 	}
 	
-	private static void dfs(List<String> res, char[][] board, int i, int j, int m, int n, TrieNode node) {
-		char c = board[i][j];
-		if (c == '#' || node.next[c - 'a'] == null) {
+	private static void dfs(char[][] board, int i, int j, List<String> res, TrieNode node) {
+		if (i < 0 || i == board.length || j < 0 || j == board[0].length || board[i][j] == '#' || node.next[board[i][j] - 'a'] == null) {
 			return;
 		}
+		char c = board[i][j];
 		node = node.next[c - 'a'];
 		if (node.word != null) {
 			res.add(node.word);
 			node.word = null;
 		}
-		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 		board[i][j] = '#';
-		for (int[] dir : dirs) {
-			int x = i + dir[0], y = j + dir[1];
-			if (x >= 0 && x < m && y >= 0 && y < n) {
-				dfs(res, board, x, y, m, n, node);
-			}
-		}
+		dfs(board, i + 1, j, res, node);
+		dfs(board, i - 1, j, res, node);
+		dfs(board, i, j + 1, res, node);
+		dfs(board, i, j - 1, res, node);
 		board[i][j] = c;
 	}
 	
@@ -62,5 +58,4 @@ public class WordSearchII {
 		TrieNode[] next = new TrieNode[26];
 		String word;
 	}
-	
 }

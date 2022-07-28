@@ -11,34 +11,35 @@ public class KthLargestElementInAnArray {
 		int n = nums.length, lo = 0, hi = n - 1;
 		k = n - k;
 		while (lo <= hi) {
-			int pivot = partition(nums, lo, hi);
-			if (pivot < k) {
-				lo = pivot + 1;
-			} else if (pivot > k) {
-				hi = pivot - 1;
+			int partition = partition(nums, lo, hi);
+			if (partition == k) {
+				return nums[partition];
+			}
+			if (partition < k) {
+				lo = partition + 1;
 			} else {
-				break;
+				hi = partition - 1;
 			}
 		}
-		return nums[k];
+		return nums[lo];
 	}
 	
-	private static int partition(int[] nums, int lo, int hi) {
-		int pivot = lo;
-		while (lo <= hi) {
-			while (lo <= hi && nums[lo] <= nums[pivot]) {
-				lo++;
+	private static int partition(int[] nums, int start, int end) {
+		int pivot = start;
+		while (start <= end) {
+			while (start <= end && nums[start] <= nums[pivot]) {
+				start++;
 			}
-			while (lo <= hi && nums[pivot] < nums[hi]) {
-				hi--;
+			while (start <= end && nums[end] > nums[pivot]) {
+				end--;
 			}
-			if (lo > hi) {
+			if (start > end) {
 				break;
 			}
-			swap(nums, lo, hi);
+			swap(nums, start, end);
 		}
-		swap(nums, pivot, hi);
-		return hi;
+		swap(nums, start, end);
+		return end;
 	}
 	
 	private static void swap(int[] nums, int start, int end) {

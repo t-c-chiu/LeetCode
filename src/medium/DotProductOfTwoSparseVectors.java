@@ -27,12 +27,11 @@ public class DotProductOfTwoSparseVectors {
 		
 		// Return the dotProduct of two sparse vectors
 		public int dotProduct(SparseVector vec) {
-			if (map.size() > vec.map.size()) {
+			if (vec.map.size() < map.size()) {
 				return vec.dotProduct(this);
 			}
-			
 			int res = 0;
-			for (int i : map.keySet()) {
+			for (Integer i : map.keySet()) {
 				if (vec.map.containsKey(i)) {
 					res += map.get(i) * vec.map.get(i);
 				}

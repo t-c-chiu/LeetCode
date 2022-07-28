@@ -1,5 +1,7 @@
 package medium;
 
+import java.util.Stack;
+
 public class MinStack {
 	public static void main(String[] args) {
 		MinStack minStack = new MinStack();
@@ -12,37 +14,29 @@ public class MinStack {
 		System.out.println(minStack.getMin());
 	}
 	
-	Node head;
+	Stack<Integer> stack = new Stack<>();
+	Stack<Integer> minStack = new Stack<>();
 	
 	public void push(int val) {
-		if (head == null) {
-			head = new Node(val, val, null);
+		stack.push(val);
+		if (minStack.isEmpty() || val < minStack.peek()) {
+			minStack.push(val);
 		} else {
-			head = new Node(val, Math.min(head.min, val), head);
+			minStack.push(minStack.peek());
 		}
 	}
 	
 	public void pop() {
-		head = head.next;
+		stack.pop();
+		minStack.pop();
 	}
 	
 	public int top() {
-		return head.val;
+		return stack.peek();
 	}
 	
 	public int getMin() {
-		return head.min;
+		return minStack.peek();
 	}
 	
-	class Node {
-		int val;
-		int min;
-		Node next;
-		
-		public Node(int val, int min, Node next) {
-			this.val = val;
-			this.min = min;
-			this.next = next;
-		}
-	}
 }

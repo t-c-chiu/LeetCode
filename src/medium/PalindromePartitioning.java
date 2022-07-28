@@ -13,18 +13,19 @@ public class PalindromePartitioning {
 	
 	public static List<List<String>> partition(String s) {
 		List<List<String>> res = new ArrayList<>();
-		backtrack(res, new ArrayList<>(), s, 0);
+		helper(res, s, 0, new ArrayList<>());
 		return res;
 	}
 	
-	private static void backtrack(List<List<String>> res, List<String> temp, String s, int start) {
+	private static void helper(List<List<String>> res, String s, int start, List<String> temp) {
 		if (start == s.length()) {
 			res.add(new ArrayList<>(temp));
+			return;
 		}
 		for (int i = start; i < s.length(); i++) {
 			if (isPalindrome(s, start, i)) {
 				temp.add(s.substring(start, i + 1));
-				backtrack(res, temp, s, i + 1);
+				helper(res, s, i + 1, temp);
 				temp.remove(temp.size() - 1);
 			}
 		}

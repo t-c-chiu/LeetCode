@@ -11,29 +11,22 @@ public class ReverseLinkedListII {
 	}
 	
 	public static ListNode reverseBetween(ListNode head, int left, int right) {
-		ListNode dummy = new ListNode(0);
+		ListNode dummy = new ListNode(0), prev = null, cur = dummy;
 		dummy.next = head;
-		ListNode prev = dummy;
-		ListNode cur = head;
-		while (left > 1) {
+		for (int i = 0; i < left; i++) {
 			prev = cur;
 			cur = cur.next;
-			left--;
-			right--;
 		}
-		
-		ListNode last = cur;
-		ListNode next = cur.next;
-		ListNode nextnext;
-		while (right > 1) {
-			nextnext = next.next;
-			next.next = cur;
+		ListNode last = null, reversedHead = cur, next;
+		for (int i = left; i <= right; i++) {
+			next = cur.next;
+			cur.next = last;
+			last = cur;
 			cur = next;
-			next = nextnext;
-			right--;
 		}
-		last.next = next;
-		prev.next = cur;
+		prev.next = last;
+		reversedHead.next = cur;
 		return dummy.next;
 	}
+	
 }

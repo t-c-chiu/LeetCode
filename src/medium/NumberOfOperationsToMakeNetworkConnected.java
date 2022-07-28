@@ -1,8 +1,5 @@
 package medium;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class NumberOfOperationsToMakeNetworkConnected {
 	
 	public static void main(String[] args) {
@@ -14,67 +11,58 @@ public class NumberOfOperationsToMakeNetworkConnected {
 		if (connections.length < n - 1) {
 			return -1;
 		}
-		
-		List<Integer>[] graph = new List[n];
-		for (int i = 0; i < graph.length; i++) {
-			graph[i] = new ArrayList<>();
-		}
-		for (int[] c : connections) {
-			graph[c[0]].add(c[1]);
-			graph[c[1]].add(c[0]);
-		}
-		int res = 0;
-		boolean[] visited = new boolean[n];
+		int[] parent = new int[n];
 		for (int i = 0; i < n; i++) {
-			res += dfs(graph, visited, i);
+			parent[i] = i;
 		}
-		return res - 1;
+		for (int[] con : connections) {
+			int p1 = find(parent, con[0]);
+			int p2 = find(parent, con[1]);
+			if (p1 != p2) {
+				n--;
+				parent[p1] = p2;
+			}
+		}
+		return n - 1;
 	}
 	
-	private static int dfs(List<Integer>[] graph, boolean[] visited, int i) {
-		if (visited[i]) {
-			return 0;
+	private static int find(int[] parent, int i) {
+		if (parent[i] != i) {
+			parent[i] = find(parent, parent[i]);
 		}
-		visited[i] = true;
-		for (Integer next : graph[i]) {
-			dfs(graph, visited, next);
-		}
-		return 1;
+		return parent[i];
 	}
-
 //	public static int makeConnected(int n, int[][] connections) {
 //		if (connections.length < n - 1) {
 //			return -1;
 //		}
-//
-//		int[] parent = new int[n];
-//		for (int i = 0; i < parent.length; i++) {
-//			parent[i] = i;
+//		Map<Integer, List<Integer>> g = new HashMap<>();
+//		for (int i = 0; i < n; i++) {
+//			g.put(i, new ArrayList<>());
 //		}
-//		int res = n - 1;
 //		for (int[] c : connections) {
-//			int p1 = findParent(parent, c[0]);
-//			int p2 = findParent(parent, c[1]);
-//			if (p1 != p2) {
-//				merge(parent, p1, p2);
-//				res--;
+//			g.get(c[0]).add(c[1]);
+//			g.get(c[1]).add(c[0]);
+//		}
+//		boolean[] visited = new boolean[n];
+//		int circle = 0;
+//		for (int i = 0; i < n; i++) {
+//			if (!visited[i]) {
+//				visited[i] = true;
+//				circle++;
+//				dfs(g, i, visited);
 //			}
 //		}
-//		return res;
+//		return circle - 1;
 //	}
 //
-//	private static void merge(int[] parent, int p1, int p2) {
-//		if (p1 < p2) {
-//			parent[p2] = p1;
-//		} else {
-//			parent[p1] = p2;
+//	private static void dfs(Map<Integer, List<Integer>> g, int i, boolean[] visited) {
+//		for (Integer next : g.get(i)) {
+//			if (!visited[next]) {
+//				visited[next] = true;
+//				dfs(g, next, visited);
+//			}
 //		}
 //	}
-//
-//	private static int findParent(int[] parent, int i) {
-//		if (parent[i] != i) {
-//			return parent[i] = findParent(parent, parent[i]);
-//		}
-//		return i;
-//	}
+	
 }

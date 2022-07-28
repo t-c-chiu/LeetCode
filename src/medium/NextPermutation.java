@@ -15,16 +15,19 @@ public class NextPermutation {
 	 * 1 4 2 3 5 - 1 4 2 5 3 - 1 4 3 2 5 - 1 4 3 5 2
 	 */
 	public static void nextPermutation(int[] nums) {
-		int n = nums.length, i = n - 2;
-		while (i >= 0 && nums[i] >= nums[i + 1]) {
-			i--;
+		int i, n = nums.length;
+		for (i = n - 2; i >= 0; i--) {
+			if (nums[i] < nums[i + 1]) {
+				break;
+			}
 		}
 		if (i >= 0) {
-			int j = n - 1;
-			while (j >= 0 && nums[j] <= nums[i]) {
-				j--;
+			for (int j = n - 1; j > i; j--) {
+				if (nums[j] > nums[i]) {
+					swap(nums, i, j);
+					break;
+				}
 			}
-			swap(nums, i, j);
 		}
 		reverse(nums, i + 1);
 	}

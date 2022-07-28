@@ -16,46 +16,46 @@ public class AccountsMerge {
 	}
 	
 	public static List<List<String>> accountsMerge(List<List<String>> accounts) {
-		Map<String, String> emailToName = new HashMap<>();
-		Map<String, Set<String>> graph = new HashMap<>();
+		List<List<String>> res = new ArrayList<>();
+		Map<String, String> emailToParent = new HashMap<>();
+		Map<String, List<String>> g = new HashMap<>();
+		Set<String> seen = new HashSet<>();
 		for (List<String> account : accounts) {
-			String name = account.get(0);
 			for (int i = 1; i < account.size(); i++) {
 				String email = account.get(i);
-				emailToName.putIfAbsent(email, name);
-				graph.putIfAbsent(email, new HashSet<>());
-				Set<String> mappings = graph.get(email);
-				for (int j = 1; j < account.size(); j++) {
-					if (i == j) {
-						continue;
-					}
-					mappings.add(account.get(j));
+				emailToParent.put(email, account.get(0));
+				if (i > 1) {
+					String firstEmail = account.get(1);
+					g.putIfAbsent(firstEmail, new ArrayList<>());
+					g.putIfAbsent(email, new ArrayList<>());
+					g.get(firstEmail).add(email);
+					g.get(email).add(firstEmail);
 				}
 			}
 		}
-		
-		Set<String> visited = new HashSet<>();
-		List<List<String>> res = new ArrayList<>();
-		for (String email : graph.keySet()) {
-			List<String> list = new ArrayList<>();
-			if (!visited.contains(email)) {
-				visited.add(email);
-				dfs(graph, email, visited, list);
-				list.sort(Comparator.naturalOrder());
-				list.add(0, emailToName.get(email));
-				res.add(list);
+		for (List<String> account : accounts) {
+			String firstEmail = account.get(1);
+			if (!seen.contains(firstEmail)) {
+				List<String> temp = new ArrayList<>();
+				seen.add(firstEmail);
+				dfs(temp, firstEmail, g, seen);
+				temp.sort(Comparator.naturalOrder());
+				temp.add(0, emailToParent.get(firstEmail));
+				res.add(temp);
 			}
 		}
 		return res;
 	}
 	
-	private static void dfs(Map<String, Set<String>> graph, String email, Set<String> visited, List<String> list) {
-		list.add(email);
-		Set<String> next = graph.get(email);
-		for (String s : next) {
-			if (!visited.contains(s)) {
-				visited.add(s);
-				dfs(graph, s, visited, list);
+	private static void dfs(List<String> temp, String email, Map<String, List<String>> g, Set<String> seen) {
+		temp.add(email);
+		if (!g.containsKey(email)) {
+			return;
+		}
+		for (String next : g.get(email)) {
+			if (!seen.contains(next)) {
+				seen.add(next);
+				dfs(temp, next, g, seen);
 			}
 		}
 	}

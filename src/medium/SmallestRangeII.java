@@ -9,15 +9,12 @@ public class SmallestRangeII {
 		System.out.println(res);
 	}
 	
-	public static int smallestRangeII(int[] A, int K) {
-		int n = A.length;
-		Arrays.sort(A);
-		int min = A[0];
-		int max = A[n - 1];
-		int res = max - min;
+	public static int smallestRangeII(int[] nums, int k) {
+		Arrays.sort(nums);
+		int n = nums.length, min = nums[0], max = nums[n - 1], res = max - min;
 		for (int i = 0; i < n - 1; i++) {
-			max = Math.max(A[i] + K, A[n - 1] - K);
-			min = Math.min(A[0] + K, A[i + 1] - K);
+			min = Math.min(nums[0] + k, nums[i + 1] - k);
+			max = Math.max(nums[n - 1] - k, nums[i] + k);
 			res = Math.min(res, max - min);
 		}
 		return res;

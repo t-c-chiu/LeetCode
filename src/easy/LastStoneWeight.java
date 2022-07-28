@@ -5,21 +5,21 @@ import java.util.*;
 public class LastStoneWeight {
 	
 	public static void main(String[] args) {
-		LastStoneWeight test = new LastStoneWeight();
-		System.out.println(test.lastStoneWeight(new int[]{2, 7, 4, 1, 8, 1}));
+		System.out.println(lastStoneWeight(new int[]{2, 7, 4, 1, 8, 1}));
 	}
 	
-	public int lastStoneWeight(int[] stones) {
-		PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.reverseOrder());
+	public static int lastStoneWeight(int[] stones) {
+		PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
 		for (int stone : stones) {
-			queue.add(stone);
+			pq.offer(stone);
 		}
-		while (queue.size() > 1) {
-			int bigStone = queue.poll();
-			int smallStone = queue.poll();
-			if (bigStone > smallStone)
-				queue.add(bigStone - smallStone);
+		while (pq.size() > 1) {
+			int big = pq.poll();
+			int small = pq.poll();
+			if (big > small) {
+				pq.offer(big - small);
+			}
 		}
-		return queue.isEmpty() ? 0 : queue.poll();
+		return pq.isEmpty() ? 0 : pq.poll();
 	}
 }

@@ -26,9 +26,10 @@ public class SortList {
 	}
 	
 	private static ListNode merge(ListNode left, ListNode right) {
-		ListNode dummy = new ListNode(0), cur = dummy;
+		ListNode dummy = new ListNode(0);
+		ListNode cur = dummy;
 		while (left != null && right != null) {
-			if (left.val < right.val) {
+			if (left.val <= right.val) {
 				cur.next = left;
 				left = left.next;
 			} else {

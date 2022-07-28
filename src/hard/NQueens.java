@@ -22,49 +22,48 @@ public class NQueens {
 		return res;
 	}
 	
-	private static void helper(List<List<String>> res, char[][] chars, int i, int n) {
-		if (i == n) {
-			res.add(construct(chars));
+	private static void helper(List<List<String>> res, char[][] board, int row, int n) {
+		if (row == n) {
+			res.add(construct(board));
 			return;
 		}
 		for (int j = 0; j < n; j++) {
-			if (isValid(chars, i, j)) {
-				chars[i][j] = 'Q';
-				helper(res, chars, i + 1, n);
-				chars[i][j] = '.';
+			if (isValid(board, row, j)) {
+				board[row][j] = 'Q';
+				helper(res, board, row + 1, n);
+				board[row][j] = '.';
 			}
 		}
 	}
 	
-	private static boolean isValid(char[][] chars, int i, int j) {
-		for (int k = 0; k < i; k++) {
-			if (chars[k][j] == 'Q') {
+	private static boolean isValid(char[][] board, int i, int j) {
+		for (int k = i; k >= 0; k--) {
+			if (board[k][j] == 'Q') {
 				return false;
 			}
 		}
-		for (int x = i - 1, y = j - 1; x >= 0 && y >= 0; x--, y--) {
-			if (chars[x][y] == 'Q') {
+		for (int k = i, l = j; k >= 0 && l >= 0; k--, l--) {
+			if (board[k][l] == 'Q') {
 				return false;
 			}
 		}
-		for (int x = i - 1, y = j + 1; x >= 0 && y < chars.length; x--, y++) {
-			if (chars[x][y] == 'Q') {
+		for (int k = i, l = j; k >= 0 && l < board.length; k--, l++) {
+			if (board[k][l] == 'Q') {
 				return false;
 			}
 		}
 		return true;
 	}
 	
-	private static List<String> construct(char[][] chars) {
-		List<String> list = new ArrayList<>();
-		for (char[] row : chars) {
-			StringBuilder sb = new StringBuilder();
-			for (char c : row) {
-				sb.append(c);
+	private static List<String> construct(char[][] board) {
+		List<String> res = new ArrayList<>();
+		for (int i = 0; i < board.length; i++) {
+			StringBuilder row = new StringBuilder();
+			for (int j = 0; j < board.length; j++) {
+				row.append(board[i][j]);
 			}
-			list.add(sb.toString());
+			res.add(row.toString());
 		}
-		return list;
+		return res;
 	}
-	
 }

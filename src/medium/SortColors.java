@@ -5,21 +5,21 @@ import java.util.Arrays;
 public class SortColors {
 	
 	public static void main(String[] args) {
-		int[] nums = new int[]{2, 0, 1};
+		int[] nums = new int[]{2, 0, 2, 1, 1, 0};
 		sortColors(nums);
 		Arrays.stream(nums).forEach(System.out::print);
 	}
 	
 	public static void sortColors(int[] nums) {
-		int i = 0, l = 0, r = nums.length - 1;
+		int n = nums.length, i = 0, l = 0, r = n - 1;
 		while (i <= r) {
 			int num = nums[i];
 			if (num == 0) {
-				swap(nums, l, i);
-				l++;
+				swap(nums, i, l);
 				i++;
+				l++;
 			} else if (num == 2) {
-				swap(nums, r, i);
+				swap(nums, i, r);
 				r--;
 			} else {
 				i++;

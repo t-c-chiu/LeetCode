@@ -17,8 +17,8 @@ public class CarFleet {
 			cars[i] = new double[]{position[i], (double) (target - position[i]) / speed[i]};
 		}
 		Arrays.sort(cars, Comparator.comparingDouble(o -> -o[0]));
-		int fleet = 0;
 		double time = 0;
+		int fleet = 0;
 		for (double[] car : cars) {
 			if (car[1] > time) {
 				fleet++;

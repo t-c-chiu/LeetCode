@@ -8,29 +8,26 @@ public class MinimumSwapsToGroupAll1sTogether {
 	}
 	
 	public static int minSwaps(int[] data) {
-		int oneCount = 0;
-		for (int num : data) {
-			if (num == 1) {
-				oneCount++;
+		int ones = 0;
+		for (int i : data) {
+			if (i == 1) {
+				ones++;
 			}
 		}
-		int swap = 0;
-		for (int i = 0; i < oneCount; i++) {
-			if (data[i] == 0) {
+		int res = Integer.MAX_VALUE, swap = 0;
+		for (int r = 0, l = 0; r < data.length; r++) {
+			if (data[r] == 0) {
 				swap++;
 			}
-		}
-		int res = swap, left = 1, right = oneCount;
-		while (right < data.length) {
-			if (data[left - 1] == 0) {
-				swap--;
+			if (r - l == ones) {
+				if (data[l] == 0) {
+					swap--;
+				}
+				l++;
 			}
-			if (data[right] == 0) {
-				swap++;
+			if (r - l + 1 == ones) {
+				res = Math.min(res, swap);
 			}
-			res = Math.min(res, swap);
-			left++;
-			right++;
 		}
 		return res;
 	}

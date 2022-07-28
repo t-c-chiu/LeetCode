@@ -12,15 +12,15 @@ public class BackspaceStringCompare {
 	
 	public static boolean backspaceCompare(String s, String t) {
 		int i = s.length() - 1, j = t.length() - 1;
-		while (true) {
-			int skip = 0;
-			while (i >= 0 && (s.charAt(i) == '#' || skip > 0)) {
-				skip += s.charAt(i) == '#' ? 1 : -1;
+		while (i >= 0 || j >= 0) {
+			int back = 0;
+			while (i >= 0 && (s.charAt(i) == '#' || back > 0)) {
+				back += s.charAt(i) == '#' ? 1 : -1;
 				i--;
 			}
-			skip = 0;
-			while (j >= 0 && (t.charAt(j) == '#' || skip > 0)) {
-				skip += t.charAt(j) == '#' ? 1 : -1;
+			back = 0;
+			while (j >= 0 && (t.charAt(j) == '#' || back > 0)) {
+				back += t.charAt(j) == '#' ? 1 : -1;
 				j--;
 			}
 			if (i >= 0 && j >= 0 && s.charAt(i) == t.charAt(j)) {
@@ -32,7 +32,6 @@ public class BackspaceStringCompare {
 		}
 		return i == -1 && j == -1;
 	}
-
 //	public static boolean backspaceCompare(String s, String t) {
 //		Stack<Character> st1 = new Stack<>(), st2 = new Stack<>();
 //		for (int i = 0; i < s.length(); i++) {

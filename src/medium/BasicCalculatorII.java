@@ -5,37 +5,35 @@ import java.util.Stack;
 public class BasicCalculatorII {
 	
 	public static void main(String[] args) {
-		int res = calculate("3+2* 2");
+		int res = calculate("3+2* 2-5*4+6+7/2");
 		System.out.println(res);
 	}
 	
 	public static int calculate(String s) {
 		Stack<Integer> stack = new Stack<>();
-		int num = 0, n = s.length();
 		char op = '+';
-		for (int i = 0; i < n; i++) {
+		int i = 0;
+		while (i < s.length()) {
 			char c = s.charAt(i);
 			if (Character.isDigit(c)) {
-				num = num * 10 + c - '0';
-			}
-			if (!Character.isDigit(c) && !Character.isWhitespace(c) || i == n - 1) {
-				switch (op) {
-					case '+':
-						stack.push(num);
-						break;
-					case '-':
-						stack.push(-num);
-						break;
-					case '*':
-						stack.push(stack.pop() * num);
-						break;
-					case '/':
-						stack.push(stack.pop() / num);
+				int num = 0;
+				while (i < s.length() && Character.isDigit(s.charAt(i))) {
+					num = num * 10 + s.charAt(i) - '0';
+					i++;
 				}
-				num = 0;
-				op = c;
+				switch (op) {
+					case '+' -> stack.push(num);
+					case '-' -> stack.push(-num);
+					case '*' -> stack.push(stack.pop() * num);
+					case '/' -> stack.push(stack.pop() / num);
+				}
+			} else {
+				if (!Character.isWhitespace(c)) {
+					op = c;
+				}
+				i++;
 			}
 		}
-		return stack.stream().mapToInt(i -> i).sum();
+		return stack.stream().mapToInt(num -> num).sum();
 	}
 }

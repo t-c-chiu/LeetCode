@@ -7,28 +7,18 @@ public class LongestPalindromicSubstring {
 		System.out.println(res);
 	}
 	
-	static int start;
-	static int maxLen;
-	
 	public static String longestPalindrome(String s) {
 		int n = s.length();
-		for (int i = 0; i < n; i++) {
-			extendPalindrome(i, i, s);
-			if (i + 1 < n) {
-				extendPalindrome(i, i + 1, s);
+		String res = "";
+		boolean[][] dp = new boolean[n][n];
+		for (int i = n - 1; i >= 0; i--) {
+			for (int j = i; j < n; j++) {
+				dp[i][j] = s.charAt(i) == s.charAt(j) && (j - i <= 2 || dp[i + 1][j - 1]);
+				if (dp[i][j] && j - i + 1 > res.length()) {
+					res = s.substring(i, j + 1);
+				}
 			}
 		}
-		return s.substring(start, start + maxLen);
-	}
-	
-	private static void extendPalindrome(int left, int right, String s) {
-		while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-			left--;
-			right++;
-		}
-		if (right - left - 1 > maxLen) {
-			start = left + 1;
-			maxLen = right - left - 1;
-		}
+		return res;
 	}
 }

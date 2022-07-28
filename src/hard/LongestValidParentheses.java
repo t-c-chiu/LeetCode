@@ -10,25 +10,20 @@ public class LongestValidParentheses {
 	}
 	
 	public static int longestValidParentheses(String s) {
-		int n = s.length();
 		Stack<Integer> stack = new Stack<>();
-		for (int i = 0; i < n; i++) {
-			if (s.charAt(i) == '(') {
-				stack.push(i);
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (c == ')' && !stack.isEmpty() && s.charAt(stack.peek()) == '(') {
+				stack.pop();
 			} else {
-				if (!stack.isEmpty() && s.charAt(stack.peek()) == '(') {
-					stack.pop();
-				} else {
-					stack.push(i);
-				}
+				stack.push(i);
 			}
 		}
-		int res = 0;
-		while (!stack.isEmpty()) {
-			int last = stack.pop();
-			res = Math.max(res, n - last - 1);
-			n = last;
+		int prev = -1, res = 0;
+		for (Integer i : stack) {
+			res = Math.max(res, i - prev - 1);
+			prev = i;
 		}
-		return Math.max(res, n);
+		return Math.max(res, s.length() - prev - 1);
 	}
 }

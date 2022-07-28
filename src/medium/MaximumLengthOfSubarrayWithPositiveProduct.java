@@ -3,26 +3,25 @@ package medium;
 public class MaximumLengthOfSubarrayWithPositiveProduct {
 	
 	public static void main(String[] args) {
-		int res = getMaxLen(new int[]{1, -2, -3, 4});
+		int res = getMaxLen(new int[]{1, -2, -3, 4, 5, 0, -4, 2, -3, 1, 1, 4, 5});
 		System.out.println(res);
 	}
 	
 	public static int getMaxLen(int[] nums) {
-		int res = 0, zeroIndex = -1, firstNegIndex = -1, negCount = 0;
+		int lastZero = -1, firstNegative = -1, negativeCount = 0, res = 0;
 		for (int i = 0; i < nums.length; i++) {
-			if (nums[i] == 0) {
-				zeroIndex = i;
-				firstNegIndex = -1;
-				negCount = 0;
-				continue;
-			}
-			if (nums[i] < 0) {
-				if (firstNegIndex == -1) {
-					firstNegIndex = i;
+			int num = nums[i];
+			if (num == 0) {
+				lastZero = i;
+				negativeCount = 0;
+				firstNegative = -1;
+			} else if (num < 0) {
+				if (firstNegative == -1) {
+					firstNegative = i;
 				}
-				negCount++;
+				negativeCount++;
 			}
-			res = Math.max(res, i - (negCount % 2 == 0 ? zeroIndex : firstNegIndex));
+			res = Math.max(res, negativeCount % 2 == 0 ? i - lastZero : i - firstNegative);
 		}
 		return res;
 	}

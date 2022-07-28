@@ -1,41 +1,40 @@
 package medium;
 
+import java.util.Arrays;
+
 public class FindFirstAndLastPositionOfElementInSortedArray {
 	
 	public static void main(String[] args) {
-		int[] res = searchRange(new int[]{5, 7, 7, 8, 8, 10}, 6);
-		for (int i : res) {
-			System.out.print(i + " ");
-		}
+		int[] res = searchRange(new int[]{5, 7, 7, 8, 8, 10}, 7);
+		System.out.println(Arrays.toString(res));
 	}
-	
-	static int start = -1;
-	static int end = -1;
 	
 	public static int[] searchRange(int[] nums, int target) {
-		searchRange(nums, target, 0, nums.length - 1);
-		return new int[]{start, end};
-	}
-	
-	private static void searchRange(int[] nums, int target, int lo, int hi) {
-		if (lo > hi) {
-			return;
-		}
-		
-		int mid = (lo + hi) / 2;
-		if (nums[mid] == target) {
-			if (start == -1 || start > mid) {
+		int n = nums.length, start = -1, end = -1, lo = 0, hi = n - 1;
+		while (lo <= hi) {
+			int mid = (lo + hi) / 2, num = nums[mid];
+			if (num == target && (mid == 0 || nums[mid - 1] < target)) {
 				start = mid;
+				break;
+			} else if (num < target) {
+				lo = mid + 1;
+			} else {
+				hi = mid - 1;
 			}
-			if (end == -1 || end < mid) {
-				end = mid;
-			}
-			searchRange(nums, target, lo, mid - 1);
-			searchRange(nums, target, mid + 1, hi);
-		} else if (nums[mid] < target) {
-			searchRange(nums, target, mid + 1, hi);
-		} else {
-			searchRange(nums, target, lo, mid - 1);
 		}
+		lo = 0;
+		hi = n - 1;
+		while (lo <= hi) {
+			int mid = (lo + hi) / 2, num = nums[mid];
+			if (num == target && (mid == n - 1 || nums[mid + 1] > target)) {
+				end = mid;
+				break;
+			} else if (num > target) {
+				hi = mid - 1;
+			} else {
+				lo = mid + 1;
+			}
+		}
+		return new int[]{start, end};
 	}
 }

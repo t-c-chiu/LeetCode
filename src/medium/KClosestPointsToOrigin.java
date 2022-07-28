@@ -22,6 +22,10 @@ public class KClosestPointsToOrigin {
 				pq.poll();
 			}
 		}
-		return pq.toArray(new int[][]{});
+		int[][] res = new int[k][2];
+		for (int i = 0; i < k; i++) {
+			res[i] = pq.poll();
+		}
+		return res;
 	}
 }

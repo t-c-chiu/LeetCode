@@ -15,8 +15,12 @@ public class MeetingRoomsII {
 		System.out.println(res);
 	}
 	
+	/**
+	 * 1 2 3 4 7
+	 * 2 4 6 8 10
+	 */
 	public static int minMeetingRooms(int[][] intervals) {
-		int n = intervals.length, res = 0;
+		int n = intervals.length;
 		int[] start = new int[n], end = new int[n];
 		for (int i = 0; i < n; i++) {
 			start[i] = intervals[i][0];
@@ -24,11 +28,10 @@ public class MeetingRoomsII {
 		}
 		Arrays.sort(start);
 		Arrays.sort(end);
-		for (int i = 0, endIdx = 0; i < n; i++) {
-			if (start[i] < end[endIdx]) {
+		int res = 0;
+		for (int i = 0, j = 0; i < n; i++) {
+			if (start[i] < end[j]) {
 				res++;
-			} else {
-				endIdx++;
 			}
 		}
 		return res;
@@ -38,11 +41,10 @@ public class MeetingRoomsII {
 //		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
 //		pq.offer(intervals[0]);
 //		for (int i = 1; i < intervals.length; i++) {
-//			int[] interval = intervals[i];
-//			if (pq.peek()[1] <= interval[0]) {
+//			if (pq.peek()[1] <= intervals[i][0]) {
 //				pq.poll();
 //			}
-//			pq.offer(interval);
+//			pq.offer(intervals[i]);
 //		}
 //		return pq.size();
 //	}

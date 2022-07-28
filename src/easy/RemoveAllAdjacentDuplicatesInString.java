@@ -8,16 +8,16 @@ public class RemoveAllAdjacentDuplicatesInString {
 	}
 	
 	public static String removeDuplicates(String s) {
-		StringBuilder builder = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
-			int j = builder.length() - 1;
-			if (j >= 0 && c == builder.charAt(j)) {
-				builder.deleteCharAt(j);
+			int last = sb.length() - 1;
+			if (!sb.isEmpty() && sb.charAt(last) == c) {
+				sb.deleteCharAt(last);
 			} else {
-				builder.append(c);
+				sb.append(c);
 			}
 		}
-		return builder.toString();
+		return sb.toString();
 	}
 }

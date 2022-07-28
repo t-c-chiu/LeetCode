@@ -8,18 +8,19 @@ public class MajorityElement {
 	}
 	
 	public static int majorityElement(int[] nums) {
-		int candidate = 0;
-		int count = 0;
+		int res = 0, count = 0;
 		for (int num : nums) {
-			if (num == candidate) {
-				count++;
-			} else if (count == 0) {
-				candidate = num;
+			if (num == res) {
 				count++;
 			} else {
-				count--;
+				if (count == 0) {
+					res = num;
+					count = 1;
+				} else {
+					count--;
+				}
 			}
 		}
-		return candidate;
+		return res;
 	}
 }

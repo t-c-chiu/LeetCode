@@ -12,25 +12,27 @@ public class CombinationSumII {
 	public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
 		Arrays.sort(candidates);
 		List<List<Integer>> res = new ArrayList<>();
-		backtrack(res, new ArrayList<>(), candidates, target, 0);
+		helper(res, candidates, 0, 0, target, new ArrayList<>());
 		return res;
 	}
 	
-	private static void backtrack(List<List<Integer>> res, List<Integer> temp, int[] candidates, int target, int start) {
-		if (target == 0) {
+	private static void helper(List<List<Integer>> res, int[] arr, int start, int sum, int target, List<Integer> temp) {
+		if (sum == target) {
 			res.add(new ArrayList<>(temp));
+			return;
 		}
-		for (int i = start; i < candidates.length; i++) {
-			if (i > start && candidates[i] == candidates[i - 1]) {
+		if (sum > target) {
+			return;
+		}
+		for (int i = start; i < arr.length; i++) {
+			if (i > start && arr[i] == arr[i - 1]) {
 				continue;
 			}
-			if (target - candidates[i] < 0) {
-				return;
-			}
-			temp.add(candidates[i]);
-			backtrack(res, temp, candidates, target - candidates[i], i + 1);
+			temp.add(arr[i]);
+			helper(res, arr, i + 1, sum + arr[i], target, temp);
 			temp.remove(temp.size() - 1);
 		}
 	}
+	
 	
 }

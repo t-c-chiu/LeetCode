@@ -16,11 +16,12 @@ public class CheapestFlightsWithinKStops {
 		for (int i = 0; i <= k; i++) {
 			int[] temp = Arrays.copyOf(cost, n);
 			for (int[] flight : flights) {
-				int from = flight[0], to = flight[1], price = flight[2];
-				if (cost[from] == Integer.MAX_VALUE) {
-					continue;
+				int from = flight[0];
+				int to = flight[1];
+				int price = flight[2];
+				if (cost[from] != Integer.MAX_VALUE) {
+					temp[to] = Math.min(temp[to], cost[from] + price);
 				}
-				temp[to] = Math.min(temp[to], cost[from] + price);
 			}
 			cost = temp;
 		}

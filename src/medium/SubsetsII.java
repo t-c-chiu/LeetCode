@@ -13,19 +13,21 @@ public class SubsetsII {
 	public static List<List<Integer>> subsetsWithDup(int[] nums) {
 		Arrays.sort(nums);
 		List<List<Integer>> res = new ArrayList<>();
-		backtrack(res, new ArrayList<>(), nums, 0);
+		helper(res, nums, 0, new ArrayList<>());
 		return res;
 	}
 	
-	private static void backtrack(List<List<Integer>> res, List<Integer> temp, int[] nums, int start) {
+	private static void helper(List<List<Integer>> res, int[] nums, int start, List<Integer> temp) {
 		res.add(new ArrayList<>(temp));
 		for (int i = start; i < nums.length; i++) {
-			if (i == start || nums[i] != nums[i - 1]) {
-				temp.add(nums[i]);
-				backtrack(res, temp, nums, i + 1);
-				temp.remove(temp.size() - 1);
+			if (i > start && nums[i] == nums[i - 1]) {
+				continue;
 			}
+			temp.add(nums[i]);
+			helper(res, nums, i + 1, temp);
+			temp.remove(temp.size() - 1);
 		}
 	}
+	
 	
 }

@@ -21,39 +21,34 @@ public class DesignTwitter {
 	static class Twitter {
 		
 		Map<Integer, Set<Integer>> follow;
-		Map<Integer, Map<Integer, Integer>> tweet;
-		int order = 0;
+		Map<Integer, Set<int[]>> tweets;
+		int timestamp;
 		
 		public Twitter() {
 			follow = new HashMap<>();
-			tweet = new HashMap<>();
+			tweets = new HashMap<>();
 		}
 		
 		public void postTweet(int userId, int tweetId) {
-			tweet.putIfAbsent(userId, new HashMap<>());
-			tweet.get(userId).put(order++, tweetId);
+			follow.putIfAbsent(userId, new HashSet<>());
+			follow.get(userId).add(userId);
+			tweets.putIfAbsent(userId, new HashSet<>());
+			tweets.get(userId).add(new int[]{tweetId, timestamp++});
 		}
 		
 		public List<Integer> getNewsFeed(int userId) {
-			PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue<>((o1, o2) -> o2.getKey() - o1.getKey());
-			Map<Integer, Integer> tweets = tweet.get(userId);
-			if (tweets != null) {
-				queue.addAll(tweets.entrySet());
+			if (!follow.containsKey(userId)) {
+				return new ArrayList<>();
 			}
-			Set<Integer> followees = follow.get(userId);
-			if (followees != null) {
-				for (Integer followeeId : followees) {
-					Map<Integer, Integer> followeeTweets = tweet.get(followeeId);
-					if (followeeTweets != null) {
-						queue.addAll(followeeTweets.entrySet());
-					}
+			PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> -o[1]));
+			for (Integer followee : follow.get(userId)) {
+				if (tweets.containsKey(followee)) {
+					pq.addAll(tweets.get(followee));
 				}
 			}
 			List<Integer> res = new ArrayList<>();
-			int k = 10;
-			while (!queue.isEmpty() && k > 0) {
-				res.add(queue.poll().getValue());
-				k--;
+			while (!pq.isEmpty() && res.size() < 10) {
+				res.add(pq.poll()[0]);
 			}
 			return res;
 		}
@@ -64,9 +59,8 @@ public class DesignTwitter {
 		}
 		
 		public void unfollow(int followerId, int followeeId) {
-			Set<Integer> followees = follow.get(followerId);
-			if (followees != null) {
-				followees.remove(followeeId);
+			if (follow.containsKey(followerId)) {
+				follow.get(followerId).remove(followeeId);
 			}
 		}
 	}

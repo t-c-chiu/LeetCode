@@ -1,42 +1,37 @@
 package medium;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TopKFrequentElements {
 	
 	public static void main(String[] args) {
-		TopKFrequentElements topKFrequentElements = new TopKFrequentElements();
-		System.out.println(topKFrequentElements.topKFrequent(new int[]{1, 1, 1, 2, 2, 2, 3}, 2));
-		System.out.println(topKFrequentElements.topKFrequent(new int[]{1, 2}, 2));
+		System.out.println(Arrays.toString(topKFrequent(new int[]{1, 1, 1, 2, 2, 2, 3}, 2)));
+		System.out.println(Arrays.toString(topKFrequent(new int[]{1, 2}, 2)));
 	}
 	
-	public List<Integer> topKFrequent(int[] nums, int k) {
-		List<Integer> result = new ArrayList<>(k);
+	public static int[] topKFrequent(int[] nums, int k) {
 		Map<Integer, Integer> map = new HashMap<>();
-		for (int i : nums) {
-			map.put(i, map.getOrDefault(i, 0) + 1);
+		for (int num : nums) {
+			map.put(num, map.getOrDefault(num, 0) + 1);
 		}
-		
-		List<Integer>[] lists = new ArrayList[nums.length + 1];
-		for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-			List<Integer> list = lists[entry.getValue()];
-			if (list == null) {
-				list = new ArrayList<>();
-				lists[entry.getValue()] = list;
+		int n = nums.length;
+		List<Integer>[] bucket = new List[n + 1];
+		for (Integer num : map.keySet()) {
+			int freq = map.get(num);
+			if (bucket[freq] == null) {
+				bucket[freq] = new ArrayList<>();
 			}
-			list.add(entry.getKey());
+			bucket[freq].add(num);
 		}
-		
-		for (int i = nums.length; i > 0 && k > 0; i--) {
-			List<Integer> list = lists[i];
-			if (list == null)
-				continue;
-			result.addAll(list);
-			k -= list.size();
+		int[] res = new int[k];
+		for (int i = n, j = 0; i >= 1 && k > 0; i--) {
+			if (bucket[i] != null) {
+				for (Integer num : bucket[i]) {
+					res[j++] = num;
+				}
+				k -= bucket[i].size();
+			}
 		}
-		return result;
+		return res;
 	}
 }

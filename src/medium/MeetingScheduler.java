@@ -16,8 +16,8 @@ public class MeetingScheduler {
 	}
 	
 	public static List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
-		Arrays.sort(slots1, Comparator.comparingInt(o -> o[0]));
-		Arrays.sort(slots2, Comparator.comparingInt(o -> o[0]));
+		Arrays.sort(slots1, Comparator.comparingInt(o -> o[1]));
+		Arrays.sort(slots2, Comparator.comparingInt(o -> o[1]));
 		int i = 0, j = 0;
 		while (i < slots1.length && j < slots2.length) {
 			int start = Math.max(slots1[i][0], slots2[j][0]);

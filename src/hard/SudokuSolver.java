@@ -20,37 +20,41 @@ public class SudokuSolver {
 	}
 	
 	public static void solveSudoku(char[][] board) {
-		solve(board, 0, 0);
+		solve(board);
 	}
 	
-	private static boolean solve(char[][] board, int i, int j) {
-		if (i == 9) {
-			return true;
-		}
-		if (j == 9) {
-			return solve(board, i + 1, 0);
-		}
-		if (board[i][j] != '.') {
-			return solve(board, i, j + 1);
-		}
-		for (char c = '1'; c <= '9'; c++) {
-			if (isValid(board, i, j, c)) {
-				board[i][j] = c;
-				if (solve(board, i, j + 1)) {
-					return true;
+	public static boolean solve(char[][] board) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (board[i][j] == '.') {
+					for (char k = '1'; k <= '9'; k++) {
+						if (isValid(board, i, j, k)) {
+							board[i][j] = k;
+							if (solve(board)) {
+								return true;
+							}
+							board[i][j] = '.';
+						}
+					}
+					return false;
 				}
-				board[i][j] = '.';
 			}
 		}
-		return false;
+		return true;
 	}
 	
-	private static boolean isValid(char[][] board, int row, int col, char c) {
-		for (int i = 0; i < 9; i++) {
-			// 4,5 -> 3,3 3,4 3,5 4,3
-			int blockRow = 3 * (row / 3), blockCol = 3 * (col / 3);
-			if (board[i][col] == c || board[row][i] == c || board[blockRow + i / 3][blockCol + i % 3] == c) {
+	private static boolean isValid(char[][] board, int i, int j, char c) {
+		for (int k = 0; k < 9; k++) {
+			if (board[k][j] == c || board[i][k] == c) {
 				return false;
+			}
+		}
+		int rowStart = (i / 3) * 3, colStart = (j / 3) * 3;
+		for (int k = 0; k < 3; k++) {
+			for (int l = 0; l < 3; l++) {
+				if (board[rowStart + k][colStart + l] == c) {
+					return false;
+				}
 			}
 		}
 		return true;

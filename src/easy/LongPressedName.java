@@ -3,22 +3,21 @@ package easy;
 public class LongPressedName {
 	
 	public static void main(String[] args) {
-		LongPressedName test = new LongPressedName();
-		System.out.println(test.isLongPressedName("alex", "aaleex"));
-		System.out.println(test.isLongPressedName("saeed", "ssaaedd"));
-		System.out.println(test.isLongPressedName("leelee", "lleeelee"));
-		System.out.println(test.isLongPressedName("laiden", "laiden"));
+		System.out.println(isLongPressedName("alex", "aaleex"));
+		System.out.println(isLongPressedName("saeed", "ssaaedd"));
+		System.out.println(isLongPressedName("leelee", "lleeelee"));
+		System.out.println(isLongPressedName("laiden", "laiden"));
 	}
 	
-	public boolean isLongPressedName(String name, String typed) {
-		int i = 0, j = 0;
-		while (i < name.length()) {
-			if (j == typed.length())
-				return false;
-			if (name.charAt(i) == typed.charAt(j))
+	public static boolean isLongPressedName(String name, String typed) {
+		int i = 0;
+		for (int j = 0; j < typed.length(); j++) {
+			if (i < name.length() && name.charAt(i) == typed.charAt(j)) {
 				i++;
-			j++;
+			} else if (j == 0 || typed.charAt(j) != typed.charAt(j - 1)) {
+				return false;
+			}
 		}
-		return true;
+		return i == name.length();
 	}
 }

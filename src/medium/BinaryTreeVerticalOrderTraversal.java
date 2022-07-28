@@ -11,50 +11,47 @@ public class BinaryTreeVerticalOrderTraversal {
 		System.out.println(res);
 	}
 	
+	
+	static int min, max;
+	
 	public static List<List<Integer>> verticalOrder(TreeNode root) {
-		if (root == null) {
-			return new ArrayList<>();
-		}
-		
 		List<List<Integer>> res = new ArrayList<>();
-		Map<Integer, List<Integer>> map = new HashMap<>();
-		Queue<TreeNodeWithCol> queue = new LinkedList<>();
-		queue.offer(new TreeNodeWithCol(root, 0));
-		int min = 0, max = 0;
-		while (!queue.isEmpty()) {
-			int size = queue.size();
-			for (int i = 0; i < size; i++) {
-				TreeNodeWithCol node = queue.poll();
-				TreeNode treeNode = node.node;
-				map.putIfAbsent(node.col, new ArrayList<>());
-				map.get(node.col).add(treeNode.val);
-				
-				if (treeNode.left != null) {
-					queue.offer(new TreeNodeWithCol(treeNode.left, node.col - 1));
-					min = Math.min(min, node.col - 1);
-				}
-				
-				if (treeNode.right != null) {
-					queue.offer(new TreeNodeWithCol(treeNode.right, node.col + 1));
-					max = Math.max(max, node.col + 1);
-				}
-			}
+		if (root == null) {
+			return res;
 		}
-		
+		findRange(root, 0);
 		for (int i = min; i <= max; i++) {
-			res.add(map.get(i));
+			res.add(new ArrayList<>());
+		}
+		Queue<TreeNode> q = new LinkedList<>();
+		Queue<Integer> idx = new LinkedList<>();
+		q.offer(root);
+		idx.offer(-min);
+		while (!q.isEmpty()) {
+			TreeNode node = q.poll();
+			int i = idx.poll();
+			res.get(i).add(node.val);
+			if (node.left != null) {
+				q.offer(node.left);
+				idx.offer(i - 1);
+			}
+			if (node.right != null) {
+				q.offer(node.right);
+				idx.offer(i + 1);
+			}
 		}
 		return res;
 	}
 	
-	static class TreeNodeWithCol {
-		TreeNode node;
-		int col;
-		
-		TreeNodeWithCol(TreeNode node, int col) {
-			this.node = node;
-			this.col = col;
+	private static void findRange(TreeNode root, int i) {
+		if (root == null) {
+			return;
 		}
+		min = Math.min(min, i);
+		max = Math.max(max, i);
+		findRange(root.left, i - 1);
+		findRange(root.right, i + 1);
 	}
+	
 	
 }

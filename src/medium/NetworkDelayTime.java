@@ -5,35 +5,32 @@ import java.util.*;
 public class NetworkDelayTime {
 	
 	public static void main(String[] args) {
-		int res = networkDelayTime(new int[][]{{1, 2, 1}, {2, 3, 2}, {1, 3, 2}}, 3, 1);
+		int res = networkDelayTime(new int[][]{{1, 2, 1}, {2, 3, 2}, {1, 3, 4}}, 3, 1);
 		System.out.println(res);
 	}
 	
 	public static int networkDelayTime(int[][] times, int n, int k) {
-		Map<Integer, Map<Integer, Integer>> map = new HashMap<>();
-		for (int[] time : times) {
-			map.putIfAbsent(time[0], new HashMap<>());
-			map.get(time[0]).put(time[1], time[2]);
+		Map<Integer, List<int[]>> g = new HashMap<>();
+		for (int i = 1; i <= n; i++) {
+			g.put(i, new ArrayList<>());
 		}
-		
-		PriorityQueue<int[]> queue = new PriorityQueue<>(Comparator.comparingInt(o -> o[0]));
-		queue.offer(new int[]{0, k});
+		for (int[] time : times) {
+			g.get(time[0]).add(new int[]{time[1], time[2]});
+		}
 		Set<Integer> seen = new HashSet<>();
+		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
+		pq.offer(new int[]{k, 0});
 		int res = 0;
-		while (!queue.isEmpty()) {
-			int[] data = queue.poll();
-			int curDis = data[0];
-			int curNode = data[1];
-			if (seen.contains(curNode)) {
+		while (!pq.isEmpty()) {
+			int[] poll = pq.poll();
+			int node = poll[0], time = poll[1];
+			if (seen.contains(node)) {
 				continue;
 			}
-			seen.add(curNode);
-			res = curDis;
-			if (map.containsKey(curNode)) {
-				Map<Integer, Integer> next = map.get(curNode);
-				for (Integer to : next.keySet()) {
-					queue.offer(new int[]{curDis + next.get(to), to});
-				}
+			seen.add(node);
+			res = time;
+			for (int[] next : g.get(node)) {
+				pq.offer(new int[]{next[0], time + next[1]});
 			}
 		}
 		return seen.size() == n ? res : -1;

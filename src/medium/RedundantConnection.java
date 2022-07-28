@@ -1,5 +1,7 @@
 package medium;
 
+import java.util.Arrays;
+
 public class RedundantConnection {
 	
 	public static void main(String[] args) {
@@ -10,39 +12,30 @@ public class RedundantConnection {
 				{1, 4},
 				{1, 5},
 		});
-		for (int i : res) {
-			System.out.print(i + " ");
-		}
+		System.out.println(Arrays.toString(res));
 	}
 	
 	public static int[] findRedundantConnection(int[][] edges) {
-		int[] parents = new int[1001];
-		for (int i = 0; i < parents.length; i++) {
-			parents[i] = i;
+		int n = edges.length;
+		int[] parent = new int[n + 1];
+		for (int i = 0; i <= n; i++) {
+			parent[i] = i;
 		}
-		
 		for (int[] edge : edges) {
-			if (!union(parents, edge[0], edge[1])) {
+			int p1 = find(parent, edge[0]);
+			int p2 = find(parent, edge[1]);
+			if (p1 == p2) {
 				return edge;
 			}
+			parent[p1] = p2;
 		}
 		return new int[2];
 	}
 	
-	private static boolean union(int[] parents, int i, int j) {
-		int ip = find(parents, i);
-		int jp = find(parents, j);
-		if (ip == jp) {
-			return false;
+	private static int find(int[] parent, int i) {
+		if (parent[i] != i) {
+			parent[i] = find(parent, parent[i]);
 		}
-		parents[ip] = jp;
-		return true;
-	}
-	
-	private static int find(int[] parents, int i) {
-		if (parents[i] == i) {
-			return i;
-		}
-		return find(parents, parents[i]);
+		return parent[i];
 	}
 }

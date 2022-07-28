@@ -1,7 +1,9 @@
 package medium;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Permutations {
 	
@@ -12,22 +14,25 @@ public class Permutations {
 	
 	public static List<List<Integer>> permute(int[] nums) {
 		List<List<Integer>> res = new ArrayList<>();
-		backtrack(res, new ArrayList<>(), nums);
+		helper(res, nums, new ArrayList<>(), new HashSet<>());
 		return res;
 	}
 	
-	private static void backtrack(List<List<Integer>> res, List<Integer> temp, int[] nums) {
+	private static void helper(List<List<Integer>> res, int[] nums, List<Integer> temp, Set<Integer> seen) {
 		if (temp.size() == nums.length) {
 			res.add(new ArrayList<>(temp));
 			return;
 		}
-		for (int i = 0; i < nums.length; i++) {
-			if (temp.contains(nums[i])) {
+		for (int num : nums) {
+			if (seen.contains(num)) {
 				continue;
 			}
-			temp.add(nums[i]);
-			backtrack(res, temp, nums);
+			temp.add(num);
+			seen.add(num);
+			helper(res, nums, temp, seen);
+			seen.remove(num);
 			temp.remove(temp.size() - 1);
 		}
 	}
+	
 }

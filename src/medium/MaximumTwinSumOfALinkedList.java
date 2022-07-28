@@ -10,11 +10,13 @@ public class MaximumTwinSumOfALinkedList {
 	}
 	
 	public static int pairSum(ListNode head) {
-		ListNode slow = head, fast = head;
+		ListNode prev = null, slow = head, fast = head;
 		while (fast != null && fast.next != null) {
+			prev = slow;
 			slow = slow.next;
 			fast = fast.next.next;
 		}
+		prev.next = null;
 		slow = reverse(slow);
 		int res = 0;
 		while (slow != null) {
@@ -26,14 +28,14 @@ public class MaximumTwinSumOfALinkedList {
 	}
 	
 	private static ListNode reverse(ListNode node) {
-		ListNode pre = null, cur = node, next;
+		ListNode prev = null, cur = node, next;
 		while (cur != null) {
 			next = cur.next;
-			cur.next = pre;
-			pre = cur;
+			cur.next = prev;
+			prev = cur;
 			cur = next;
 		}
-		return pre;
+		return prev;
 	}
 
 //	public static int pairSum(ListNode head) {
