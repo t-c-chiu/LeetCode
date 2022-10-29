@@ -5,39 +5,40 @@ import java.util.*;
 public class MinimumHeightTrees {
 	
 	public static void main(String[] args) {
-		List<Integer> res = findMinHeightTrees(4, new int[][]{{3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}});
+		List<Integer> res = findMinHeightTrees(6, new int[][]{{3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}});
 		System.out.println(res);
 	}
 	
 	public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
 		if (n == 1) {
-			return Collections.singletonList(0);
+			return List.of(0);
 		}
-		
-		Map<Integer, List<Integer>> map = new HashMap<>();
+		Map<Integer, Set<Integer>> graph = new HashMap<>();
 		for (int[] edge : edges) {
-			map.computeIfAbsent(edge[0], k -> new ArrayList<>()).add(edge[1]);
-			map.computeIfAbsent(edge[1], k -> new ArrayList<>()).add(edge[0]);
+			graph.putIfAbsent(edge[0], new HashSet<>());
+			graph.putIfAbsent(edge[1], new HashSet<>());
+			graph.get(edge[0]).add(edge[1]);
+			graph.get(edge[1]).add(edge[0]);
 		}
 		Queue<Integer> leaves = new LinkedList<>();
-		for (Integer node : map.keySet()) {
-			if (map.get(node).size() == 1) {
+		for (Integer node : graph.keySet()) {
+			if (graph.get(node).size() == 1) {
 				leaves.offer(node);
 			}
 		}
-		while (n > 2) {
-			int size = leaves.size();
-			n -= size;
-			for (int i = 0; i < size; i++) {
-				Integer leaf = leaves.poll();
-				Integer next = map.get(leaf).iterator().next();
-				map.get(next).remove(leaf);
-				if (map.get(next).size() == 1) {
-					leaves.offer(next);
+		while (!leaves.isEmpty() && n > 2) {
+			for (int i = leaves.size(); i > 0; i--) {
+				Integer cur = leaves.poll();
+				n--;
+				for (Integer next : graph.get(cur)) {
+					graph.get(next).remove(cur);
+					if (graph.get(next).size() == 1) {
+						leaves.offer(next);
+					}
 				}
 			}
 		}
-		return leaves.stream().toList();
+		return new ArrayList<>(leaves);
 	}
 
 //	public static List<Integer> findMinHeightTrees(int n, int[][] edges) {

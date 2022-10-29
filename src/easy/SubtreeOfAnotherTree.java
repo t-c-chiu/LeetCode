@@ -22,12 +22,13 @@ public class SubtreeOfAnotherTree {
 	}
 	
 	private static boolean isSame(TreeNode root, TreeNode subRoot) {
-		if (root == null || subRoot == null) {
-			return root == subRoot;
+		if (root == null && subRoot == null) {
+			return true;
 		}
-		if (root.val != subRoot.val) {
+		if (root == null || subRoot == null) {
 			return false;
 		}
-		return isSame(root.left, subRoot.left) && isSame(root.right, subRoot.right);
+		return root.val == subRoot.val && isSame(root.left, subRoot.left) && isSame(root.right, subRoot.right);
 	}
+	
 }

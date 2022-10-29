@@ -14,18 +14,19 @@ public class LetterCombinationsOfAPhoneNumber {
 		if (digits.isEmpty()) {
 			return res;
 		}
-		String[] map = new String[]{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-		helper(res, map, digits, 0, "");
+		List<String> list = Arrays.asList("", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz");
+		helper(res, digits, 0, list, "");
 		return res;
 	}
 	
-	private static void helper(List<String> res, String[] map, String digits, int i, String temp) {
+	private static void helper(List<String> res, String digits, int i, List<String> list, String temp) {
 		if (i == digits.length()) {
 			res.add(temp);
 			return;
 		}
-		for (char c : map[digits.charAt(i) - '0'].toCharArray()) {
-			helper(res, map, digits, i + 1, temp + c);
+		String s = list.get(digits.charAt(i) - '0');
+		for (int j = 0; j < s.length(); j++) {
+			helper(res, digits, i + 1, list, temp + s.charAt(j));
 		}
 	}
 }

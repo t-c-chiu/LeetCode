@@ -23,10 +23,11 @@ public class SudokuSolver {
 		solve(board);
 	}
 	
-	public static boolean solve(char[][] board) {
+	private static boolean solve(char[][] board) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				if (board[i][j] == '.') {
+				char c = board[i][j];
+				if (c == '.') {
 					for (char k = '1'; k <= '9'; k++) {
 						if (isValid(board, i, j, k)) {
 							board[i][j] = k;

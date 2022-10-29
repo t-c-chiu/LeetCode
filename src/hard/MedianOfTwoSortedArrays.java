@@ -3,7 +3,7 @@ package hard;
 public class MedianOfTwoSortedArrays {
 	
 	public static void main(String[] args) {
-		double res = findMedianSortedArrays(new int[]{1, 2, 3, 4}, new int[]{1, 2, 3, 4, 5, 6, 7});
+		double res = findMedianSortedArrays(new int[]{1, 3}, new int[]{2, 4});
 		System.out.println(res);
 	}
 	
@@ -16,20 +16,19 @@ public class MedianOfTwoSortedArrays {
 		while (lo <= hi) {
 			int partition1 = (lo + hi) / 2;
 			int partition2 = (m + n + 1) / 2 - partition1;
-			int left1Max = partition1 == 0 ? Integer.MIN_VALUE : nums1[partition1 - 1];
-			int left2Max = partition2 == 0 ? Integer.MIN_VALUE : nums2[partition2 - 1];
-			int right1Min = partition1 == m ? Integer.MAX_VALUE : nums1[partition1];
-			int right2Min = partition2 == n ? Integer.MAX_VALUE : nums2[partition2];
-			if (left1Max <= right2Min && left2Max <= right1Min) {
+			int left1 = partition1 == 0 ? Integer.MIN_VALUE : nums1[partition1 - 1];
+			int right1 = partition1 == m ? Integer.MAX_VALUE : nums1[partition1];
+			int left2 = partition2 == 0 ? Integer.MIN_VALUE : nums2[partition2 - 1];
+			int right2 = partition2 == n ? Integer.MAX_VALUE : nums2[partition2];
+			if (left1 <= right2 && left2 <= right1) {
 				if ((m + n) % 2 == 0) {
-					return (Math.max(left1Max, left2Max) + Math.min(right1Min, right2Min)) / 2d;
+					return (Math.max(left1, left2) + Math.min(right1, right2)) / 2d;
 				} else {
-					return Math.max(left1Max, left2Max);
+					return Math.max(left1, left2);
 				}
-			}
-			if (left1Max > right2Min) {
+			} else if (left1 > right2) {
 				hi = partition1 - 1;
-			} else if (left2Max > right1Min) {
+			} else {
 				lo = partition1 + 1;
 			}
 		}

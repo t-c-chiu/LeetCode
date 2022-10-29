@@ -8,19 +8,17 @@ public class ContainsDuplicateIII {
 		System.out.println(res);
 	}
 	
-	public static boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
-		TreeSet<Long> set = new TreeSet<>();
-		for (int i = 0; i < nums.length; i++) {
-			long num = nums[i];
-			Long floor = set.floor(num);
-			Long ceiling = set.ceiling(num);
-			if (floor != null && num - floor <= t || ceiling != null && ceiling - num <= t) {
+	public static boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+		TreeSet<Integer> set = new TreeSet<>();
+		for (int r = 0, l = 0; r < nums.length; r++) {
+			int num = nums[r];
+			if (l < r - indexDiff) {
+				set.remove(nums[l++]);
+			}
+			if (!set.subSet(num - valueDiff, true, num + valueDiff, true).isEmpty()) {
 				return true;
 			}
 			set.add(num);
-			if (i - k >= 0) {
-				set.remove((long) nums[i - k]);
-			}
 		}
 		return false;
 	}

@@ -5,24 +5,23 @@ import util.ListNode;
 public class ReorderList {
 	
 	public static void main(String[] args) {
-		ListNode head = ListNode.generateHead(new int[]{1, 2, 3, 4, 5, 6});
+		ListNode head = ListNode.generateHead(new int[]{1, 2, 3, 4, 5});
 		reorderList(head);
 		System.out.println(head);
 	}
 	
 	public static void reorderList(ListNode head) {
-		ListNode prev = null, slow = head, fast = head;
+		if (head == null || head.next == null) {
+			return;
+		}
+		ListNode pre = null, slow = head, fast = head;
 		while (fast != null && fast.next != null) {
-			prev = slow;
+			pre = slow;
 			slow = slow.next;
 			fast = fast.next.next;
 		}
-		if (prev == null) {
-			return;
-		}
-		prev.next = null;
-		slow = reverse(slow);
-		ListNode left = head, right = slow;
+		pre.next = null;
+		ListNode left = head, right = reverse(slow);
 		while (left != null) {
 			ListNode leftNext = left.next;
 			ListNode rightNext = right.next;

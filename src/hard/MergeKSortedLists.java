@@ -2,9 +2,6 @@ package hard;
 
 import util.ListNode;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
 public class MergeKSortedLists {
 	
 	public static void main(String[] args) {
@@ -15,27 +12,40 @@ public class MergeKSortedLists {
 		System.out.println(res);
 	}
 	
-	/**
-	 * 1 4 5
-	 * 1 3 4
-	 * 2 6
-	 */
 	public static ListNode mergeKLists(ListNode[] lists) {
-		ListNode dummy = new ListNode(0);
-		ListNode cur = dummy;
-		PriorityQueue<ListNode> pq = new PriorityQueue<>(Comparator.comparingInt(node -> node.val));
-		for (ListNode list : lists) {
-			if (list != null) {
-				pq.offer(list);
-			}
+		if (lists.length == 0) {
+			return null;
 		}
-		while (!pq.isEmpty()) {
-			ListNode poll = pq.poll();
-			cur.next = poll;
-			cur = cur.next;
-			if (poll.next != null) {
-				pq.offer(poll.next);
+		return mergeKLists(lists, 0, lists.length - 1);
+	}
+	
+	private static ListNode mergeKLists(ListNode[] lists, int lo, int hi) {
+		if (lo == hi) {
+			return lists[lo];
+		}
+		int mid = (lo + hi) / 2;
+		ListNode left = mergeKLists(lists, lo, mid);
+		ListNode right = mergeKLists(lists, mid + 1, hi);
+		return merge(left, right);
+	}
+	
+	private static ListNode merge(ListNode left, ListNode right) {
+		ListNode dummy = new ListNode(0), cur = dummy;
+		while (left != null && right != null) {
+			if (left.val <= right.val) {
+				cur.next = left;
+				left = left.next;
+			} else {
+				cur.next = right;
+				right = right.next;
 			}
+			cur = cur.next;
+		}
+		if (left != null) {
+			cur.next = left;
+		}
+		if (right != null) {
+			cur.next = right;
 		}
 		return dummy.next;
 	}

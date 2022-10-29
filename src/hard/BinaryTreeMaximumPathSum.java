@@ -16,14 +16,13 @@ public class BinaryTreeMaximumPathSum {
 		return res;
 	}
 	
-	private static int helper(TreeNode root) {
-		if (root == null) {
+	private static int helper(TreeNode node) {
+		if (node == null) {
 			return 0;
 		}
-		int val = root.val;
-		int left = helper(root.left);
-		int right = helper(root.right);
-		res = Math.max(res, val + left + right);
-		return Math.max(0, Math.max(left, right) + val);
+		int left = helper(node.left);
+		int right = helper(node.right);
+		res = Math.max(res, left + right + node.val);
+		return Math.max(0, Math.max(left, right) + node.val);
 	}
 }

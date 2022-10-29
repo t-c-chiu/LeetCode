@@ -3,21 +3,20 @@ package medium;
 public class LongestRepeatingCharacterReplacement {
 	
 	public static void main(String[] args) {
-		int res = characterReplacement("ABAA", 0);
+		int res = characterReplacement("ABAB", 2);
 		System.out.println(res);
 	}
 	
 	public static int characterReplacement(String s, int k) {
-		int[] count = new int[26];
 		int res = 0, max = 0;
-		for (int right = 0, left = 0; right < s.length(); right++) {
-			int j = s.charAt(right) - 'A';
-			count[j]++;
-			max = Math.max(max, count[j]);
-			if (right - left + 1 > k + max) {
-				count[s.charAt(left++) - 'A']--;
+		int[] count = new int[26];
+		for (int r = 0, l = 0; r < s.length(); r++) {
+			char c = s.charAt(r);
+			max = Math.max(max, ++count[c - 'A']);
+			if (r - l + 1 <= max + k) {
+				res = Math.max(res, r - l + 1);
 			} else {
-				res = Math.max(res, right - left + 1);
+				count[s.charAt(l++) - 'A']--;
 			}
 		}
 		return res;

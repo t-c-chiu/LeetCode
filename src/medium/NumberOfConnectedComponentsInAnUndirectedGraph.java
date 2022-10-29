@@ -13,15 +13,15 @@ public class NumberOfConnectedComponentsInAnUndirectedGraph {
 	}
 	
 	public static int countComponents(int n, int[][] edges) {
-		int[] p = new int[n];
+		int[] parent = new int[n];
 		for (int i = 0; i < n; i++) {
-			p[i] = i;
+			parent[i] = i;
 		}
 		for (int[] edge : edges) {
-			int p1 = find(p, edge[0]);
-			int p2 = find(p, edge[1]);
+			int p1 = find(parent, edge[0]);
+			int p2 = find(parent, edge[1]);
 			if (p1 != p2) {
-				p[p1] = p2;
+				parent[p1] = p2;
 				n--;
 			}
 		}

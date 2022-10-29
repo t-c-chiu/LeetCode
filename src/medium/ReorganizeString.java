@@ -9,35 +9,32 @@ public class ReorganizeString {
 	
 	public static String reorganizeString(String s) {
 		int[] count = new int[26];
-		int len = s.length();
-		int max = 0;
-		int maxIndex = 0;
-		for (int i = 0; i < len; i++) {
-			int j = s.charAt(i) - 'a';
-			count[j]++;
-			if (count[j] > max) {
-				max = count[j];
-				maxIndex = j;
+		int max = 0, n = s.length();
+		char maxChar = 'a';
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			count[c - 'a']++;
+			if (count[c - 'a'] > max) {
+				max = count[c - 'a'];
+				maxChar = c;
 			}
 		}
-		
-		if (count[maxIndex] > (len + 1) / 2) {
+		if (max > (n + 1) / 2) {
 			return "";
 		}
-		
-		char[] res = new char[len];
 		int i = 0;
-		while (count[maxIndex] > 0) {
-			res[i] = (char) (maxIndex + 'a');
-			count[maxIndex]--;
+		char[] res = new char[n];
+		while (count[maxChar - 'a'] > 0) {
+			res[i] = maxChar;
+			count[maxChar - 'a']--;
 			i += 2;
 		}
 		for (int j = 0; j < count.length; j++) {
 			while (count[j] > 0) {
-				if (i >= len) {
+				if (i >= n) {
 					i = 1;
 				}
-				res[i] = (char) (j + 'a');
+				res[i] = (char) ('a' + j);
 				count[j]--;
 				i += 2;
 			}

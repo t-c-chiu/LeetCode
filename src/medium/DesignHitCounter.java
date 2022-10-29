@@ -27,12 +27,12 @@ public class DesignHitCounter {
 		}
 		
 		public void hit(int timestamp) {
-			int index = timestamp % 300;
-			if (timestamps[index] != timestamp) {
-				timestamps[index] = timestamp;
-				hits[index] = 1;
+			int temp = timestamp % 300;
+			if (timestamps[temp] == timestamp) {
+				hits[temp]++;
 			} else {
-				hits[index]++;
+				timestamps[temp] = timestamp;
+				hits[temp] = 1;
 			}
 		}
 		

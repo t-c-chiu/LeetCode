@@ -7,18 +7,21 @@ public class IsomorphicStrings {
 	
 	public static void main(String[] args) {
 		IsomorphicStrings isomorphicStrings = new IsomorphicStrings();
-		System.out.println(isomorphicStrings.isIsomorphic("egg", "add"));
+		System.out.println(isomorphicStrings.isIsomorphic("badc", "baba"));
 	}
 	
 	public boolean isIsomorphic(String s, String t) {
-		Map<Character, Character> map = new HashMap<>();
+		Map<Character, Character> st = new HashMap<>();
+		Map<Character, Character> ts = new HashMap<>();
 		for (int i = 0; i < s.length(); i++) {
-			char c1 = s.charAt(i);
-			char c2 = t.charAt(i);
-			if (map.containsKey(c1) && map.get(c1) != c2 || !map.containsKey(c1) && map.containsValue(c2)) {
+			char sc = s.charAt(i);
+			char tc = t.charAt(i);
+			if (!st.containsKey(sc) && !ts.containsKey(tc)) {
+				st.put(sc, tc);
+				ts.put(tc, sc);
+			}
+			if (!st.containsKey(sc) || st.get(sc) != tc || !ts.containsKey(tc) || ts.get(tc) != sc) {
 				return false;
-			} else {
-				map.put(c1, c2);
 			}
 		}
 		return true;

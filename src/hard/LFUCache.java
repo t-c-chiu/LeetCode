@@ -10,73 +10,56 @@ public class LFUCache {
 		lfu.get(0);
 	}
 	
-	private int counter = 0;
-	private int capacity;
-	private Map<Integer, Integer> valMap = new HashMap<>();
-	private Map<Integer, Integer> freqMap = new HashMap<>();
-	private Map<Integer, Integer> recentMap = new HashMap<>();
-	private TreeMap<Integer, Set<Integer>> numsByFreq = new TreeMap<>();
+	int capacity;
+	int minFreq;
+	Map<Integer, Integer> map;
+	Map<Integer, Integer> freqMap;
+	Map<Integer, LinkedHashSet<Integer>> freqToKeys;
 	
 	public LFUCache(int capacity) {
 		this.capacity = capacity;
+		map = new HashMap<>();
+		freqMap = new HashMap<>();
+		freqToKeys = new HashMap<>();
+		freqToKeys.put(1, new LinkedHashSet<>());
 	}
 	
 	public int get(int key) {
-		if (!valMap.containsKey(key)) {
+		if (!map.containsKey(key)) {
 			return -1;
 		}
-		updateFreqAndRecent(key);
-		return valMap.get(key);
+		Integer oldFreq = freqMap.get(key);
+		LinkedHashSet<Integer> set = freqToKeys.get(oldFreq);
+		set.remove(key);
+		if (set.isEmpty() && minFreq == oldFreq) {
+			minFreq++;
+		}
+		int newFreq = oldFreq + 1;
+		freqToKeys.putIfAbsent(newFreq, new LinkedHashSet<>());
+		freqToKeys.get(newFreq).add(key);
+		freqMap.put(key, newFreq);
+		return map.get(key);
 	}
 	
 	public void put(int key, int value) {
-		if (capacity <= 0) {
+		if (capacity == 0) {
 			return;
 		}
-		
-		if (valMap.containsKey(key) || valMap.size() < capacity) {
-			valMap.put(key, value);
-			updateFreqAndRecent(key);
-		} else {
-			Set<Integer> nums = numsByFreq.firstEntry().getValue();
-			int lowestCount = Integer.MAX_VALUE;
-			int keyToRemove = -1;
-			for (Integer num : nums) {
-				Integer counter = recentMap.get(num);
-				if (counter < lowestCount) {
-					lowestCount = counter;
-					keyToRemove = num;
-				}
-			}
-			nums.remove(keyToRemove);
-			if (nums.isEmpty()) {
-				numsByFreq.pollFirstEntry();
-			}
-			remove(keyToRemove);
-			put(key, value);
+		if (map.containsKey(key)) {
+			map.put(key, value);
+			get(key);
+			return;
 		}
-	}
-	
-	private void updateFreqAndRecent(int key) {
-		Integer prevFreq = freqMap.get(key);
-		if (prevFreq != null) {
-			Set<Integer> set = numsByFreq.get(prevFreq);
-			set.remove(key);
-			if (set.isEmpty()) {
-				numsByFreq.remove(prevFreq);
-			}
+		if (map.size() == capacity) {
+			LinkedHashSet<Integer> set = freqToKeys.get(minFreq);
+			Integer keyToRemove = set.iterator().next();
+			map.remove(keyToRemove);
+			freqMap.remove(keyToRemove);
+			set.remove(keyToRemove);
 		}
-		int newFreq = prevFreq == null ? 1 : prevFreq + 1;
-		Set<Integer> set = numsByFreq.getOrDefault(newFreq, new HashSet<>());
-		set.add(key);
-		numsByFreq.put(newFreq, set);
-		freqMap.put(key, newFreq);
-		recentMap.put(key, counter++);
-	}
-	
-	private void remove(int key) {
-		valMap.remove(key);
-		freqMap.remove(key);
-		recentMap.remove(key);
+		minFreq = 1;
+		map.put(key, value);
+		freqMap.put(key, 1);
+		freqToKeys.get(1).add(key);
 	}
 }

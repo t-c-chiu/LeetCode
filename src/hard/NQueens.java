@@ -1,6 +1,7 @@
 package hard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NQueens {
@@ -14,46 +15,45 @@ public class NQueens {
 		List<List<String>> res = new ArrayList<>();
 		char[][] board = new char[n][n];
 		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				board[i][j] = '.';
-			}
+			Arrays.fill(board[i], '.');
 		}
-		helper(res, board, 0, n);
+		solveNQueens(res, board, 0, n);
 		return res;
 	}
 	
-	private static void helper(List<List<String>> res, char[][] board, int row, int n) {
-		if (row == n) {
+	private static void solveNQueens(List<List<String>> res, char[][] board, int r, int n) {
+		if (r == n) {
 			res.add(construct(board));
 			return;
 		}
-		for (int j = 0; j < n; j++) {
-			if (isValid(board, row, j)) {
-				board[row][j] = 'Q';
-				helper(res, board, row + 1, n);
-				board[row][j] = '.';
+		for (int i = 0; i < n; i++) {
+			if (isValid(board, r, i, n)) {
+				board[r][i] = 'Q';
+				solveNQueens(res, board, r + 1, n);
+				board[r][i] = '.';
 			}
 		}
 	}
 	
-	private static boolean isValid(char[][] board, int i, int j) {
-		for (int k = i; k >= 0; k--) {
-			if (board[k][j] == 'Q') {
+	private static boolean isValid(char[][] board, int r, int c, int n) {
+		for (int i = 0; i < r; i++) {
+			if (board[i][c] == 'Q') {
 				return false;
 			}
 		}
-		for (int k = i, l = j; k >= 0 && l >= 0; k--, l--) {
-			if (board[k][l] == 'Q') {
+		for (int i = r, j = c; i >= 0 && j >= 0; i--, j--) {
+			if (board[i][j] == 'Q') {
 				return false;
 			}
 		}
-		for (int k = i, l = j; k >= 0 && l < board.length; k--, l++) {
-			if (board[k][l] == 'Q') {
+		for (int i = r, j = c; i >= 0 && j < n; i--, j++) {
+			if (board[i][j] == 'Q') {
 				return false;
 			}
 		}
 		return true;
 	}
+	
 	
 	private static List<String> construct(char[][] board) {
 		List<String> res = new ArrayList<>();

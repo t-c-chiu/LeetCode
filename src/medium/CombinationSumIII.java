@@ -11,21 +11,21 @@ public class CombinationSumIII {
 	
 	public static List<List<Integer>> combinationSum3(int k, int n) {
 		List<List<Integer>> res = new ArrayList<>();
-		backtrack(res, new ArrayList<>(), k, n, 1);
+		helper(res, 1, k, n, new ArrayList<>());
 		return res;
 	}
 	
-	private static void backtrack(List<List<Integer>> res, List<Integer> temp, int k, int n, int start) {
+	private static void helper(List<List<Integer>> res, int start, int k, int n, List<Integer> temp) {
+		if (temp.size() > k || n < 0) {
+			return;
+		}
 		if (temp.size() == k && n == 0) {
 			res.add(new ArrayList<>(temp));
 			return;
 		}
 		for (int i = start; i <= 9; i++) {
-			if (n - i < 0) {
-				return;
-			}
 			temp.add(i);
-			backtrack(res, temp, k, n - i, i + 1);
+			helper(res, i + 1, k, n - i, temp);
 			temp.remove(temp.size() - 1);
 		}
 	}

@@ -3,7 +3,7 @@ package easy;
 public class PalindromeNumber {
 	
 	public static void main(String[] args) {
-		boolean res = isPalindrome(1221);
+		boolean res = isPalindrome(10);
 		System.out.println(res);
 	}
 	
@@ -12,7 +12,7 @@ public class PalindromeNumber {
 			return false;
 		}
 		int y = 0;
-		while (y < x) {
+		while (x > y) {
 			y = y * 10 + x % 10;
 			x /= 10;
 		}

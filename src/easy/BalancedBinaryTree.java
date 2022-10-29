@@ -9,21 +9,18 @@ public class BalancedBinaryTree {
 		System.out.println(res);
 	}
 	
-	
 	public static boolean isBalanced(TreeNode root) {
-		return getDepth(root) != -1;
+		return helper(root) != -1;
 	}
 	
-	private static int getDepth(TreeNode node) {
+	private static int helper(TreeNode node) {
 		if (node == null) {
 			return 0;
 		}
-		int left = getDepth(node.left);
-		int right = getDepth(node.right);
+		int left = helper(node.left), right = helper(node.right);
 		if (left == -1 || right == -1 || Math.abs(left - right) > 1) {
 			return -1;
 		}
 		return Math.max(left, right) + 1;
 	}
-	
 }

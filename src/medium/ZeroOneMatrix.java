@@ -1,5 +1,8 @@
 package medium;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class ZeroOneMatrix {
 	
 	public static void main(String[] args) {
@@ -17,70 +20,32 @@ public class ZeroOneMatrix {
 	}
 	
 	public static int[][] updateMatrix(int[][] mat) {
-		int n = mat.length;
-		int m = mat[0].length;
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				if (mat[i][j] == 1) {
-					mat[i][j] = n * m;
+		int m = mat.length, n = mat[0].length;
+		boolean[][] visited = new boolean[m][n];
+		Queue<int[]> queue = new LinkedList<>();
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (mat[i][j] == 0) {
+					queue.offer(new int[]{i, j, 0});
+					visited[i][j] = true;
 				}
 			}
 		}
-		
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				if (i > 0) {
-					mat[i][j] = Math.min(mat[i][j], mat[i - 1][j] + 1);
+		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+		while (!queue.isEmpty()) {
+			int[] poll = queue.poll();
+			int i = poll[0], j = poll[1], dis = poll[2];
+			mat[i][j] = dis;
+			for (int[] dir : dirs) {
+				int r = i + dir[0], c = j + dir[1];
+				if (r < 0 || r == m || c < 0 || c == n || visited[r][c]) {
+					continue;
 				}
-				if (j > 0) {
-					mat[i][j] = Math.min(mat[i][j], mat[i][j - 1] + 1);
-				}
+				visited[r][c] = true;
+				queue.offer(new int[]{r, c, dis + 1});
 			}
 		}
-		
-		for (int i = n - 1; i >= 0; i--) {
-			for (int j = m - 1; j >= 0; j--) {
-				if (i < n - 1) {
-					mat[i][j] = Math.min(mat[i][j], mat[i + 1][j] + 1);
-				}
-				if (j < m - 1) {
-					mat[i][j] = Math.min(mat[i][j], mat[i][j + 1] + 1);
-				}
-			}
-		}
-		
 		return mat;
 	}
-
-
-//	public static int[][] updateMatrix(int[][] mat) {
-//		int n = mat.length;
-//		int m = mat[0].length;
-//		Queue<int[]> queue = new LinkedList<>();
-//		for (int i = 0; i < n; i++) {
-//			for (int j = 0; j < m; j++) {
-//				if (mat[i][j] == 0) {
-//					queue.offer(new int[]{i, j});
-//				} else {
-//					mat[i][j] = Integer.MAX_VALUE;
-//				}
-//			}
-//		}
-//
-//		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-//		while (!queue.isEmpty()) {
-//			int[] cell = queue.poll();
-//			for (int[] dir : dirs) {
-//				int r = cell[0] + dir[0];
-//				int c = cell[1] + dir[1];
-//				if (r < 0 || c < 0 || r == n || c == m || mat[r][c] <= mat[cell[0]][cell[1]] + 1) {
-//					continue;
-//				}
-//				mat[r][c] = mat[cell[0]][cell[1]] + 1;
-//				queue.offer(new int[]{r, c});
-//			}
-//
-//		}
-//		return mat;
-//	}
+	
 }

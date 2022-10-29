@@ -12,14 +12,11 @@ public class NextGreaterElementIII {
 		for (int i = chars.length - 2; i >= 0; i--) {
 			if (chars[i] < chars[i + 1]) {
 				for (int j = chars.length - 1; j > i; j--) {
-					if (chars[i] < chars[j]) {
+					if (chars[j] > chars[i]) {
 						swap(chars, i, j);
 						reverse(chars, i + 1);
-						long val = Long.parseLong(String.valueOf(chars));
-						if (val <= Integer.MAX_VALUE) {
-							return (int) val;
-						}
-						return -1;
+						long res = Long.parseLong(String.valueOf(chars));
+						return res > Integer.MAX_VALUE ? -1 : (int) res;
 					}
 				}
 			}

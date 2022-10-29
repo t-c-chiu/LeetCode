@@ -23,22 +23,36 @@ public class RomanToInteger {
 		int[] nums = new int[n];
 		for (int i = 0; i < n; i++) {
 			switch (s.charAt(i)) {
-				case 'I' -> nums[i] = 1;
-				case 'V' -> nums[i] = 5;
-				case 'X' -> nums[i] = 10;
-				case 'L' -> nums[i] = 50;
-				case 'C' -> nums[i] = 100;
-				case 'D' -> nums[i] = 500;
-				case 'M' -> nums[i] = 1000;
+				case 'I':
+					nums[i] = 1;
+					break;
+				case 'V':
+					nums[i] = 5;
+					break;
+				case 'X':
+					nums[i] = 10;
+					break;
+				case 'L':
+					nums[i] = 50;
+					break;
+				case 'C':
+					nums[i] = 100;
+					break;
+				case 'D':
+					nums[i] = 500;
+					break;
+				case 'M':
+					nums[i] = 1000;
+					break;
 			}
 		}
 		for (int i = 0; i < n - 1; i++) {
-			if (nums[i] >= nums[i + 1])
+			if (nums[i] >= nums[i + 1]) {
 				res += nums[i];
-			else
+			} else {
 				res -= nums[i];
+			}
 		}
-		res += nums[n - 1];
-		return res;
+		return res + nums[n - 1];
 	}
 }

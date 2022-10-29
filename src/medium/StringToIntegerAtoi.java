@@ -13,42 +13,29 @@ public class StringToIntegerAtoi {
 		System.out.println(res);
 	}
 	
-	public static int myAtoi(String str) {
-		if (str.isEmpty()) {
+	public static int myAtoi(String s) {
+		int i = 0, n = s.length();
+		while (i < n && Character.isWhitespace(s.charAt(i))) {
+			i++;
+		}
+		if (i == n) {
 			return 0;
 		}
-		
-		int i = 0;
-		while (i < str.length() && str.charAt(i) == ' ') {
+		boolean positive = s.charAt(i) != '-';
+		if (s.charAt(i) == '+' || s.charAt(i) == '-') {
 			i++;
 		}
-		
-		if (i == str.length()) {
-			return 0;
-		}
-		
-		int sign = 1;
-		char signChar = str.charAt(i);
-		if (signChar == '+' || signChar == '-') {
-			sign = signChar == '+' ? 1 : -1;
-			i++;
-		}
-		
-		int res = 0;
-		while (i < str.length()) {
-			char c = str.charAt(i);
-			if (!Character.isDigit(c)) {
-				break;
+		long res = 0;
+		while (i < n && Character.isDigit(s.charAt(i))) {
+			res = res * 10 + s.charAt(i) - '0';
+			if (positive && res > Integer.MAX_VALUE) {
+				return Integer.MAX_VALUE;
 			}
-			
-			int digit = c - '0';
-			if ((Integer.MAX_VALUE - digit) / 10 < res) {
-				return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+			if (!positive && -res < Integer.MIN_VALUE) {
+				return Integer.MIN_VALUE;
 			}
-			res = res * 10 + digit;
 			i++;
 		}
-		
-		return res * sign;
+		return (int) (positive ? res : -res);
 	}
 }

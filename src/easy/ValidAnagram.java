@@ -8,14 +8,20 @@ public class ValidAnagram {
 	}
 	
 	public boolean isAnagram(String s, String t) {
-		char[] chars = new char[26];
-		for (char c : s.toCharArray())
-			chars[c - 'a']++;
-		for (char c : t.toCharArray())
-			chars[c - 'a']--;
-		for (int i : chars)
-			if (i != 0)
+		if (s.length() != t.length()) {
+			return false;
+		}
+		int n = s.length();
+		int[] count = new int[26];
+		for (int i = 0; i < n; i++) {
+			count[s.charAt(i) - 'a']++;
+			count[t.charAt(i) - 'a']--;
+		}
+		for (int i : count) {
+			if (i != 0) {
 				return false;
+			}
+		}
 		return true;
 	}
 }

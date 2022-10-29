@@ -34,20 +34,19 @@ public class ShortestPathToGetFood {
 		int res = 1;
 		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 		while (!q.isEmpty()) {
-			for (int k = q.size(); k > 0; k--) {
+			for (int i = q.size(); i > 0; i--) {
 				int[] cur = q.poll();
-				int x = cur[0], y = cur[1];
+				int r = cur[0], c = cur[1];
 				for (int[] dir : dirs) {
-					int newX = x + dir[0];
-					int newY = y + dir[1];
-					if (newX < 0 || newX == m || newY < 0 || newY == n || grid[newX][newY] == 'X') {
+					int rr = r + dir[0], cc = c + dir[1];
+					if (rr < 0 || rr == m || cc < 0 || cc == n || grid[rr][cc] == 'X') {
 						continue;
 					}
-					if (grid[newX][newY] == '#') {
+					if (grid[rr][cc] == '#') {
 						return res;
 					}
-					grid[newX][newY] = 'X';
-					q.offer(new int[]{newX, newY});
+					grid[rr][cc] = 'X';
+					q.offer(new int[]{rr, cc});
 				}
 			}
 			res++;

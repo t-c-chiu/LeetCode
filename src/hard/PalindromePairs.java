@@ -17,30 +17,41 @@ public class PalindromePairs {
 	public static List<List<Integer>> palindromePairs(String[] words) {
 		List<List<Integer>> res = new ArrayList<>();
 		Map<String, Integer> map = new HashMap<>();
-		for (int i = 0; i < words.length; i++) {
+		int n = words.length;
+		for (int i = 0; i < n; i++) {
 			map.put(words[i], i);
 		}
-		for (int i = 0; i < words.length; i++) {
-			for (int j = 0; j <= words[i].length(); j++) {
-				String str1 = words[i].substring(0, j);
-				String str2 = words[i].substring(j);
-				if (isPalindrome(str1)) {
-					String str2rvs = new StringBuilder(str2).reverse().toString();
-					if (map.containsKey(str2rvs) && map.get(str2rvs) != i) {
-						List<Integer> list = new ArrayList<>();
-						list.add(map.get(str2rvs));
-						list.add(i);
-						res.add(list);
+		if (map.containsKey("")) {
+			int blankIdx = map.get("");
+			for (int i = 0; i < n; i++) {
+				if (isPalindrome(words[i]) && i != blankIdx) {
+					res.add(Arrays.asList(blankIdx, i));
+					res.add(Arrays.asList(i, blankIdx));
+				}
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			String word = words[i];
+			String rvs = reverse(word);
+			if (map.containsKey(rvs) && map.get(rvs) != i) {
+				res.add(Arrays.asList(i, map.get(rvs)));
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			String word = words[i];
+			for (int j = 1; j < word.length(); j++) {
+				String s1 = word.substring(0, j);
+				String s2 = word.substring(j);
+				if (isPalindrome(s1)) {
+					String s2rvs = reverse(s2);
+					if (map.containsKey(s2rvs) && map.get(s2rvs) != i) {
+						res.add(Arrays.asList(map.get(s2rvs), i));
 					}
 				}
-				if (isPalindrome(str2)) {
-					String str1rvs = new StringBuilder(str1).reverse().toString();
-					// check "str.length() != 0" to avoid duplicates
-					if (map.containsKey(str1rvs) && map.get(str1rvs) != i && str2.length() != 0) {
-						List<Integer> list = new ArrayList<>();
-						list.add(i);
-						list.add(map.get(str1rvs));
-						res.add(list);
+				if (isPalindrome(s2)) {
+					String s1rvs = reverse(s1);
+					if (map.containsKey(s1rvs) && map.get(s1rvs) != i) {
+						res.add(Arrays.asList(i, map.get(s1rvs)));
 					}
 				}
 			}

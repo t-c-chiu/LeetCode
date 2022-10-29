@@ -1,6 +1,6 @@
 package medium;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class CheapestFlightsWithinKStops {
 	
@@ -10,21 +10,28 @@ public class CheapestFlightsWithinKStops {
 	}
 	
 	public static int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-		int[] cost = new int[n];
-		Arrays.fill(cost, Integer.MAX_VALUE);
-		cost[src] = 0;
-		for (int i = 0; i <= k; i++) {
-			int[] temp = Arrays.copyOf(cost, n);
-			for (int[] flight : flights) {
-				int from = flight[0];
-				int to = flight[1];
-				int price = flight[2];
-				if (cost[from] != Integer.MAX_VALUE) {
-					temp[to] = Math.min(temp[to], cost[from] + price);
+		Map<Integer, Set<int[]>> graph = new HashMap<>();
+		for (int i = 0; i < n; i++) {
+			graph.put(i, new HashSet<>());
+		}
+		for (int[] flight : flights) {
+			int from = flight[0], to = flight[1], price = flight[2];
+			graph.get(from).add(new int[]{to, price});
+		}
+		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
+		pq.offer(new int[]{src, 0, 0});
+		while (!pq.isEmpty()) {
+			int[] poll = pq.poll();
+			int city = poll[0], price = poll[1], stop = poll[2];
+			if (city == dst) {
+				return price;
+			}
+			if (stop <= k) {
+				for (int[] next : graph.get(city)) {
+					pq.offer(new int[]{next[0], price + next[1], stop + 1});
 				}
 			}
-			cost = temp;
 		}
-		return cost[dst] == Integer.MAX_VALUE ? -1 : cost[dst];
+		return -1;
 	}
 }

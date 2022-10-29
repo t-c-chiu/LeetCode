@@ -1,42 +1,43 @@
 package medium;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class LowestCommonAncestorOfABinaryTreeIII {
 	
 	public static void main(String[] args) {
 	}
 	
 	public static Node lowestCommonAncestor(Node p, Node q) {
-		Node a = p, b = q;
-		while (a != b) {
-			a = a.parent != null ? a.parent : q;
-			b = b.parent != null ? b.parent : p;
+		int pDepth = getDepth(p), qDepth = getDepth(q);
+		while (pDepth > qDepth) {
+			p = p.parent;
+			pDepth--;
 		}
-		return a;
+		while (qDepth > pDepth) {
+			q = q.parent;
+			qDepth--;
+		}
+		while (p != q) {
+			p = p.parent;
+			q = q.parent;
+		}
+		return p;
 	}
+	
+	private static int getDepth(Node n) {
+		int depth = 0;
+		while (n.parent != null) {
+			n = n.parent;
+			depth++;
+		}
+		return depth;
+	}
+
 //	public static Node lowestCommonAncestor(Node p, Node q) {
-//		Set<Node> pParents = new HashSet<>();
-//		addParents(pParents, p);
-//		return search(pParents, q);
-//	}
-//
-//	private static void addParents(Set<Node> pParents, Node p) {
-//		while (p != null) {
-//			pParents.add(p);
-//			p = p.parent;
+//		Node a = p, b = q;
+//		while (a != b) {
+//			a = a.parent == null ? q : a.parent;
+//			b = b.parent == null ? p : b.parent;
 //		}
-//	}
-//
-//	private static Node search(Set<Node> pParents, Node q) {
-//		while (q != null) {
-//			if (pParents.contains(q)) {
-//				return q;
-//			}
-//			q = q.parent;
-//		}
-//		return null;
+//		return a;
 //	}
 	
 	class Node {

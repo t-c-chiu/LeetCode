@@ -13,11 +13,10 @@ public class LongestIncreasingSubsequence {
 	public static int lengthOfLIS(int[] nums) {
 		List<Integer> list = new ArrayList<>();
 		for (int num : nums) {
-			if (list.isEmpty() || list.get(list.size() - 1) < num) {
+			if (list.isEmpty() || num > list.get(list.size() - 1)) {
 				list.add(num);
 			} else {
-				int i = binarySearch(list, num);
-				list.set(i, num);
+				list.set(binarySearch(list, num), num);
 			}
 		}
 		return list.size();
@@ -35,20 +34,6 @@ public class LongestIncreasingSubsequence {
 		}
 		return lo;
 	}
-
-//	public static int lengthOfLIS(int[] nums) {
-//		int n = nums.length;
-//		int[] dp = new int[n];
-//		Arrays.fill(dp, 1);
-//		int res = 0;
-//		for (int i = 0; i < n; i++) {
-//			for (int j = 0; j < i; j++) {
-//				if (nums[i] > nums[j]) {
-//					dp[i] = Math.max(dp[i], dp[j] + 1);
-//				}
-//			}
-//			res = Math.max(res, dp[i]);
-//		}
-//		return res;
-//	}
+	
+	
 }

@@ -15,14 +15,12 @@ public class EncodeAndDecodeStrings {
 	}
 	
 	static public class Codec {
-		
-		// Encodes a list of strings to a single string.
 		public String encode(List<String> strs) {
-			StringBuilder builder = new StringBuilder();
-			for (String str : strs) {
-				builder.append(str.length()).append("/").append(str);
+			StringBuilder sb = new StringBuilder();
+			for (String s : strs) {
+				sb.append(s.length()).append('/').append(s);
 			}
-			return builder.toString();
+			return sb.toString();
 		}
 		
 		// Decodes a single string to a list of strings.
@@ -30,12 +28,15 @@ public class EncodeAndDecodeStrings {
 			List<String> res = new ArrayList<>();
 			int from = 0;
 			while (from < s.length()) {
-				int slash = s.indexOf("/", from);
-				int size = Integer.parseInt(s.substring(from, slash));
-				from = slash + size + 1;
+				int slash = s.indexOf('/', from);
+				int len = Integer.parseInt(s.substring(from, slash));
+				from = slash + 1 + len;
 				res.add(s.substring(slash + 1, from));
+				
 			}
 			return res;
 		}
+		// Encodes a list of strings to a single string.
+
 	}
 }

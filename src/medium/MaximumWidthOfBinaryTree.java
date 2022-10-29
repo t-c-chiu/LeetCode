@@ -13,27 +13,24 @@ public class MaximumWidthOfBinaryTree {
 	}
 	
 	public static int widthOfBinaryTree(TreeNode root) {
-		int res = 0;
 		Deque<TreeNode> deque = new ArrayDeque<>();
 		root.val = 0;
-		deque.offerLast(root);
+		deque.offer(root);
+		int res = 0;
 		while (!deque.isEmpty()) {
 			res = Math.max(res, deque.peekLast().val - deque.peekFirst().val + 1);
 			for (int i = deque.size(); i > 0; i--) {
 				TreeNode cur = deque.pollFirst();
-				TreeNode left = cur.left;
-				TreeNode right = cur.right;
-				if (left != null) {
-					left.val = cur.val * 2;
-					deque.offerLast(left);
+				if (cur.left != null) {
+					cur.left.val = cur.val * 2;
+					deque.offerLast(cur.left);
 				}
-				if (right != null) {
-					right.val = cur.val * 2 + 1;
-					deque.offerLast(right);
+				if (cur.right != null) {
+					cur.right.val = cur.val * 2 + 1;
+					deque.offerLast(cur.right);
 				}
 			}
 		}
 		return res;
 	}
-	
 }

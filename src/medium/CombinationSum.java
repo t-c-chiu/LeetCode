@@ -17,11 +17,11 @@ public class CombinationSum {
 	}
 	
 	private static void helper(List<List<Integer>> res, int[] candidates, int start, int sum, int target, List<Integer> temp) {
-		if (sum == target) {
-			res.add(new ArrayList<>(temp));
+		if (sum > target) {
 			return;
 		}
-		if (sum > target) {
+		if (sum == target) {
+			res.add(new ArrayList<>(temp));
 			return;
 		}
 		for (int i = start; i < candidates.length; i++) {
@@ -30,5 +30,4 @@ public class CombinationSum {
 			temp.remove(temp.size() - 1);
 		}
 	}
-	
 }

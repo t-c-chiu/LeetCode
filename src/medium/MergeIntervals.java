@@ -20,17 +20,20 @@ public class MergeIntervals {
 	public static int[][] merge(int[][] intervals) {
 		Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
 		List<int[]> list = new ArrayList<>();
-		int[] cur = intervals[0];
-		list.add(cur);
-		for (int[] interval : intervals) {
-			if (interval[0] <= cur[1]) {
-				cur[1] = Math.max(cur[1], interval[1]);
+		list.add(intervals[0]);
+		for (int i = 1; i < intervals.length; i++) {
+			int[] cur = list.get(list.size() - 1);
+			if (cur[1] >= intervals[i][0]) {
+				cur[1] = Math.max(cur[1], intervals[i][1]);
 			} else {
-				cur = interval;
-				list.add(cur);
+				list.add(intervals[i]);
 			}
 		}
-		return list.toArray(new int[list.size()][]);
+		int[][] res = new int[list.size()][2];
+		for (int i = 0; i < res.length; i++) {
+			res[i] = list.get(i);
+		}
+		return res;
 	}
 
 //	public static int[][] merge(int[][] intervals) {

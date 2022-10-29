@@ -22,11 +22,12 @@ public class PathSumII {
 		if (node == null) {
 			return;
 		}
-		int val = node.val;
-		temp.add(val);
-		targetSum -= val;
-		if (targetSum == 0 && isLeaf(node)) {
+		targetSum -= node.val;
+		temp.add(node.val);
+		if (isLeaf(node) && targetSum == 0) {
 			res.add(new ArrayList<>(temp));
+			temp.remove(temp.size() - 1);
+			return;
 		}
 		helper(res, node.left, targetSum, temp);
 		helper(res, node.right, targetSum, temp);

@@ -2,9 +2,6 @@ package medium;
 
 import util.TreeNode;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class HouseRobberIII {
 	public static void main(String[] args) {
 		TreeNode root = new TreeNode(3);
@@ -15,33 +12,41 @@ public class HouseRobberIII {
 		right.right = new TreeNode(1);
 		root.left = left;
 		root.right = right;
-		System.out.println(new HouseRobberIII().rob(root));
+		System.out.println(rob(root));
 	}
 	
-	//      3
-	//     / \
-	//    4   5
-	//   / \   \
-	//  1   3   1
-	private Map<TreeNode, Integer> cache = new HashMap<>();
-	
-	public int rob(TreeNode root) {
-		if (root == null)
-			return 0;
-		if (cache.containsKey(root))
-			return cache.get(root);
-		
-		int val = root.val;
-		TreeNode left = root.left;
-		TreeNode right = root.right;
-		if (left != null)
-			val += rob(left.left) + rob(left.right);
-		if (right != null)
-			val += rob(right.left) + rob(right.right);
-		
-		val = Math.max(val, rob(left) + rob(right));
-		cache.put(root, val);
-		
-		return val;
+	public static int rob(TreeNode node) {
+		int[] res = helper(node);
+		return Math.max(res[0], res[1]);
 	}
+	
+	private static int[] helper(TreeNode node) {
+		if (node == null) {
+			return new int[2];
+		}
+		int[] left = helper(node.left);
+		int[] right = helper(node.right);
+		return new int[]{Math.max(left[0], left[1]) + Math.max(right[0], right[1]), node.val + left[0] + right[0]};
+	}
+//	static Map<TreeNode, Integer> cache = new HashMap<>();
+//
+//	public static int rob(TreeNode node) {
+//		if (node == null) {
+//			return 0;
+//		}
+//		if (cache.containsKey(node)) {
+//			return cache.get(node);
+//		}
+//		int val = 0;
+//		if (node.left != null) {
+//			val += rob(node.left.left) + rob(node.left.right);
+//		}
+//		if (node.right != null) {
+//			val += rob(node.right.left) + rob(node.right.right);
+//		}
+//		val = Math.max(val + node.val, rob(node.left) + rob(node.right));
+//		cache.put(node, val);
+//		return val;
+//	}
+	
 }

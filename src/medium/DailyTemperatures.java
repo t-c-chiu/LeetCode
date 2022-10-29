@@ -15,8 +15,8 @@ public class DailyTemperatures {
 		int[] res = new int[n];
 		Stack<Integer> stack = new Stack<>();
 		for (int i = 0; i < n; i++) {
-			while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
-				Integer j = stack.pop();
+			while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]) {
+				int j = stack.pop();
 				res[j] = i - j;
 			}
 			stack.push(i);

@@ -19,6 +19,9 @@ public class SubsetsII {
 	
 	private static void helper(List<List<Integer>> res, int[] nums, int start, List<Integer> temp) {
 		res.add(new ArrayList<>(temp));
+		if (start == nums.length) {
+			return;
+		}
 		for (int i = start; i < nums.length; i++) {
 			if (i > start && nums[i] == nums[i - 1]) {
 				continue;
@@ -28,6 +31,5 @@ public class SubsetsII {
 			temp.remove(temp.size() - 1);
 		}
 	}
-	
 	
 }

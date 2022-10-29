@@ -11,16 +11,17 @@ public class MoveZeroes {
 	}
 	
 	public static void moveZeroes(int[] nums) {
-		int n = nums.length, zero = 0;
-		for (int i = 0; i < n; i++) {
-			if (nums[i] == 0) {
-				zero++;
-			} else {
-				nums[i - zero] = nums[i];
+		int i = 0;
+		for (int j = 0; j < nums.length; j++) {
+			if (nums[j] != 0) {
+				swap(nums, i++, j);
 			}
 		}
-		for (int i = n - zero; i < n; i++) {
-			nums[i] = 0;
-		}
+	}
+	
+	private static void swap(int[] nums, int i, int j) {
+		int temp = nums[i];
+		nums[i] = nums[j];
+		nums[j] = temp;
 	}
 }

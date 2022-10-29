@@ -16,7 +16,7 @@ public class BestTimeToBuyAndSellStockIII {
 		for (int i = 1; i <= 2; i++) {
 			int maxAfterBuy = -prices[0];
 			for (int j = 1; j < n; j++) {
-				dp[i][j] = Math.max(dp[i][j - 1], prices[j] + maxAfterBuy);
+				dp[i][j] = Math.max(dp[i][j - 1], maxAfterBuy + prices[j]);
 				maxAfterBuy = Math.max(maxAfterBuy, dp[i - 1][j - 1] - prices[j]);
 			}
 		}

@@ -39,44 +39,42 @@ public class DesignAnExpressionTreeWithEvaluateFunction {
 		}
 	}
 	
-	static class OptNode extends Node {
+	static class OpNode extends Node {
 		
-		public OptNode(String val) {
+		public OpNode(String val) {
 			super(val);
 		}
 		
 		@Override
 		public int evaluate() {
-			int leftVal = left.evaluate();
-			int rightVal = right.evaluate();
 			switch (val) {
 				case "+":
-					return leftVal + rightVal;
+					return left.evaluate() + right.evaluate();
 				case "-":
-					return leftVal - rightVal;
+					return left.evaluate() - right.evaluate();
 				case "*":
-					return leftVal * rightVal;
+					return left.evaluate() * right.evaluate();
 				case "/":
-					return leftVal / rightVal;
+					return left.evaluate() / right.evaluate();
 			}
-			return Integer.parseInt(val);
+			return -1;
 		}
 	}
 	
 	static class TreeBuilder {
 		Node buildTree(String[] postfix) {
-			Set<String> operators = new HashSet<>(Arrays.asList("+", "-", "*", "/"));
+			Set<String> ops = new HashSet<>(Arrays.asList("+", "-", "*", "/"));
 			Stack<Node> stack = new Stack<>();
-			for (String s : postfix) {
-				Node newNode;
-				if (operators.contains(s)) {
-					newNode = new OptNode(s);
-					newNode.right = stack.pop();
-					newNode.left = stack.pop();
+			for (String val : postfix) {
+				Node node = null;
+				if (ops.contains(val)) {
+					node = new OpNode(val);
+					node.right = stack.pop();
+					node.left = stack.pop();
 				} else {
-					newNode = new NumNode(s);
+					node = new NumNode(val);
 				}
-				stack.push(newNode);
+				stack.push(node);
 			}
 			return stack.pop();
 		}

@@ -7,10 +7,10 @@ public class JumpGame {
 	}
 	
 	public static boolean canJump(int[] nums) {
-		int n = nums.length;
-		for (int i = 0, max = 0; i <= max && i < n; i++) {
-			max = Math.max(max, i + nums[i]);
-			if (max >= n - 1) {
+		int n = nums.length, farthest = 0;
+		for (int i = 0; i <= farthest; i++) {
+			farthest = Math.max(farthest, i + nums[i]);
+			if (farthest >= n - 1) {
 				return true;
 			}
 		}

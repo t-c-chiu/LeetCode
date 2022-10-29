@@ -7,11 +7,12 @@ public class BestSightseeingPair {
 		System.out.println(res);
 	}
 	
+	// values[i] + values[j] + i - j
 	public static int maxScoreSightseeingPair(int[] values) {
-		int res = 0, imax = values[0];
-		for (int j = 1; j < values.length; j++) {
-			res = Math.max(res, imax + values[j] - j);
-			imax = Math.max(imax, values[j] + j);
+		int res = 0, maxi = values[0];
+		for (int i = 1; i < values.length; i++) {
+			res = Math.max(res, maxi + values[i] - i);
+			maxi = Math.max(maxi, values[i] + i);
 		}
 		return res;
 	}

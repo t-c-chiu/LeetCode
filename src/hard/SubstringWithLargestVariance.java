@@ -36,18 +36,10 @@ public class SubstringWithLargestVariance {
 	}
 	
 	private static int helper(int[] nums) {
-		int n = nums.length;
-		int[] maxFromLeft = new int[n];
-		maxFromLeft[0] = nums[0];
-		for (int i = 1; i < n; i++) {
-			maxFromLeft[i] = Math.max(maxFromLeft[i - 1] + nums[i], nums[i]);
-		}
-		int res = 0, maxFromRight = 0;
-		for (int i = n - 1; i >= 0; i--) {
-			maxFromRight = Math.max(maxFromRight + nums[i], nums[i]);
-			if (nums[i] == -1) {
-				res = Math.max(res, maxFromLeft[i] + maxFromRight + 1);
-			}
+		int res = 0, max = 0;
+		for (int i = 0; i < nums.length; i++) {
+			max = Math.max(max, max + nums[i]);
+			res = Math.max(res, max);
 		}
 		return res;
 	}

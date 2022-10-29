@@ -5,30 +5,33 @@ import java.util.*;
 public class FindAndReplacePattern {
 	
 	public static void main(String[] args) {
-		FindAndReplacePattern test = new FindAndReplacePattern();
-		test.findAndReplacePattern(new String[]{"abc", "deq", "mee", "aqq", "dkd", "ccc"}, "abb")
-				.forEach(System.out::println);
+		List<String> res = findAndReplacePattern(new String[]{"abc", "deq", "mee", "aqq", "dkd", "ccc"}, "abb");
+		System.out.println(res);
 	}
 	
-	public List<String> findAndReplacePattern(String[] words, String pattern) {
+	public static List<String> findAndReplacePattern(String[] words, String pattern) {
 		List<String> res = new ArrayList<>();
-		int[] normalizedPattern = normalize(pattern);
 		for (String word : words) {
-			if (Arrays.equals(normalizedPattern, normalize(word)))
+			if (isMatch(word, pattern)) {
 				res.add(word);
+			}
 		}
 		return res;
 	}
-	
-	private int[] normalize(String pattern) {
-		Map<Character, Integer> map = new HashMap<>();
-		int len = pattern.length();
-		int[] res = new int[len];
-		for (int i = 0, j = 0; i < len; i++) {
-			final char c = pattern.charAt(i);
-			map.putIfAbsent(c, j++);
-			res[i] = map.get(c);
+
+	private static boolean isMatch(String word, String pattern) {
+		int n = word.length();
+		Map<Character, Character> map = new HashMap<>();
+		Set<Character> used = new HashSet<>();
+		for (int i = 0; i < n; i++) {
+			char c1 = pattern.charAt(i), c2 = word.charAt(i);
+			if (map.containsKey(c1) && map.get(c1) != c2 || !map.containsKey(c1) && used.contains(c2)) {
+				return false;
+			} else {
+				map.put(c1, c2);
+				used.add(c2);
+			}
 		}
-		return res;
+		return true;
 	}
 }

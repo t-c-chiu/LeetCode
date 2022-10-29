@@ -8,16 +8,18 @@ public class PowXN {
 	}
 	
 	public static double myPow(double x, int n) {
-		return myPow(x, (long) n);
+		double res = helper(x, n);
+		return n >= 0 ? res : 1 / res;
 	}
 	
-	public static double myPow(double x, long n) {
-		if (n < 0) {
-			return 1 / myPow(x, -n);
-		}
+	private static double helper(double x, int n) {
 		if (n == 0) {
 			return 1;
 		}
-		return n % 2 == 0 ? myPow(x * x, n / 2) : x * myPow(x * x, n / 2);
+		if (n % 2 == 0) {
+			return helper(x * x, n / 2);
+		} else {
+			return x * helper(x * x, n / 2);
+		}
 	}
 }

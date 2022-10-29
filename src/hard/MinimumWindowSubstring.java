@@ -11,38 +11,36 @@ public class MinimumWindowSubstring {
 	}
 	
 	public static String minWindow(String s, String t) {
-		int m = s.length(), n = t.length();
-		if (n > m) {
+		if (s.length() < t.length()) {
 			return "";
 		}
+		String res = "";
+		int count = t.length();
 		Map<Character, Integer> map = new HashMap<>();
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < t.length(); i++) {
 			char c = t.charAt(i);
 			map.put(c, map.getOrDefault(c, 0) + 1);
 		}
-		int count = map.size(), max = Integer.MAX_VALUE;
-		String res = "";
-		for (int right = 0, left = 0; right < m; right++) {
-			char c = s.charAt(right);
+		for (int r = 0, l = 0; r < s.length(); r++) {
+			char c = s.charAt(r);
 			if (map.containsKey(c)) {
 				map.put(c, map.get(c) - 1);
-				if (map.get(c) == 0) {
+				if (map.get(c) >= 0) {
 					count--;
 				}
-				while (count == 0) {
-					if (right - left + 1 < max) {
-						max = right - left + 1;
-						res = s.substring(left, right + 1);
-					}
-					c = s.charAt(left);
-					if (map.containsKey(c)) {
-						map.put(c, map.get(c) + 1);
-						if (map.get(c) > 0) {
-							count++;
-						}
-					}
-					left++;
+			}
+			while (count == 0) {
+				if (res.isEmpty() || r - l + 1 < res.length()) {
+					res = s.substring(l, r + 1);
 				}
+				c = s.charAt(l);
+				if (map.containsKey(c)) {
+					map.put(c, map.get(c) + 1);
+					if (map.get(c) > 0) {
+						count++;
+					}
+				}
+				l++;
 			}
 		}
 		return res;

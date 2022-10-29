@@ -13,13 +13,13 @@ public class SortList {
 		if (head == null || head.next == null) {
 			return head;
 		}
-		ListNode prev = null, slow = head, fast = head;
+		ListNode pre = null, slow = head, fast = head;
 		while (fast != null && fast.next != null) {
-			prev = slow;
+			pre = slow;
 			slow = slow.next;
 			fast = fast.next.next;
 		}
-		prev.next = null;
+		pre.next = null;
 		ListNode left = sortList(head);
 		ListNode right = sortList(slow);
 		return merge(left, right);

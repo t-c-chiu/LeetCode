@@ -14,11 +14,11 @@ public class Permutations {
 	
 	public static List<List<Integer>> permute(int[] nums) {
 		List<List<Integer>> res = new ArrayList<>();
-		helper(res, nums, new ArrayList<>(), new HashSet<>());
+		helper(res, nums, new HashSet<>(), new ArrayList<>());
 		return res;
 	}
 	
-	private static void helper(List<List<Integer>> res, int[] nums, List<Integer> temp, Set<Integer> seen) {
+	private static void helper(List<List<Integer>> res, int[] nums, Set<Integer> seen, List<Integer> temp) {
 		if (temp.size() == nums.length) {
 			res.add(new ArrayList<>(temp));
 			return;
@@ -27,12 +27,11 @@ public class Permutations {
 			if (seen.contains(num)) {
 				continue;
 			}
-			temp.add(num);
 			seen.add(num);
-			helper(res, nums, temp, seen);
-			seen.remove(num);
+			temp.add(num);
+			helper(res, nums, seen, temp);
 			temp.remove(temp.size() - 1);
+			seen.remove(num);
 		}
 	}
-	
 }

@@ -22,6 +22,7 @@ public class TimeBasedKeyValueStore {
 	}
 	
 	static class TimeMap {
+		
 		Map<String, TreeMap<Integer, String>> map;
 		
 		public TimeMap() {
@@ -29,15 +30,16 @@ public class TimeBasedKeyValueStore {
 		}
 		
 		public void set(String key, String value, int timestamp) {
-			TreeMap<Integer, String> treeMap = map.getOrDefault(key, new TreeMap<>());
-			treeMap.put(timestamp, value);
-			map.putIfAbsent(key, treeMap);
+			map.putIfAbsent(key, new TreeMap<>());
+			map.get(key).put(timestamp, value);
 		}
 		
 		public String get(String key, int timestamp) {
-			TreeMap<Integer, String> treeMap = map.get(key);
-			Integer i = treeMap.floorKey(timestamp);
-			return i != null ? treeMap.get(i) : "";
+			if (!map.containsKey(key) || map.get(key).floorKey(timestamp) == null) {
+				return "";
+			}
+			return map.get(key).floorEntry(timestamp).getValue();
 		}
 	}
+	
 }

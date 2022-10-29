@@ -5,7 +5,7 @@ import util.ListNode;
 public class RotateList {
 	
 	public static void main(String[] args) {
-		ListNode res = rotateRight(ListNode.generateHead(new int[]{1}), 0);
+		ListNode res = rotateRight(ListNode.generateHead(new int[]{1, 2, 3, 4, 5}), 2);
 		System.out.println(res);
 	}
 	
@@ -13,19 +13,20 @@ public class RotateList {
 		if (head == null) {
 			return null;
 		}
-		ListNode tail = head;
 		int len = 1;
+		ListNode tail = head;
 		while (tail.next != null) {
-			tail = tail.next;
 			len++;
+			tail = tail.next;
 		}
 		tail.next = head;
-		for (int i = 0; i < len - (k % len); i++) {
+		k = len - k % len;
+		while (k > 0) {
 			tail = tail.next;
+			k--;
 		}
-		head = tail.next;
+		ListNode res = tail.next;
 		tail.next = null;
-		return head;
+		return res;
 	}
-	
 }

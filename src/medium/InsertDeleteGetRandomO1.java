@@ -17,37 +17,36 @@ public class InsertDeleteGetRandomO1 {
 	
 	static class RandomizedSet {
 		
-		List<Integer> list;
 		Map<Integer, Integer> map;
+		List<Integer> list;
 		
 		public RandomizedSet() {
-			list = new ArrayList<>();
 			map = new HashMap<>();
+			list = new ArrayList<>();
 		}
 		
 		public boolean insert(int val) {
-			if (!map.containsKey(val)) {
-				map.put(val, list.size());
-				list.add(val);
-				return true;
+			if (map.containsKey(val)) {
+				return false;
 			}
-			return false;
+			map.put(val, list.size());
+			list.add(val);
+			return true;
 		}
 		
 		public boolean remove(int val) {
-			if (map.containsKey(val)) {
-				Integer pos = map.get(val);
-				int lastIdx = list.size() - 1;
-				int lastElement = list.get(lastIdx);
-				if (pos < lastIdx) {
-					list.set(pos, lastElement);
-					map.put(lastElement, pos);
-				}
-				list.remove(lastIdx);
-				map.remove(val);
-				return true;
+			if (!map.containsKey(val)) {
+				return false;
 			}
-			return false;
+			int index = map.get(val);
+			int lastEle = list.get(list.size() - 1);
+			if (val != lastEle) {
+				list.set(index, lastEle);
+				map.put(lastEle, index);
+			}
+			map.remove(val);
+			list.remove(list.size() - 1);
+			return true;
 		}
 		
 		public int getRandom() {

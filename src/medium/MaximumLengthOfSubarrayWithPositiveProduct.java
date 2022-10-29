@@ -8,41 +8,27 @@ public class MaximumLengthOfSubarrayWithPositiveProduct {
 	}
 	
 	public static int getMaxLen(int[] nums) {
-		int lastZero = -1, firstNegative = -1, negativeCount = 0, res = 0;
-		for (int i = 0; i < nums.length; i++) {
-			int num = nums[i];
-			if (num == 0) {
+		int n = nums.length, res = 0, lastZero = -1, firstNeg = -1, negCount = 0;
+		for (int i = 0; i < n; i++) {
+			if (nums[i] == 0) {
 				lastZero = i;
-				negativeCount = 0;
-				firstNegative = -1;
-			} else if (num < 0) {
-				if (firstNegative == -1) {
-					firstNegative = i;
-				}
-				negativeCount++;
+				negCount = 0;
+				firstNeg = -1;
+				continue;
 			}
-			res = Math.max(res, negativeCount % 2 == 0 ? i - lastZero : i - firstNegative);
+			if (nums[i] < 0) {
+				negCount++;
+				if (firstNeg == -1) {
+					firstNeg = i;
+				}
+			}
+			if (negCount % 2 == 1) {
+				res = Math.max(res, i - firstNeg);
+			} else {
+				res = Math.max(res, i - lastZero);
+			}
 		}
 		return res;
 	}
-
-//	public static int getMaxLen(int[] nums) {
-//		int res = 0, positive = 0, negative = 0;
-//		for (int num : nums) {
-//			if (num == 0) {
-//				positive = 0;
-//				negative = 0;
-//			} else if (num > 0) {
-//				positive++;
-//				negative = negative == 0 ? 0 : negative + 1;
-//			} else {
-//				int temp = positive;
-//				positive = negative == 0 ? 0 : negative + 1;
-//				negative = temp + 1;
-//			}
-//			res = Math.max(res, positive);
-//		}
-//		return res;
-//	}
-
+	
 }

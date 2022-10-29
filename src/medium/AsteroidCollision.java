@@ -13,24 +13,22 @@ public class AsteroidCollision {
 	public static int[] asteroidCollision(int[] asteroids) {
 		Stack<Integer> stack = new Stack<>();
 		for (int i = 0; i < asteroids.length; i++) {
-			int num = asteroids[i];
-			if (num > 0) {
-				stack.push(num);
-			} else {
-				while (!stack.isEmpty() && stack.peek() > 0 && stack.peek() < -num) {
+			if (asteroids[i] < 0) {
+				while (!stack.isEmpty() && stack.peek() > 0 && stack.peek() < -asteroids[i]) {
 					stack.pop();
 				}
-				if (!stack.isEmpty() && stack.peek() == -num) {
+				if (!stack.isEmpty() && stack.peek() == -asteroids[i]) {
 					stack.pop();
 				} else if (stack.isEmpty() || stack.peek() < 0) {
-					stack.push(num);
+					stack.push(asteroids[i]);
 				}
+			} else {
+				stack.push(asteroids[i]);
 			}
 		}
 		int[] res = new int[stack.size()];
-		int i = 0;
-		for (Integer num : stack) {
-			res[i++] = num;
+		for (int i = stack.size() - 1; i >= 0; i--) {
+			res[i] = stack.pop();
 		}
 		return res;
 	}

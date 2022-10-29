@@ -17,54 +17,43 @@ public class FirstUniqueNumber {
 	
 	static class FirstUnique {
 		
+		Map<Integer, Node> seen;
 		Node head;
 		Node tail;
-		Map<Integer, Node> map;
-		
-		class Node {
-			int value;
-			Node prev;
-			Node next;
-			
-			Node(int value) {
-				this.value = value;
-			}
-		}
 		
 		public FirstUnique(int[] nums) {
+			seen = new HashMap<>();
 			head = new Node(0);
 			tail = new Node(0);
 			head.next = tail;
 			tail.prev = head;
-			map = new HashMap<>();
 			for (int num : nums) {
 				add(num);
 			}
 		}
 		
 		public int showFirstUnique() {
-			return head.next == tail ? -1 : head.next.value;
+			return head.next == tail ? -1 : head.next.val;
 		}
 		
 		public void add(int value) {
-			if (map.containsKey(value)) {
-				remove(value);
+			if (seen.containsKey(value)) {
+				remove(seen.get(value));
 			} else {
-				addToEnd(value);
+				Node node = new Node(value);
+				addToTail(node);
+				seen.put(value, node);
 			}
 		}
 		
-		private void addToEnd(int value) {
-			Node node = new Node(value);
-			map.put(value, node);
+		private void addToTail(Node node) {
 			node.prev = tail.prev;
 			node.next = tail;
 			tail.prev.next = node;
 			tail.prev = node;
 		}
 		
-		private void remove(int value) {
-			Node node = map.get(value);
+		private void remove(Node node) {
 			if (node.prev == null || node.next == null) {
 				return;
 			}
@@ -72,6 +61,16 @@ public class FirstUniqueNumber {
 			node.next.prev = node.prev;
 			node.prev = null;
 			node.next = null;
+		}
+		
+		class Node {
+			int val;
+			Node prev;
+			Node next;
+			
+			Node(int val) {
+				this.val = val;
+			}
 		}
 	}
 //	static class FirstUnique {

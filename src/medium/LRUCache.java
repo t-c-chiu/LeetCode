@@ -1,6 +1,7 @@
 package medium;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LRUCache {
 	
@@ -17,45 +18,31 @@ public class LRUCache {
 		System.out.println(lRUCache.get(4));    // return 4
 	}
 	
-	Map<Integer, Node> map = new HashMap<>();
-	Node head = new Node(0, 0);
-	Node tail = new Node(0, 0);
 	int capacity;
+	Map<Integer, Node> map;
+	Node head;
+	Node tail;
 	
 	public LRUCache(int capacity) {
+		this.capacity = capacity;
+		map = new HashMap<>();
+		head = new Node(0, 0);
+		tail = new Node(0, 0);
 		head.next = tail;
 		tail.prev = head;
-		this.capacity = capacity;
 	}
 	
 	public int get(int key) {
-		if (map.containsKey(key)) {
-			Node node = map.get(key);
-			remove(node);
-			addToTail(node);
-			return node.val;
+		if (!map.containsKey(key)) {
+			return -1;
 		}
-		return -1;
-	}
-	
-	public void put(int key, int value) {
-		Node node;
-		if (map.containsKey(key)) {
-			node = map.get(key);
-			node.val = value;
-			remove(node);
-		} else {
-			node = new Node(key, value);
-			map.put(key, node);
-		}
+		Node node = map.get(key);
+		removeNode(node);
 		addToTail(node);
-		if (map.size() > capacity) {
-			map.remove(head.next.key);
-			remove(head.next);
-		}
+		return node.val;
 	}
 	
-	private void remove(Node node) {
+	private void removeNode(Node node) {
 		node.prev.next = node.next;
 		node.next.prev = node.prev;
 	}
@@ -65,6 +52,24 @@ public class LRUCache {
 		node.next = tail;
 		tail.prev.next = node;
 		tail.prev = node;
+	}
+	
+	public void put(int key, int value) {
+		Node node;
+		if (!map.containsKey(key)) {
+			node = new Node(key, value);
+			map.put(key, node);
+		} else {
+			node = map.get(key);
+			node.val = value;
+			removeNode(node);
+		}
+		addToTail(node);
+		if (map.size() > capacity) {
+			Node toRemove = head.next;
+			map.remove(toRemove.key);
+			removeNode(toRemove);
+		}
 	}
 	
 	class Node {

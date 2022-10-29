@@ -19,20 +19,19 @@ public class EmployeeFreeTime {
 	}
 	
 	public static List<Interval> employeeFreeTime(List<List<Interval>> schedule) {
-		List<Interval> res = new ArrayList<>();
 		List<Interval> intervals = new ArrayList<>();
 		for (List<Interval> list : schedule) {
 			intervals.addAll(list);
 		}
 		intervals.sort(Comparator.comparingInt(o -> o.start));
-		int end = intervals.get(0).end;
-		for (int i = 1; i < intervals.size(); i++) {
-			Interval interval = intervals.get(i);
-			if (interval.start <= end) {
-				end = Math.max(end, interval.end);
+		List<Interval> res = new ArrayList<>();
+		Interval cur = intervals.get(0);
+		for (Interval interval : intervals) {
+			if (cur.end >= interval.start) {
+				cur.end = Math.max(cur.end, interval.end);
 			} else {
-				res.add(new Interval(end, interval.start));
-				end = interval.end;
+				res.add(new Interval(cur.end, interval.start));
+				cur = interval;
 			}
 		}
 		return res;

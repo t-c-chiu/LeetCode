@@ -13,8 +13,9 @@ public class CopyListWithRandomPointer {
 		copyRandomList(head);
 	}
 	
-	static public Node copyRandomList(Node head) {
-		return copyRandomList(head, new HashMap<>());
+	public static Node copyRandomList(Node head) {
+		Map<Node, Node> map = new HashMap<>();
+		return copyRandomList(head, map);
 	}
 	
 	private static Node copyRandomList(Node node, Map<Node, Node> map) {
@@ -27,7 +28,9 @@ public class CopyListWithRandomPointer {
 		Node newNode = new Node(node.val);
 		map.put(node, newNode);
 		newNode.next = copyRandomList(node.next, map);
-		newNode.random = copyRandomList(node.random, map);
+		if (node.random != null) {
+			newNode.random = map.get(node.random);
+		}
 		return newNode;
 	}
 	

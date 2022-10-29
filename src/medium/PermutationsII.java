@@ -1,8 +1,6 @@
 package medium;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class PermutationsII {
 	
@@ -14,11 +12,11 @@ public class PermutationsII {
 	public static List<List<Integer>> permuteUnique(int[] nums) {
 		Arrays.sort(nums);
 		List<List<Integer>> res = new ArrayList<>();
-		backtrack(res, new ArrayList<>(), nums, new boolean[nums.length]);
+		helper(res, nums, new boolean[nums.length], new ArrayList<>());
 		return res;
 	}
 	
-	private static void backtrack(List<List<Integer>> res, List<Integer> temp, int[] nums, boolean[] used) {
+	private static void helper(List<List<Integer>> res, int[] nums, boolean[] used, List<Integer> temp) {
 		if (temp.size() == nums.length) {
 			res.add(new ArrayList<>(temp));
 			return;
@@ -29,9 +27,9 @@ public class PermutationsII {
 			}
 			used[i] = true;
 			temp.add(nums[i]);
-			backtrack(res, temp, nums, used);
-			temp.remove(temp.size() - 1);
+			helper(res, nums, used, temp);
 			used[i] = false;
+			temp.remove(temp.size() - 1);
 		}
 	}
 }

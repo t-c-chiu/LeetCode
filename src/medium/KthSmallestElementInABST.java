@@ -4,8 +4,12 @@ import util.TreeNode;
 
 public class KthSmallestElementInABST {
 	
+	public static void main(String[] args) {
+		int res = kthSmallest(TreeNode.generateRoot(new Integer[]{5, 3, 6, 2, 4, null, null, 1}), 3);
+		System.out.println(res);
+	}
 	
-	static int res, count;
+	static int count, res;
 	
 	public static int kthSmallest(TreeNode root, int k) {
 		helper(root, k);
@@ -23,4 +27,5 @@ public class KthSmallestElementInABST {
 		}
 		helper(root.right, k);
 	}
+	
 }

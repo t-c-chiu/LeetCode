@@ -14,25 +14,29 @@ public class WordLadder {
 		if (!set.contains(endWord)) {
 			return 0;
 		}
-		Queue<String> q = new LinkedList<>();
-		q.offer(beginWord);
 		int res = 1;
-		while (!q.isEmpty()) {
-			for (int i = q.size(); i > 0; i--) {
-				String word = q.poll();
+		Queue<String> queue = new LinkedList<>();
+		queue.offer(beginWord);
+		while (!queue.isEmpty()) {
+			for (int i = queue.size(); i > 0; i--) {
+				String word = queue.poll();
 				if (word.equals(endWord)) {
 					return res;
 				}
-				for (int j = 0; j < word.length(); j++) {
+				char[] chars = word.toCharArray();
+				for (int j = 0; j < chars.length; j++) {
+					char c = chars[j];
 					for (char k = 'a'; k <= 'z'; k++) {
-						char[] chars = word.toCharArray();
-						chars[j] = k;
-						String next = new String(chars);
-						if (set.contains(next)) {
-							q.offer(next);
-							set.remove(next);
+						if (c != k) {
+							chars[j] = k;
+							String next = String.valueOf(chars);
+							if (set.contains(next)) {
+								set.remove(next);
+								queue.offer(next);
+							}
 						}
 					}
+					chars[j] = c;
 				}
 			}
 			res++;

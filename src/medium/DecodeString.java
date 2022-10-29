@@ -12,34 +12,34 @@ public class DecodeString {
 	
 	public static String decodeString(String s) {
 		Stack<Integer> countStack = new Stack<>();
-		Stack<String> resStack = new Stack<>();
-		StringBuilder res = new StringBuilder();
-		int i = 0;
-		while (i < s.length()) {
+		Stack<String> strStack = new Stack<>();
+		StringBuilder builder = new StringBuilder();
+		int i = 0, n = s.length();
+		while (i < n) {
 			char c = s.charAt(i);
 			if (Character.isDigit(c)) {
 				int num = 0;
-				while (Character.isDigit(s.charAt(i))) {
+				while (i < n && Character.isDigit(s.charAt(i))) {
 					num = num * 10 + s.charAt(i) - '0';
 					i++;
 				}
 				countStack.push(num);
 			} else {
 				if (Character.isLetter(c)) {
-					res.append(c);
+					builder.append(c);
 				} else if (c == '[') {
-					resStack.push(res.toString());
-					res = new StringBuilder();
-				} else if (c == ']') {
-					StringBuilder temp = new StringBuilder(resStack.pop());
+					strStack.push(builder.toString());
+					builder = new StringBuilder();
+				} else {
+					StringBuilder temp = new StringBuilder(strStack.pop());
 					for (int j = countStack.pop(); j > 0; j--) {
-						temp.append(res);
+						temp.append(builder);
 					}
-					res = temp;
+					builder = temp;
 				}
 				i++;
 			}
 		}
-		return res.toString();
+		return builder.toString();
 	}
 }

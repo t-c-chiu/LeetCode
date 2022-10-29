@@ -1,5 +1,6 @@
 package medium;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class KthSmallestElementInASortedMatrix {
@@ -14,35 +15,21 @@ public class KthSmallestElementInASortedMatrix {
 	}
 	
 	public static int kthSmallest(int[][] matrix, int k) {
-		PriorityQueue<Node> queue = new PriorityQueue<>();
-		for (int i = 0; i < matrix.length; i++) {
-			queue.add(new Node(i, 0, matrix[i][0]));
+		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[0]));
+		int n = matrix.length;
+		for (int i = 0; i < n; i++) {
+			pq.offer(new int[]{matrix[i][0], i, 0});
 		}
-		Node node = null;
-		while (k > 0) {
-			node = queue.poll();
-			k--;
-			if (node.y < matrix[0].length - 1) {
-				queue.offer(new Node(node.x, node.y + 1, matrix[node.x][node.y + 1]));
+		while (k > 1) {
+			int[] cur = pq.poll();
+			int y = cur[2];
+			if (y + 1 < n) {
+				int x = cur[1];
+				pq.offer(new int[]{matrix[x][y + 1], x, y + 1});
 			}
+			k--;
 		}
-		return node.val;
+		return pq.peek()[0];
 	}
 	
-	static class Node implements Comparable<Node> {
-		int x;
-		int y;
-		int val;
-		
-		public Node(int x, int y, int val) {
-			this.x = x;
-			this.y = y;
-			this.val = val;
-		}
-		
-		@Override
-		public int compareTo(Node o) {
-			return val - o.val;
-		}
-	}
 }

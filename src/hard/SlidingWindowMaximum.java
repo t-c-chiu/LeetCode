@@ -14,17 +14,17 @@ public class SlidingWindowMaximum {
 	public static int[] maxSlidingWindow(int[] nums, int k) {
 		int n = nums.length;
 		int[] res = new int[n - k + 1];
-		Deque<Integer> dq = new ArrayDeque<>();
-		for (int r = 0; r < n; r++) {
-			if (!dq.isEmpty() && dq.peekFirst() <= r - k) {
-				dq.pollFirst();
+		Deque<Integer> deque = new ArrayDeque<>();
+		for (int i = 0; i < n; i++) {
+			while (!deque.isEmpty() && nums[i] > nums[deque.peekLast()]) {
+				deque.pollLast();
 			}
-			while (!dq.isEmpty() && nums[dq.peekLast()] < nums[r]) {
-				dq.pollLast();
+			deque.offerLast(i);
+			if (i - k + 1 > deque.peekFirst()) {
+				deque.pollFirst();
 			}
-			dq.offerLast(r);
-			if (r - k + 1 >= 0) {
-				res[r - k + 1] = nums[dq.peekFirst()];
+			if (i - k + 1 >= 0) {
+				res[i - k + 1] = nums[deque.peekFirst()];
 			}
 		}
 		return res;

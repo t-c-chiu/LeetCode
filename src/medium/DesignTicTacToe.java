@@ -16,66 +16,31 @@ public class DesignTicTacToe {
 	
 	static class TicTacToe {
 		
-		int[][] board;
+		int[] rows;
+		int[] cols;
+		int diagonal;
+		int antiDiagonal;
 		
 		public TicTacToe(int n) {
-			board = new int[n][n];
+			rows = new int[n];
+			cols = new int[n];
 		}
 		
 		public int move(int row, int col, int player) {
-			board[row][col] = player;
-			return check(row, col, player) ? player : 0;
-		}
-		
-		private boolean check(int row, int col, int player) {
-			return checkRow(row, player) || checkCol(col, player)
-					|| checkTopLeftToBottomRight(row, col, player)
-					|| checkTopRightToBottomLeft(row, col, player);
-		}
-		
-		private boolean checkRow(int row, int player) {
-			for (int i = 0; i < board[row].length; i++) {
-				if (board[row][i] != player) {
-					return false;
-				}
+			int n = rows.length;
+			int add = player == 1 ? 1 : -1;
+			rows[row] += add;
+			cols[col] += add;
+			if (row == col) {
+				diagonal += add;
 			}
-			return true;
-		}
-		
-		private boolean checkCol(int col, int player) {
-			for (int i = 0; i < board.length; i++) {
-				if (board[i][col] != player) {
-					return false;
-				}
+			if (row + col == n - 1) {
+				antiDiagonal += add;
 			}
-			return true;
-		}
-		
-		private boolean checkTopLeftToBottomRight(int row, int col, int player) {
-			if (row != col) {
-				return false;
+			if (Math.abs(rows[row]) == n || Math.abs(cols[col]) == n || Math.abs(diagonal) == n || Math.abs(antiDiagonal) == n) {
+				return player;
 			}
-			
-			for (int i = 0; i < board.length; i++) {
-				if (board[i][i] != player) {
-					return false;
-				}
-			}
-			return true;
-		}
-		
-		private boolean checkTopRightToBottomLeft(int row, int col, int player) {
-			int n = board.length;
-			if (row + col != n - 1) {
-				return false;
-			}
-			
-			for (int i = 0; i < n; i++) {
-				if (board[i][n - i - 1] != player) {
-					return false;
-				}
-			}
-			return true;
+			return 0;
 		}
 	}
 }

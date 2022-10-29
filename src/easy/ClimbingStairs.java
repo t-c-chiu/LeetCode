@@ -2,27 +2,20 @@ package easy;
 
 public class ClimbingStairs {
 	public static void main(String[] args) {
-		ClimbingStairs climbingStairs = new ClimbingStairs();
-		System.out.println(climbingStairs.climbStairs(1));
-		System.out.println(climbingStairs.climbStairs(2));
-		System.out.println(climbingStairs.climbStairs(3));
-		System.out.println(climbingStairs.climbStairs(4));
-		System.out.println(climbingStairs.climbStairs(5));
+		int res = climbStairs(5);
+		System.out.println(res);
 	}
 	
-	public int climbStairs(int n) {
+	public static int climbStairs(int n) {
 		if (n == 1) {
 			return 1;
 		}
-		if (n == 2) {
-			return 2;
-		}
-		int prev = 1;
-		int cur = 2;
-		for (int i = 3; i <= n; i++) {
-			int temp = prev + cur;
+		int prev = 1, cur = 2;
+		while (n > 2) {
+			int next = prev + cur;
 			prev = cur;
-			cur = temp;
+			cur = next;
+			n--;
 		}
 		return cur;
 	}

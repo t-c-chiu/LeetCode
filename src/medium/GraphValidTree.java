@@ -8,9 +8,6 @@ public class GraphValidTree {
 	}
 	
 	public static boolean validTree(int n, int[][] edges) {
-		if (n - 1 != edges.length) {
-			return false;
-		}
 		int[] parent = new int[n];
 		for (int i = 0; i < n; i++) {
 			parent[i] = i;
@@ -22,8 +19,9 @@ public class GraphValidTree {
 				return false;
 			}
 			parent[p1] = p2;
+			n--;
 		}
-		return true;
+		return n == 1;
 	}
 	
 	private static int find(int[] parent, int i) {

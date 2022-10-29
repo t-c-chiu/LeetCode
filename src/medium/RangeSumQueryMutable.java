@@ -1,26 +1,19 @@
 package medium;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-
 public class RangeSumQueryMutable {
 	
 	public static void main(String[] args) {
 		NumArray numArray = new NumArray(new int[]{1, 3, 5});
-		numArray.sumRange(0, 2); // return 1 + 3 + 5 = 9
+		System.out.println(numArray.sumRange(0, 2)); // return 1 + 3 + 5 = 9
 		numArray.update(1, 2);   // nums = [1, 2, 5]
-		numArray.sumRange(0, 2); // return 1 + 2 + 5 = 8
+		System.out.println(numArray.sumRange(0, 2)); // return 1 + 2 + 5 = 8
 	}
 	
 	static class NumArray {
 		
 		class SegmentTreeNode {
-			int start;
-			int end;
-			SegmentTreeNode left;
-			SegmentTreeNode right;
-			int sum;
+			int start, end, sum;
+			SegmentTreeNode left, right;
 			
 			SegmentTreeNode(int start, int end) {
 				this.start = start;
@@ -41,49 +34,53 @@ public class RangeSumQueryMutable {
 			SegmentTreeNode node = new SegmentTreeNode(start, end);
 			if (start == end) {
 				node.sum = nums[start];
-			} else {
-				int mid = start + (end - start) / 2;
-				node.left = buildTree(nums, start, mid);
-				node.right = buildTree(nums, mid + 1, end);
-				node.sum = node.left.sum + node.right.sum;
+				return node;
+			}
+			int mid = (start + end) / 2;
+			node.left = buildTree(nums, start, mid);
+			node.right = buildTree(nums, mid + 1, end);
+			if (node.left != null) {
+				node.sum += node.left.sum;
+			}
+			if (node.right != null) {
+				node.sum += node.right.sum;
 			}
 			return node;
 		}
 		
 		public void update(int index, int val) {
-			update(root, index, val);
+			update(index, val, root);
 		}
 		
-		private void update(SegmentTreeNode node, int index, int val) {
+		private void update(int index, int val, SegmentTreeNode node) {
 			if (node.start == index && node.end == index) {
 				node.sum = val;
-			} else {
-				int mid = node.start + (node.end - node.start) / 2;
-				if (index <= mid) {
-					update(node.left, index, val);
-				} else {
-					update(node.right, index, val);
-				}
-				node.sum = node.left.sum + node.right.sum;
+				return;
 			}
+			int mid = (node.start + node.end) / 2;
+			if (index <= mid) {
+				update(index, val, node.left);
+			} else {
+				update(index, val, node.right);
+			}
+			node.sum = node.left.sum + node.right.sum;
 		}
 		
 		public int sumRange(int left, int right) {
-			return sumRange(root, left, right);
+			return sumRange(left, right, root);
 		}
 		
-		private int sumRange(SegmentTreeNode node, int start, int end) {
-			if (node.start == start && node.end == end) {
+		private int sumRange(int left, int right, SegmentTreeNode node) {
+			if (node.start == left && node.end == right) {
 				return node.sum;
 			}
-			int mid = node.start + (node.end - node.start) / 2;
-			if (end <= mid) {
-				return sumRange(node.left, start, end);
-			} else if (start > mid) {
-				return sumRange(node.right, start, end);
-			} else {
-				return sumRange(node.left, start, mid) + sumRange(node.right, mid + 1, end);
+			int mid = (node.start + node.end) / 2;
+			if (right <= mid) {
+				return sumRange(left, right, node.left);
+			} else if (left > mid) {
+				return sumRange(left, right, node.right);
 			}
+			return sumRange(left, mid, node.left) + sumRange(mid + 1, right, node.right);
 		}
 	}
 }

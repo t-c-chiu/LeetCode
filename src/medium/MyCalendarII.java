@@ -19,12 +19,11 @@ public class MyCalendarII {
 	
 	static class MyCalendarTwo {
 		
-		List<int[]> books;
-		List<int[]> overlaps;
+		List<int[]> books = new ArrayList<>();
+		List<int[]> overlaps = new ArrayList<>();
 		
 		public MyCalendarTwo() {
-			books = new ArrayList<>();
-			overlaps = new ArrayList<>();
+		
 		}
 		
 		public boolean book(int start, int end) {
@@ -42,4 +41,5 @@ public class MyCalendarII {
 			return true;
 		}
 	}
+	
 }

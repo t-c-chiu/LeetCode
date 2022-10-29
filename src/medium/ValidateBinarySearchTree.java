@@ -12,14 +12,13 @@ public class ValidateBinarySearchTree {
 		return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
 	}
 	
-	private static boolean isValidBST(TreeNode root, long min, long max) {
-		if (root == null) {
+	private static boolean isValidBST(TreeNode node, long min, long max) {
+		if (node == null) {
 			return true;
 		}
-		int val = root.val;
-		if (val <= min || val >= max) {
+		if (node.val <= min || node.val >= max) {
 			return false;
 		}
-		return isValidBST(root.left, min, val) && isValidBST(root.right, root.val, max);
+		return isValidBST(node.left, min, node.val) && isValidBST(node.right, node.val, max);
 	}
 }

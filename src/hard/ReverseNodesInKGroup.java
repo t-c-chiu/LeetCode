@@ -5,25 +5,22 @@ import util.ListNode;
 public class ReverseNodesInKGroup {
 	
 	public static void main(String[] args) {
-		ListNode res = reverseKGroup(ListNode.generateHead(new int[]{1, 2, 3, 4, 5}), 2);
+		ListNode res = reverseKGroup(ListNode.generateHead(new int[]{1, 2, 3, 4, 5, 6, 7}), 3);
 		System.out.println(res);
 	}
 	
 	public static ListNode reverseKGroup(ListNode head, int k) {
-		if (head == null) {
-			return null;
-		}
-		ListNode prev = null, cur = head;
-		int i = 0;
-		while (i < k && cur != null) {
-			prev = cur;
+		int len = 0;
+		ListNode pre = null, cur = head;
+		while (cur != null && len < k) {
+			pre = cur;
 			cur = cur.next;
-			i++;
+			len++;
 		}
-		if (i < k) {
+		if (len < k) {
 			return head;
 		}
-		prev.next = null;
+		pre.next = null;
 		ListNode newHead = reverse(head);
 		head.next = reverseKGroup(cur, k);
 		return newHead;

@@ -1,5 +1,6 @@
 package medium;
 
+import java.util.Arrays;
 import java.util.TreeSet;
 
 public class NextClosestTime {
@@ -10,36 +11,27 @@ public class NextClosestTime {
 	}
 	
 	public static String nextClosestTime(String time) {
-		TreeSet<Character> digits = new TreeSet<>();
-		for (int i = 0; i < time.length(); i++) {
-			char c = time.charAt(i);
-			if (c != ':') {
-				digits.add(c);
-			}
-		}
-		
 		char[] res = time.toCharArray();
-		res[4] = findNext(time.charAt(4), '9', digits);
+		TreeSet<Character> set = new TreeSet<>(Arrays.asList(time.charAt(0), time.charAt(1), time.charAt(3), time.charAt(4)));
+		res[4] = findNext(time.charAt(4), '9', set);
 		if (res[4] > time.charAt(4)) {
-			return String.valueOf(res);
+			return new String(res);
 		}
-		
-		res[3] = findNext(time.charAt(3), '5', digits);
+		res[3] = findNext(time.charAt(3), '5', set);
 		if (res[3] > time.charAt(3)) {
-			return String.valueOf(res);
+			return new String(res);
 		}
-		
-		res[1] = findNext(time.charAt(1), res[0] == '2' ? '3' : '9', digits);
+		res[1] = findNext(time.charAt(1), time.charAt(0) == '2' ? '3' : '9', set);
 		if (res[1] > time.charAt(1)) {
-			return String.valueOf(res);
+			return new String(res);
 		}
-		
-		res[0] = findNext(time.charAt(0), '2', digits);
-		return String.valueOf(res);
+		res[0] = findNext(time.charAt(0), time.charAt(1) <= '3' ? '2' : '1', set);
+		return new String(res);
 	}
 	
-	private static char findNext(char c, char limit, TreeSet<Character> digits) {
-		Character higher = digits.higher(c);
-		return higher == null || higher > limit ? digits.first() : higher;
+	private static char findNext(char c, char limit, TreeSet<Character> set) {
+		Character next = set.higher(c);
+		return next == null || next > limit ? set.first() : next;
 	}
+	
 }

@@ -10,9 +10,9 @@ public class MeetingRooms {
 	}
 	
 	public static boolean canAttendMeetings(int[][] intervals) {
-		Arrays.sort(intervals, Comparator.comparingInt(o -> o[1]));
+		Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
 		for (int i = 1; i < intervals.length; i++) {
-			if (intervals[i - 1][1] > intervals[i][0]) {
+			if (intervals[i][0] < intervals[i - 1][1]) {
 				return false;
 			}
 		}

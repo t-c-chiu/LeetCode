@@ -14,26 +14,21 @@ public class PathSum {
 		root.right.left = new TreeNode(13);
 		root.right.right = new TreeNode(4);
 		root.right.right.right = new TreeNode(1);
-		System.out.println(new PathSum().hasPathSum(root, 22));
+		System.out.println(hasPathSum(root, 22));
 	}
 	
-	//       5
-	//      / \
-	//     4   8
-	//    /   / \
-	//   11  13  4
-	//  /  \      \
-	// 7    2      1
-	// sum: 22
-	// return true: 5 + 4 + 11 + 2 = 22
-	public boolean hasPathSum(TreeNode root, int sum) {
-		if (root == null)
+	public static boolean hasPathSum(TreeNode root, int targetSum) {
+		if (root == null) {
 			return false;
-		sum -= root.val;
-		TreeNode left = root.left;
-		TreeNode right = root.right;
-		if (sum == 0 && left == null && right == null)
+		}
+		targetSum -= root.val;
+		if (isLeaf(root) && targetSum == 0) {
 			return true;
-		return hasPathSum(left, sum) || hasPathSum(right, sum);
+		}
+		return hasPathSum(root.left, targetSum) || hasPathSum(root.right, targetSum);
+	}
+	
+	private static boolean isLeaf(TreeNode node) {
+		return node != null && node.left == null && node.right == null;
 	}
 }

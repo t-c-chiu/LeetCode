@@ -13,52 +13,21 @@ public class FindLeavesOfBinaryTree {
 	
 	public static List<List<Integer>> findLeaves(TreeNode root) {
 		List<List<Integer>> res = new ArrayList<>();
-		calculateHeight(root, res);
+		dfs(res, root);
 		return res;
 	}
 	
-	private static int calculateHeight(TreeNode root, List<List<Integer>> res) {
-		if (root == null) {
-			return -1;
+	private static int dfs(List<List<Integer>> res, TreeNode node) {
+		if (node == null) {
+			return 0;
 		}
-		int height = Math.max(calculateHeight(root.left, res), calculateHeight(root.right, res)) + 1;
-		if (res.size() <= height) {
+		int left = dfs(res, node.left);
+		int right = dfs(res, node.right);
+		int depth = Math.max(left, right);
+		if (res.size() == depth) {
 			res.add(new ArrayList<>());
 		}
-		res.get(height).add(root.val);
-		return height;
+		res.get(depth).add(node.val);
+		return depth + 1;
 	}
-//	public static List<List<Integer>> findLeaves(TreeNode root) {
-//		TreeNode dummy = new TreeNode(-1);
-//		dummy.left = root;
-//		List<List<Integer>> res = new ArrayList<>();
-//		while (!isLeaf(dummy.left)) {
-//			ArrayList<Integer> list = new ArrayList<>();
-//			findLeaves(root, list);
-//			res.add(list);
-//		}
-//		res.add(Collections.singletonList(root.val));
-//		return res;
-//	}
-//
-//	private static void findLeaves(TreeNode node, List<Integer> list) {
-//		if (node == null) {
-//			return;
-//		}
-//		if (node.left != null && isLeaf(node.left)) {
-//			list.add(node.left.val);
-//			node.left = null;
-//		}
-//		if (node.right != null && isLeaf(node.right)) {
-//			list.add(node.right.val);
-//			node.right = null;
-//		}
-//		findLeaves(node.left, list);
-//		findLeaves(node.right, list);
-//	}
-//
-//	private static boolean isLeaf(TreeNode node) {
-//		return node.left == null && node.right == null;
-//	}
-	
 }

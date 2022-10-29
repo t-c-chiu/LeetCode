@@ -5,20 +5,20 @@ import util.TreeNode;
 public class InorderSuccessorInBST {
 	
 	public static void main(String[] args) {
-		TreeNode root = TreeNode.generateRoot(new Integer[]{10, 5, 15, 3, 8, null, null, 2, 4});
+		TreeNode root = TreeNode.generateRoot(new Integer[]{5, 3, 6, 2, 4, null, null, 1});
 		assert root != null;
-		TreeNode res = inorderSuccessor(root, root.left.left);
+		TreeNode res = inorderSuccessor(root, root.left);
 		System.out.println(res);
 	}
 	
 	public static TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-		TreeNode res = null;
-		while (root != null) {
-			if (p.val >= root.val) {
-				root = root.right;
+		TreeNode cur = root, res = null;
+		while (cur != null) {
+			if (cur.val > p.val) {
+				res = cur;
+				cur = cur.left;
 			} else {
-				res = root;
-				root = root.left;
+				cur = cur.right;
 			}
 		}
 		return res;

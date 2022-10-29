@@ -11,21 +11,19 @@ public class CountAndSay {
 		if (n == 1) {
 			return "1";
 		}
-		
 		String prev = countAndSay(n - 1);
-		StringBuilder builder = new StringBuilder();
-		char cur = prev.charAt(0);
+		StringBuilder sb = new StringBuilder();
+		char c = prev.charAt(0);
 		int count = 1;
 		for (int i = 1; i < prev.length(); i++) {
-			char c = prev.charAt(i);
-			if (c == cur) {
+			if (prev.charAt(i) == c) {
 				count++;
 			} else {
-				builder.append(count).append(cur);
-				cur = c;
+				sb.append(count).append(c);
+				c = prev.charAt(i);
 				count = 1;
 			}
 		}
-		return builder.append(count).append(cur).toString();
+		return sb.append(count).append(c).toString();
 	}
 }

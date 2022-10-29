@@ -14,22 +14,20 @@ public class TopKFrequentElements {
 		for (int num : nums) {
 			map.put(num, map.getOrDefault(num, 0) + 1);
 		}
-		int n = nums.length;
-		List<Integer>[] bucket = new List[n + 1];
+		List<Integer>[] bucket = new List[nums.length + 1];
 		for (Integer num : map.keySet()) {
-			int freq = map.get(num);
-			if (bucket[freq] == null) {
-				bucket[freq] = new ArrayList<>();
+			int count = map.get(num);
+			if (bucket[count] == null) {
+				bucket[count] = new ArrayList<>();
 			}
-			bucket[freq].add(num);
+			bucket[count].add(num);
 		}
 		int[] res = new int[k];
-		for (int i = n, j = 0; i >= 1 && k > 0; i--) {
+		for (int i = bucket.length - 1, j = 0; i > 0 && j < k; i--) {
 			if (bucket[i] != null) {
 				for (Integer num : bucket[i]) {
 					res[j++] = num;
 				}
-				k -= bucket[i].size();
 			}
 		}
 		return res;

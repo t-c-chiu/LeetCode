@@ -8,27 +8,24 @@ public class LongestHappyString {
 	}
 	
 	public static String longestDiverseString(int a, int b, int c) {
-		int size = a + b + c, aUsed = 0, bUsed = 0, cUsed = 0;
 		StringBuilder sb = new StringBuilder();
+		int size = a + b + c, aUsed = 0, bUsed = 0, cUsed = 0;
 		for (int i = 0; i < size; i++) {
 			if (a > 0 && a >= b && a >= c && aUsed < 2 || bUsed == 2 && a > 0 || cUsed == 2 && a > 0) {
 				sb.append('a');
 				a--;
 				aUsed++;
-				bUsed = 0;
-				cUsed = 0;
+				bUsed = cUsed = 0;
 			} else if (b > 0 && b >= a && b >= c && bUsed < 2 || aUsed == 2 && b > 0 || cUsed == 2 && b > 0) {
 				sb.append('b');
 				b--;
 				bUsed++;
-				aUsed = 0;
-				cUsed = 0;
-			} else if (c > 0 && c >= a && c >= b && cUsed < 2 || aUsed == 2 && c > 0 || bUsed == 2 && c > 0) {
+				aUsed = cUsed = 0;
+			} else if (c > 0 && c >= b && c >= a && cUsed < 2 || bUsed == 2 && c > 0 || aUsed == 2 && c > 0) {
 				sb.append('c');
 				c--;
 				cUsed++;
-				aUsed = 0;
-				bUsed = 0;
+				bUsed = aUsed = 0;
 			}
 		}
 		return sb.toString();

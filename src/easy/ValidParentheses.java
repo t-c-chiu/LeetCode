@@ -3,16 +3,14 @@ package easy;
 import java.util.Stack;
 
 public class ValidParentheses {
-	// (), {}, []
 	
 	public static void main(String[] args) {
-		ValidParentheses validParentheses = new ValidParentheses();
-		System.out.println(validParentheses.isValid("[(){}]"));
-		System.out.println(validParentheses.isValid("([]){}"));
-		System.out.println(validParentheses.isValid("{[()]}"));
+		System.out.println(isValid("[(){}]"));
+		System.out.println(isValid("([]){}"));
+		System.out.println(isValid("{[()]}"));
 	}
 	
-	public boolean isValid(String s) {
+	public static boolean isValid(String s) {
 		Stack<Character> stack = new Stack<>();
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);

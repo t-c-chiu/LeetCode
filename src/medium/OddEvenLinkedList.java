@@ -4,16 +4,14 @@ import util.ListNode;
 
 public class OddEvenLinkedList {
 	public static void main(String[] args) {
-		System.out.println(oddEvenList(ListNode.generateHead(new int[]{1, 2, 3, 4, 5})));
+		System.out.println(oddEvenList(ListNode.generateHead(new int[]{1})));
 	}
 	
 	public static ListNode oddEvenList(ListNode head) {
 		if (head == null) {
 			return null;
 		}
-		ListNode odd = head;
-		ListNode even = head.next;
-		ListNode evenHead = even;
+		ListNode odd = head, even = head.next, evenHead = even;
 		while (even != null && even.next != null) {
 			odd.next = odd.next.next;
 			even.next = even.next.next;

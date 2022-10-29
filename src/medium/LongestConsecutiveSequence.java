@@ -17,20 +17,19 @@ public class LongestConsecutiveSequence {
 			set.add(num);
 		}
 		for (int num : nums) {
-			if (!set.contains(num)) {
-				continue;
+			if (set.contains(num)) {
+				int i = num, len = 0;
+				while (set.contains(i)) {
+					len++;
+					set.remove(i++);
+				}
+				i = num - 1;
+				while (set.contains(i)) {
+					len++;
+					set.remove(i--);
+				}
+				res = Math.max(res, len);
 			}
-			int len = 0, i = num;
-			while (set.contains(i)) {
-				set.remove(i--);
-				len++;
-			}
-			i = num + 1;
-			while (set.contains(i)) {
-				set.remove(i++);
-				len++;
-			}
-			res = Math.max(res, len);
 		}
 		return res;
 	}

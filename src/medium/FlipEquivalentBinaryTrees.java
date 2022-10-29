@@ -5,7 +5,6 @@ import util.TreeNode;
 public class FlipEquivalentBinaryTrees {
 	
 	public static void main(String[] args) {
-		FlipEquivalentBinaryTrees test = new FlipEquivalentBinaryTrees();
 		TreeNode root1 = new TreeNode(1);
 		root1.left = new TreeNode(2);
 		root1.left.left = new TreeNode(4);
@@ -24,15 +23,18 @@ public class FlipEquivalentBinaryTrees {
 		root2.right.right.left = new TreeNode(8);
 		root2.right.right.right = new TreeNode(7);
 		
-		System.out.println(test.flipEquiv(root1, root2));
+		System.out.println(flipEquiv(root1, root2));
 	}
 	
-	public boolean flipEquiv(TreeNode root1, TreeNode root2) {
-		if (root1 == null || root2 == null)
-			return root1 == root2;
-		if (root1.val != root2.val)
+	public static boolean flipEquiv(TreeNode root1, TreeNode root2) {
+		if (root1 == null && root2 == null) {
+			return true;
+		}
+		if (root1 == null || root2 == null) {
 			return false;
-		return flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right) ||
-				flipEquiv(root1.left, root2.right) && flipEquiv(root1.right, root2.left);
+		}
+		return root1.val == root2.val &&
+				(flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right) ||
+						flipEquiv(root1.left, root2.right) && flipEquiv(root1.right, root2.left));
 	}
 }

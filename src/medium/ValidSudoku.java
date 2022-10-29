@@ -20,18 +20,46 @@ public class ValidSudoku {
 	}
 	
 	public static boolean isValidSudoku(char[][] board) {
-		int m = board.length, n = board[0].length;
-		Set<String> set = new HashSet<>();
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
+		for (int i = 0; i < 9; i++) {
+			Set<Character> set = new HashSet<>();
+			for (int j = 0; j < 9; j++) {
 				char c = board[i][j];
 				if (c == '.') {
 					continue;
 				}
-				if (!set.add(c + " in row " + i) ||
-						!set.add(c + " in col " + j) ||
-						!set.add(c + " in block " + i / 3 + ":" + j / 3)) {
+				if (set.contains(c)) {
 					return false;
+				}
+				set.add(c);
+			}
+		}
+		for (int j = 0; j < 9; j++) {
+			Set<Character> set = new HashSet<>();
+			for (int i = 0; i < 9; i++) {
+				char c = board[i][j];
+				if (c == '.') {
+					continue;
+				}
+				if (set.contains(c)) {
+					return false;
+				}
+				set.add(c);
+			}
+		}
+		for (int i = 0; i < 9; i += 3) {
+			for (int j = 0; j < 9; j += 3) {
+				Set<Character> set = new HashSet<>();
+				for (int k = 0; k < 3; k++) {
+					for (int l = 0; l < 3; l++) {
+						char c = board[i + k][j + l];
+						if (c == '.') {
+							continue;
+						}
+						if (set.contains(c)) {
+							return false;
+						}
+						set.add(c);
+					}
 				}
 			}
 		}

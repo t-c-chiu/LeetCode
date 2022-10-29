@@ -22,6 +22,18 @@ public class BoundaryOfBinaryTree {
 		return res;
 	}
 	
+	private static void leftBoundary(List<Integer> res, TreeNode node) {
+		if (node == null || isLeaf(node)) {
+			return;
+		}
+		res.add(node.val);
+		if (node.left != null) {
+			leftBoundary(res, node.left);
+		} else {
+			leftBoundary(res, node.right);
+		}
+	}
+	
 	private static void rightBoundary(List<Integer> res, TreeNode node) {
 		if (node == null || isLeaf(node)) {
 			return;
@@ -44,18 +56,6 @@ public class BoundaryOfBinaryTree {
 		}
 		leaves(res, node.left);
 		leaves(res, node.right);
-	}
-	
-	private static void leftBoundary(List<Integer> res, TreeNode node) {
-		if (node == null || isLeaf(node)) {
-			return;
-		}
-		res.add(node.val);
-		if (node.left != null) {
-			leftBoundary(res, node.left);
-		} else {
-			leftBoundary(res, node.right);
-		}
 	}
 	
 	private static boolean isLeaf(TreeNode node) {

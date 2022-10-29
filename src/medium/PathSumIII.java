@@ -13,26 +13,24 @@ public class PathSumIII {
 	}
 	
 	public static int pathSum(TreeNode root, int targetSum) {
-		Map<Integer, Integer> preSum = new HashMap<>();
-		preSum.put(0, 1);
-		return helper(preSum, root, targetSum, 0);
+		Map<Long, Integer> preSum = new HashMap<>();
+		preSum.put(0L, 1);
+		return helper(root, targetSum, 0, preSum);
 	}
 	
-	private static int helper(Map<Integer, Integer> preSum, TreeNode node, int targetSum, int sum) {
+	private static int helper(TreeNode node, int targetSum, long sum, Map<Long, Integer> preSum) {
 		if (node == null) {
 			return 0;
 		}
-		int val = node.val, res = 0;
-		sum += val;
-		if (preSum.containsKey(sum - targetSum)) {
-			res += preSum.get(sum - targetSum);
-		}
+		sum += node.val;
+		int res = preSum.getOrDefault(sum - targetSum, 0);
 		preSum.put(sum, preSum.getOrDefault(sum, 0) + 1);
-		res += helper(preSum, node.left, targetSum, sum);
-		res += helper(preSum, node.right, targetSum, sum);
+		res += helper(node.left, targetSum, sum, preSum);
+		res += helper(node.right, targetSum, sum, preSum);
 		preSum.put(sum, preSum.get(sum) - 1);
 		return res;
 	}
+
 
 //	public static int pathSum(TreeNode root, int targetSum) {
 //		if (root == null) {

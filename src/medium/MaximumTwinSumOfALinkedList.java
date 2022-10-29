@@ -18,11 +18,12 @@ public class MaximumTwinSumOfALinkedList {
 		}
 		prev.next = null;
 		slow = reverse(slow);
+		fast = head;
 		int res = 0;
 		while (slow != null) {
-			res = Math.max(res, head.val + slow.val);
-			head = head.next;
+			res = Math.max(res, slow.val + fast.val);
 			slow = slow.next;
+			fast = fast.next;
 		}
 		return res;
 	}

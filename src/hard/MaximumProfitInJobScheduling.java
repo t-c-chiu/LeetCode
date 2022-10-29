@@ -21,8 +21,8 @@ public class MaximumProfitInJobScheduling {
 		TreeMap<Integer, Integer> map = new TreeMap<>();
 		map.put(0, 0);
 		for (int[] job : jobs) {
-			int gain = Math.max(map.lastEntry().getValue(), map.floorEntry(job[0]).getValue() + job[2]);
-			map.put(job[1], gain);
+			int max = Math.max(map.lastEntry().getValue(), map.floorEntry(job[0]).getValue() + job[2]);
+			map.put(job[1], max);
 		}
 		return map.lastEntry().getValue();
 	}

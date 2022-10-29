@@ -3,7 +3,7 @@ package medium;
 public class KthLargestElementInAnArray {
 	
 	public static void main(String[] args) {
-		int res = findKthLargest(new int[]{3, 2, 1, 5, 6, 4}, 2);
+		int res = findKthLargest(new int[]{3, 2, 2, 2, 1, 4}, 3);
 		System.out.println(res);
 	}
 	
@@ -13,9 +13,8 @@ public class KthLargestElementInAnArray {
 		while (lo <= hi) {
 			int partition = partition(nums, lo, hi);
 			if (partition == k) {
-				return nums[partition];
-			}
-			if (partition < k) {
+				return nums[k];
+			} else if (partition < k) {
 				lo = partition + 1;
 			} else {
 				hi = partition - 1;
@@ -24,41 +23,30 @@ public class KthLargestElementInAnArray {
 		return nums[lo];
 	}
 	
-	private static int partition(int[] nums, int start, int end) {
-		int pivot = start;
-		while (start <= end) {
-			while (start <= end && nums[start] <= nums[pivot]) {
-				start++;
+	private static int partition(int[] nums, int lo, int hi) {
+		int pivot = nums[lo], start = lo;
+		while (lo <= hi) {
+			while (lo <= hi && nums[lo] <= pivot) {
+				lo++;
 			}
-			while (start <= end && nums[end] > nums[pivot]) {
-				end--;
+			while (lo <= hi && nums[hi] > pivot) {
+				hi--;
 			}
-			if (start > end) {
+			if (lo >= hi) {
 				break;
 			}
-			swap(nums, start, end);
+			swap(nums, lo, hi);
 		}
-		swap(nums, start, end);
-		return end;
+		swap(nums, start, hi);
+		return hi;
 	}
+	
 	
 	private static void swap(int[] nums, int start, int end) {
 		int temp = nums[start];
 		nums[start] = nums[end];
 		nums[end] = temp;
 	}
-
-//	public static int findKthLargest(int[] nums, int k) {
-//		PriorityQueue<Integer> pq = new PriorityQueue<>();
-//		for (int num : nums) {
-//			if (pq.size() < k) {
-//				pq.offer(num);
-//			} else if (pq.peek() < num) {
-//				pq.poll();
-//				pq.offer(num);
-//			}
-//		}
-//		return pq.poll();
-//	}
+	
 	
 }

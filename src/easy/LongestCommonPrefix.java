@@ -8,31 +8,21 @@ public class LongestCommonPrefix {
 	}
 	
 	public static String longestCommonPrefix(String[] strs) {
-		for (int i = 0; i < strs[0].length(); i++) {
-			char c = strs[0].charAt(i);
-			for (int j = 1; j < strs.length; j++) {
-				if (i == strs[j].length() || c != strs[j].charAt(i)) {
-					return strs[0].substring(0, i);
-				}
-			}
+		String res = strs[0];
+		for (int i = 1; i < strs.length; i++) {
+			res = prefix(res, strs[i]);
 		}
-		return strs[0];
+		return res;
 	}
-//	public static String longestCommonPrefix(String[] strs) {
-//		String prefix = strs[0];
-//		for (int i = 1; i < strs.length; i++) {
-//			prefix = findPrefix(prefix, strs[i]);
-//			if (prefix.isEmpty()) {
-//				return "";
-//			}
-//		}
-//		return prefix;
-//	}
-//
-//	private static String findPrefix(String s1, String s2) {
-//		while (!s1.startsWith(s2)) {
-//			s2 = s2.substring(0, s2.length() - 1);
-//		}
-//		return s2;
-//	}
+	
+	private static String prefix(String prefix, String str) {
+		int i = 0, j = 0;
+		StringBuilder sb = new StringBuilder();
+		while (i < prefix.length() && j < str.length() && prefix.charAt(i) == str.charAt(j)) {
+			sb.append(prefix.charAt(i));
+			i++;
+			j++;
+		}
+		return sb.toString();
+	}
 }

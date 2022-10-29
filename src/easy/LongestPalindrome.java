@@ -17,12 +17,15 @@ public class LongestPalindrome {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			if (set.contains(c)) {
-				set.remove(c);
 				res += 2;
+				set.remove(c);
 			} else {
 				set.add(c);
 			}
 		}
-		return set.isEmpty() ? res : res + 1;
+		if (!set.isEmpty()) {
+			res++;
+		}
+		return res;
 	}
 }

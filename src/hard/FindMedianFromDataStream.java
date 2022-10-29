@@ -6,11 +6,6 @@ public class FindMedianFromDataStream {
 	
 	public static void main(String[] args) {
 		MedianFinder medianFinder = new MedianFinder();
-		medianFinder.addAndPrint(-1);
-		medianFinder.addAndPrint(-2);
-		medianFinder.addAndPrint(-3);
-		medianFinder.addAndPrint(-4);
-		medianFinder.addAndPrint(-5);
 	}
 	
 	
@@ -20,12 +15,8 @@ public class FindMedianFromDataStream {
 		PriorityQueue<Integer> big;
 		
 		public MedianFinder() {
-			small = new PriorityQueue<>(Comparator.comparingInt(o -> -o));
-			big = new PriorityQueue<>();
-		}
-		
-		public double findMedian() {
-			return small.size() == big.size() ? (small.peek() + big.peek()) / 2d : small.peek();
+			small = new PriorityQueue<>();
+			big = new PriorityQueue<>(Comparator.reverseOrder());
 		}
 		
 		public void addNum(int num) {
@@ -38,9 +29,8 @@ public class FindMedianFromDataStream {
 			}
 		}
 		
-		public void addAndPrint(int num) {
-			addNum(num);
-			System.out.println("add " + num + " median: " + findMedian());
+		public double findMedian() {
+			return small.size() == big.size() ? (small.peek() + big.peek()) / 2d : small.peek();
 		}
 	}
 }

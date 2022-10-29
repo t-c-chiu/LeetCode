@@ -5,9 +5,8 @@ public class BackspaceStringCompare {
 	public static void main(String[] args) {
 		System.out.println(backspaceCompare("bxj##tw", "bxo#j##tw"));
 		System.out.println(backspaceCompare("ab##", "c#d#"));
-		System.out.println(backspaceCompare("a##c", "#a#c"));
+		System.out.println(backspaceCompare("nzp#o#g", "b#nzp#o#g"));
 		System.out.println(backspaceCompare("a#c", "b"));
-		
 	}
 	
 	public static boolean backspaceCompare(String s, String t) {
@@ -15,46 +14,29 @@ public class BackspaceStringCompare {
 		while (i >= 0 || j >= 0) {
 			int back = 0;
 			while (i >= 0 && (s.charAt(i) == '#' || back > 0)) {
-				back += s.charAt(i) == '#' ? 1 : -1;
-				i--;
+				if (s.charAt(i--) == '#') {
+					back++;
+				} else {
+					back--;
+				}
 			}
 			back = 0;
 			while (j >= 0 && (t.charAt(j) == '#' || back > 0)) {
-				back += t.charAt(j) == '#' ? 1 : -1;
-				j--;
+				if (t.charAt(j--) == '#') {
+					back++;
+				} else {
+					back--;
+				}
 			}
-			if (i >= 0 && j >= 0 && s.charAt(i) == t.charAt(j)) {
-				i--;
-				j--;
-			} else {
-				break;
+			if (i == -1 && j == -1) {
+				return true;
 			}
+			if (i == -1 || j == -1 || s.charAt(i) != t.charAt(j)) {
+				return false;
+			}
+			i--;
+			j--;
 		}
 		return i == -1 && j == -1;
 	}
-//	public static boolean backspaceCompare(String s, String t) {
-//		Stack<Character> st1 = new Stack<>(), st2 = new Stack<>();
-//		for (int i = 0; i < s.length(); i++) {
-//			char c = s.charAt(i);
-//			if (c != '#') {
-//				st1.push(c);
-//			} else if (!st1.isEmpty()) {
-//				st1.pop();
-//			}
-//		}
-//		for (int i = 0; i < t.length(); i++) {
-//			char c = t.charAt(i);
-//			if (c != '#') {
-//				st2.push(c);
-//			} else if (!st2.isEmpty()) {
-//				st2.pop();
-//			}
-//		}
-//		while (!st1.isEmpty() && !st2.isEmpty()) {
-//			if (st1.pop() != st2.pop()) {
-//				return false;
-//			}
-//		}
-//		return st1.isEmpty() && st2.isEmpty();
-//	}
 }

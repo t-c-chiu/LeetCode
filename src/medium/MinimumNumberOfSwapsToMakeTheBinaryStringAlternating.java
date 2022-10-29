@@ -17,11 +17,9 @@ public class MinimumNumberOfSwapsToMakeTheBinaryStringAlternating {
 				one++;
 			}
 		}
-		
 		if (Math.abs(zero - one) > 1) {
 			return -1;
 		}
-		
 		if (zero > one) {
 			return helper(chars, '0');
 		} else if (one > zero) {
@@ -37,8 +35,9 @@ public class MinimumNumberOfSwapsToMakeTheBinaryStringAlternating {
 			if (c != expect) {
 				diff++;
 			}
-			expect ^= 1;
+			expect = expect == '0' ? '1' : '0';
 		}
 		return diff / 2;
 	}
+	
 }

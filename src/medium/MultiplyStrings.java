@@ -7,30 +7,34 @@ public class MultiplyStrings {
 		System.out.println(res);
 	}
 	
+	/**
+	 * 1 2 3
+	 * 4 5 6
+	 * <p>
+	 * [4, 5+8, 6+10+12, 12+15, 18] = [4, 13, 28, 27, 18] = [5, 6, 0, 8 ,8]
+	 */
 	public static String multiply(String num1, String num2) {
-		if (num1.equals("0") || num2.equals("0")) {
+		if ("0".equals(num1) || "0".equals(num2)) {
 			return "0";
 		}
-		
-		int m = num1.length(), n = num2.length();
-		int[] res = new int[m + n];
-		for (int i = m - 1; i >= 0; i--) {
-			for (int j = n - 1; j >= 0; j--) {
-				int product = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
-				res[i + j + 1] += product;
-				res[i + j] += res[i + j + 1] / 10;
-				res[i + j + 1] = res[i + j + 1] % 10;
+		int[] res = new int[num1.length() + num2.length() - 1];
+		for (int i = 0; i < num1.length(); i++) {
+			for (int j = 0; j < num2.length(); j++) {
+				res[i + j] += (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
 			}
 		}
-		
-		StringBuilder builder = new StringBuilder();
+		for (int i = res.length - 1; i > 0; i--) {
+			res[i - 1] += res[i] / 10;
+			res[i] %= 10;
+		}
+		StringBuilder sb = new StringBuilder();
 		for (int i : res) {
-			if (builder.length() == 0 && i == 0) {
+			if (i == 0 && sb.isEmpty()) {
 				continue;
 			}
-			builder.append(i);
+			sb.append(i);
 		}
-		return builder.toString();
+		return sb.toString();
 	}
 	
 }

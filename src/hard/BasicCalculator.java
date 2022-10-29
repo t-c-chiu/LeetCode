@@ -5,19 +5,19 @@ import java.util.Stack;
 public class BasicCalculator {
 	
 	public static void main(String[] args) {
-		int res = calculate("2147483647");
+		int res = calculate("(1+(4+5+2)-3)+(6+8)");
 		System.out.println(res);
 	}
 	
 	public static int calculate(String s) {
+		int res = 0, i = 0, sign = 1, n = s.length();
 		Stack<Integer> stack = new Stack<>();
-		int sign = 1, res = 0, n = s.length(), i = 0;
 		while (i < n) {
 			char c = s.charAt(i);
 			if (Character.isDigit(c)) {
 				int num = 0;
 				while (i < n && Character.isDigit(s.charAt(i))) {
-					num = num * 10 + (s.charAt(i) - '0');
+					num = num * 10 + s.charAt(i) - '0';
 					i++;
 				}
 				res += num * sign;
@@ -29,11 +29,12 @@ public class BasicCalculator {
 				} else if (c == '(') {
 					stack.push(res);
 					stack.push(sign);
-					res = 0;
 					sign = 1;
+					res = 0;
 				} else if (c == ')') {
 					res *= stack.pop();
 					res += stack.pop();
+					sign = 1;
 				}
 				i++;
 			}

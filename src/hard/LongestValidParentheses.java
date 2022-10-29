@@ -11,19 +11,23 @@ public class LongestValidParentheses {
 	
 	public static int longestValidParentheses(String s) {
 		Stack<Integer> stack = new Stack<>();
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			if (c == ')' && !stack.isEmpty() && s.charAt(stack.peek()) == '(') {
-				stack.pop();
-			} else {
+		int n = s.length();
+		for (int i = 0; i < n; i++) {
+			if (s.charAt(i) == '(') {
 				stack.push(i);
+			} else {
+				if (stack.isEmpty() || s.charAt(stack.peek()) != '(') {
+					stack.push(i);
+				} else {
+					stack.pop();
+				}
 			}
 		}
-		int prev = -1, res = 0;
-		for (Integer i : stack) {
-			res = Math.max(res, i - prev - 1);
-			prev = i;
+		int last = n, res = 0;
+		while (!stack.isEmpty()) {
+			res = Math.max(res, last - stack.peek() - 1);
+			last = stack.pop();
 		}
-		return Math.max(res, s.length() - prev - 1);
+		return Math.max(res, last);
 	}
 }

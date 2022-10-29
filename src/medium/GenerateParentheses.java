@@ -9,7 +9,6 @@ public class GenerateParentheses {
 		System.out.println(res);
 	}
 	
-	
 	public static List<String> generateParenthesis(int n) {
 		List<String> res = new ArrayList<>();
 		helper(res, n, 0, 0, "");
@@ -17,14 +16,16 @@ public class GenerateParentheses {
 	}
 	
 	private static void helper(List<String> res, int n, int open, int close, String temp) {
-		if (close > open || open > n) {
-			return;
-		}
-		if (open == n && close == n) {
+		if (temp.length() == n * 2) {
 			res.add(temp);
 			return;
 		}
-		helper(res, n, open + 1, close, temp + "(");
-		helper(res, n, open, close + 1, temp + ")");
+		if (open < n) {
+			helper(res, n, open + 1, close, temp + '(');
+		}
+		if (close < open) {
+			helper(res, n, open, close + 1, temp + ')');
+		}
 	}
+	
 }

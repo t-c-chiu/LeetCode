@@ -2,9 +2,6 @@ package medium;
 
 import util.TreeNode;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class AddOneRowToTree {
 	
 	public static void main(String[] args) {
@@ -18,31 +15,24 @@ public class AddOneRowToTree {
 			newRoot.left = root;
 			return newRoot;
 		}
-		
-		Queue<TreeNode> queue = new LinkedList<>();
-		queue.offer(root);
-		while (!queue.isEmpty() && depth > 2) {
-			int size = queue.size();
-			for (int i = 0; i < size; i++) {
-				TreeNode node = queue.poll();
-				if (node.left != null) {
-					queue.offer(node.left);
-				}
-				if (node.right != null) {
-					queue.offer(node.right);
-				}
-			}
-			depth--;
+		helper(root, val, depth - 1);
+		return root;
+	}
+	
+	private static void helper(TreeNode node, int val, int depth) {
+		if (node == null) {
+			return;
 		}
-		while (!queue.isEmpty()) {
-			TreeNode node = queue.poll();
-			TreeNode left = node.left;
-			TreeNode right = node.right;
+		if (depth == 1) {
+			TreeNode oldLeft = node.left;
+			TreeNode oldRight = node.right;
 			node.left = new TreeNode(val);
 			node.right = new TreeNode(val);
-			node.left.left = left;
-			node.right.right = right;
+			node.left.left = oldLeft;
+			node.right.right = oldRight;
+			return;
 		}
-		return root;
+		helper(node.left, val, depth - 1);
+		helper(node.right, val, depth - 1);
 	}
 }

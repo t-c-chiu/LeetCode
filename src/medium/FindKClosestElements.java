@@ -25,32 +25,4 @@ public class FindKClosestElements {
 		}
 		return res;
 	}
-	/**
-	 * ---x--arr[mid]---arr[mid+k]---
-	 * ---arr[mid]--x---arr[mid+k]---
-	 * ---arr[mid]---x--arr[mid+k]---
-	 * ---arr[mid]---arr[mid+k]--x---
-	 */
-//	public static List<Integer> findClosestElements(int[] arr, int k, int x) {
-//		int lo = 0, hi = arr.length - k;
-//		while (lo < hi) {
-//			int mid = (lo + hi) / 2;
-//			if (x <= arr[mid]) {
-//				hi = mid;
-//			} else if (x >= arr[mid + k]) {
-//				lo = mid + 1;
-//			} else {
-//				if (x - arr[mid] <= arr[mid + k] - x) {
-//					hi = mid;
-//				} else {
-//					lo = mid + 1;
-//				}
-//			}
-//		}
-//		List<Integer> res = new ArrayList<>();
-//		for (int i = lo; i < lo + k; i++) {
-//			res.add(arr[i]);
-//		}
-//		return res;
-//	}
 }

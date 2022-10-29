@@ -15,6 +15,7 @@ public class KClosestPointsToOrigin {
 	}
 	
 	public static int[][] kClosest(int[][] points, int k) {
+		int[][] res = new int[k][2];
 		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> -(o[0] * o[0] + o[1] * o[1])));
 		for (int[] point : points) {
 			pq.offer(point);
@@ -22,9 +23,9 @@ public class KClosestPointsToOrigin {
 				pq.poll();
 			}
 		}
-		int[][] res = new int[k][2];
-		for (int i = 0; i < k; i++) {
-			res[i] = pq.poll();
+		int i = 0;
+		while (!pq.isEmpty()) {
+			res[i++] = pq.poll();
 		}
 		return res;
 	}

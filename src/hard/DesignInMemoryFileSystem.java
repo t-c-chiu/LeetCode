@@ -1,9 +1,6 @@
 package hard;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DesignInMemoryFileSystem {
 	
@@ -24,71 +21,66 @@ public class DesignInMemoryFileSystem {
 		File root;
 		
 		public FileSystem() {
-			root = new File("/");
+			root = new File("/", true);
 		}
 		
 		public List<String> ls(String path) {
+			String[] split = path.split("/");
 			File cur = root;
-			String[] files = path.split("/");
-			for (int i = 1; i < files.length; i++) {
-				cur = cur.next.get(files[i]);
+			for (int i = 1; i < split.length; i++) {
+				cur = cur.next.get(split[i]);
 			}
-			List<String> res = new ArrayList<>();
-			if (cur.isFile) {
-				res.add(cur.name);
-			} else {
-				res.addAll(cur.next.keySet().stream().sorted().toList());
+			if (cur.isDirectory) {
+				List<String> list = new ArrayList<>(cur.next.keySet());
+				list.sort(Comparator.naturalOrder());
+				return list;
 			}
-			return res;
+			return Collections.singletonList(cur.name);
 		}
-		
 		
 		public void mkdir(String path) {
-			mkdirAndReturn(path);
-			
+			mkdirWithReturn(path);
 		}
 		
-		private File mkdirAndReturn(String path) {
+		public File mkdirWithReturn(String path) {
 			File cur = root;
-			String[] files = path.split("/");
-			for (int i = 1; i < files.length; i++) {
-				String name = files[i];
-				cur.next.putIfAbsent(name, new File(name));
+			String[] split = path.split("/");
+			for (int i = 1; i < split.length; i++) {
+				String name = split[i];
+				if (!cur.next.containsKey(name)) {
+					cur.next.put(name, new File(name, true));
+				}
 				cur = cur.next.get(name);
 			}
 			return cur;
 		}
 		
 		public void addContentToFile(String filePath, String content) {
-			int i = filePath.lastIndexOf("/");
-			File dir = mkdirAndReturn(filePath.substring(0, i));
-			String fileName = filePath.substring(i + 1);
-			File file = dir.next.get(fileName);
-			if (file == null) {
-				file = new File(fileName);
-				dir.next.put(fileName, file);
-				file.isFile = true;
-			}
-			file.content += content;
+			int lastSlash = filePath.lastIndexOf('/');
+			String fileName = filePath.substring(lastSlash + 1);
+			File dir = mkdirWithReturn(filePath.substring(0, lastSlash));
+			dir.next.putIfAbsent(fileName, new File(fileName, false));
+			dir.next.get(fileName).content += content;
 		}
 		
 		public String readContentFromFile(String filePath) {
-			File cur = root;
-			String[] files = filePath.split("/");
-			for (int i = 1; i < files.length; i++) {
-				cur = cur.next.get(files[i]);
-			}
-			return cur.content;
+			int lastSlash = filePath.lastIndexOf('/');
+			String fileName = filePath.substring(lastSlash + 1);
+			File dir = mkdirWithReturn(filePath.substring(0, lastSlash));
+			return dir.next.get(fileName).content;
 		}
 		
 		class File {
-			Map<String, File> next = new HashMap<>();
 			String name;
-			String content = "";
-			boolean isFile;
+			String content;
+			boolean isDirectory;
+			Map<String, File> next;
 			
-			File(String name) {
+			File(String name, boolean isDirectory) {
 				this.name = name;
+				this.content = "";
+				this.isDirectory = isDirectory;
+				next = new HashMap<>();
 			}
 		}
 	}

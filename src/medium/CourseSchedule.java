@@ -1,9 +1,6 @@
 package medium;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class CourseSchedule {
 	
@@ -13,36 +10,34 @@ public class CourseSchedule {
 	}
 	
 	public static boolean canFinish(int numCourses, int[][] prerequisites) {
-		List<Integer>[] graph = new ArrayList[numCourses];
-		int[] indegree = new int[numCourses];
-		for (int i = 0; i < graph.length; i++) {
-			graph[i] = new ArrayList<>();
+		Map<Integer, List<Integer>> map = new HashMap<>();
+		Map<Integer, Integer> inDegree = new HashMap<>();
+		for (int i = 0; i < numCourses; i++) {
+			map.put(i, new ArrayList<>());
+			inDegree.put(i, 0);
 		}
 		for (int[] prerequisite : prerequisites) {
-			int pre = prerequisite[1];
-			int post = prerequisite[0];
-			graph[pre].add(post);
-			indegree[post]++;
+			int pre = prerequisite[0], post = prerequisite[1];
+			map.get(pre).add(post);
+			inDegree.put(post, inDegree.get(post) + 1);
 		}
 		Queue<Integer> queue = new LinkedList<>();
-		for (int i = 0; i < indegree.length; i++) {
-			if (indegree[i] == 0) {
-				queue.offer(i);
+		for (Integer course : inDegree.keySet()) {
+			if (inDegree.get(course) == 0) {
+				queue.offer(course);
 			}
 		}
-		int count = 0;
 		while (!queue.isEmpty()) {
-			int course = queue.poll();
-			count++;
-			List<Integer> posts = graph[course];
-			for (Integer post : posts) {
-				if (--indegree[post] == 0) {
-					queue.offer(post);
+			Integer cur = queue.poll();
+			numCourses--;
+			for (Integer next : map.get(cur)) {
+				inDegree.put(next, inDegree.get(next) - 1);
+				if (inDegree.get(next) == 0) {
+					queue.offer(next);
 				}
 			}
 		}
-		return count == numCourses;
+		return numCourses == 0;
 	}
-	
 	
 }

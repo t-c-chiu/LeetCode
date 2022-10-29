@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class NextPermutation {
 	
 	public static void main(String[] args) {
-		int[] arr = {1, 5, 1};
+		int[] arr = {3, 2, 1};
 		nextPermutation(arr);
 		Arrays.stream(arr).forEach(i -> System.out.print(i + " "));
 	}
@@ -15,21 +15,21 @@ public class NextPermutation {
 	 * 1 4 2 3 5 - 1 4 2 5 3 - 1 4 3 2 5 - 1 4 3 5 2
 	 */
 	public static void nextPermutation(int[] nums) {
-		int i, n = nums.length;
-		for (i = n - 2; i >= 0; i--) {
-			if (nums[i] < nums[i + 1]) {
-				break;
+		int i = nums.length - 2;
+		while (i >= 0 && nums[i] >= nums[i + 1]) {
+			i--;
+		}
+		if (i < 0) {
+			reverse(nums, 0);
+			return;
+		}
+		for (int j = nums.length - 1; j > i; j--) {
+			if (nums[j] > nums[i]) {
+				swap(nums, i, j);
+				reverse(nums, i + 1);
+				return;
 			}
 		}
-		if (i >= 0) {
-			for (int j = n - 1; j > i; j--) {
-				if (nums[j] > nums[i]) {
-					swap(nums, i, j);
-					break;
-				}
-			}
-		}
-		reverse(nums, i + 1);
 	}
 	
 	private static void swap(int[] nums, int a, int b) {

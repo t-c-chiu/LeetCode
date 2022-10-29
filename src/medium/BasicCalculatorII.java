@@ -12,28 +12,38 @@ public class BasicCalculatorII {
 	public static int calculate(String s) {
 		Stack<Integer> stack = new Stack<>();
 		char op = '+';
-		int i = 0;
-		while (i < s.length()) {
+		int res = 0, i = 0, n = s.length();
+		while (i < n) {
 			char c = s.charAt(i);
 			if (Character.isDigit(c)) {
 				int num = 0;
-				while (i < s.length() && Character.isDigit(s.charAt(i))) {
-					num = num * 10 + s.charAt(i) - '0';
-					i++;
+				while (i < n && Character.isDigit(s.charAt(i))) {
+					num = num * 10 + s.charAt(i++) - '0';
 				}
 				switch (op) {
-					case '+' -> stack.push(num);
-					case '-' -> stack.push(-num);
-					case '*' -> stack.push(stack.pop() * num);
-					case '/' -> stack.push(stack.pop() / num);
+					case '+':
+						stack.push(num);
+						break;
+					case '-':
+						stack.push(-num);
+						break;
+					case '*':
+						stack.push(stack.pop() * num);
+						break;
+					case '/':
+						stack.push(stack.pop() / num);
+						break;
 				}
 			} else {
-				if (!Character.isWhitespace(c)) {
+				if (c == '+' || c == '-' || c == '*' || c == '/') {
 					op = c;
 				}
 				i++;
 			}
 		}
-		return stack.stream().mapToInt(num -> num).sum();
+		for (Integer num : stack) {
+			res += num;
+		}
+		return res;
 	}
 }

@@ -1,5 +1,10 @@
 package medium;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+
 public class TaskScheduler {
 	
 	public static void main(String[] args) {
@@ -15,22 +20,34 @@ public class TaskScheduler {
 	// A B C _ _ _ A B C _ _ _ A B C
 	// A B C D E _ A B C D E _ A B C
 	public static int leastInterval(char[] tasks, int n) {
+		int res = 0;
 		int[] count = new int[26];
-		int max = 0, maxCount = 0;
-		for (char c : tasks) {
-			int i = c - 'A';
-			count[i]++;
-			if (count[i] > max) {
-				max = count[i];
-				maxCount = 1;
-			} else if (count[i] == max) {
-				maxCount++;
+		for (char task : tasks) {
+			count[task - 'A']++;
+		}
+		PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+		for (int i : count) {
+			if (i > 0) {
+				pq.offer(i);
 			}
 		}
-		int part = max - 1;
-		int emptySlots = (n - maxCount + 1) * part;
-		int remainingTasks = tasks.length - (max * maxCount);
-		int idle = Math.max(0, emptySlots - remainingTasks);
-		return tasks.length + idle;
+		while (!pq.isEmpty()) {
+			int k = n + 1;
+			List<Integer> nextTasks = new ArrayList<>();
+			while (k > 0 && !pq.isEmpty()) {
+				int remain = pq.poll();
+				if (remain > 1) {
+					nextTasks.add(remain - 1);
+				}
+				res++;
+				k--;
+			}
+			pq.addAll(nextTasks);
+			if (pq.isEmpty()) {
+				break;
+			}
+			res += k;
+		}
+		return res;
 	}
 }

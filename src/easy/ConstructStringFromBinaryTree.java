@@ -23,14 +23,14 @@ public class ConstructStringFromBinaryTree {
 		if (node.left == null && node.right == null) {
 			return;
 		}
-		
-		builder.append("(");
+		builder.append('(');
 		tree2str(node.left, builder);
-		builder.append(")");
+		builder.append(')');
 		if (node.right != null) {
-			builder.append("(");
+			builder.append('(');
 			tree2str(node.right, builder);
-			builder.append(")");
+			builder.append(')');
 		}
 	}
+	
 }

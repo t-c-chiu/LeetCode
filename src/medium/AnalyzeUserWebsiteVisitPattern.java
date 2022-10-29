@@ -1,7 +1,6 @@
 package medium;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class AnalyzeUserWebsiteVisitPattern {
 	
@@ -14,46 +13,43 @@ public class AnalyzeUserWebsiteVisitPattern {
 	}
 	
 	public static List<String> mostVisitedPattern(String[] username, int[] timestamp, String[] website) {
+		int n = username.length;
 		List<Info> infos = new ArrayList<>();
-		for (int i = 0; i < username.length; i++) {
+		for (int i = 0; i < n; i++) {
 			infos.add(new Info(username[i], timestamp[i], website[i]));
 		}
-		
-		Map<String, List<String>> map = new HashMap<>();
 		infos.sort(Comparator.comparingInt(info -> info.timestamp));
+		Map<String, List<String>> userToWebsites = new HashMap<>();
 		for (Info info : infos) {
-			map.putIfAbsent(info.name, new ArrayList<>());
-			map.get(info.name).add(info.website);
+			userToWebsites.putIfAbsent(info.name, new ArrayList<>());
+			userToWebsites.get(info.name).add(info.website);
 		}
-		
-		Map<String, Integer> freq = new HashMap<>();
 		int max = 0;
-		String maxPattern = "";
-		for (List<String> list : map.values()) {
-			int n = list.size();
-			if (n < 3) {
+		String res = "";
+		Map<String, Integer> freq = new HashMap<>();
+		for (List<String> websites : userToWebsites.values()) {
+			int size = websites.size();
+			if (size < 3) {
 				continue;
 			}
-			Set<String> set = new HashSet<>();
-			for (int i = 0; i < n; i++) {
-				for (int j = i + 1; j < n; j++) {
-					for (int k = j + 1; k < n; k++) {
-						set.add(list.get(i) + " " + list.get(j) + " " + list.get(k));
+			Set<String> patterns = new HashSet<>();
+			for (int i = 0; i < size; i++) {
+				for (int j = i + 1; j < size; j++) {
+					for (int k = j + 1; k < size; k++) {
+						patterns.add(websites.get(i) + " " + websites.get(j) + " " + websites.get(k));
 					}
 				}
 			}
-			
-			for (String s : set) {
-				int i = freq.getOrDefault(s, 0) + 1;
-				if (i > max || i == max && s.compareTo(maxPattern) < 0) {
-					max = i;
-					maxPattern = s;
+			for (String pattern : patterns) {
+				freq.put(pattern, freq.getOrDefault(pattern, 0) + 1);
+				int count = freq.get(pattern);
+				if (count > max || count == max && pattern.compareTo(res) < 0) {
+					max = count;
+					res = pattern;
 				}
-				freq.put(s, i);
 			}
 		}
-		
-		return Arrays.stream(maxPattern.split(" ")).collect(Collectors.toList());
+		return List.of(res.split(" "));
 	}
 	
 	static class Info {

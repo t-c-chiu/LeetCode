@@ -3,7 +3,7 @@ package medium;
 public class DecodeWays {
 	
 	public static void main(String[] args) {
-		int res = numDecodings("226");
+		int res = numDecodings("10001");
 		System.out.println(res);
 	}
 	
@@ -11,23 +11,21 @@ public class DecodeWays {
 		if (s.charAt(0) == '0') {
 			return 0;
 		}
-		int n = s.length(), prev = 1, cur = 1;
+		int n = s.length();
+		int[] dp = new int[n];
+		dp[0] = 1;
 		for (int i = 1; i < n; i++) {
-			char prevChar = s.charAt(i - 1);
-			char curChar = s.charAt(i);
-			int temp = 0;
-			if (curChar != '0') {
-				temp += cur;
+			char c = s.charAt(i);
+			char prevC = s.charAt(i - 1);
+			if (c != '0') {
+				dp[i] = dp[i - 1];
 			}
-			if (prevChar == '1' || prevChar == '2' && curChar <= '6') {
-				temp += prev;
+			if (prevC == '1' || prevC == '2' && c <= '6') {
+				dp[i] += i == 1 ? 1 : dp[i - 2];
 			}
-			prev = cur;
-			cur = temp;
 		}
-		return cur;
+		return dp[n - 1];
 	}
-
 //	public static int numDecodings(String s) {
 //		if (s.charAt(0) == '0') {
 //			return 0;

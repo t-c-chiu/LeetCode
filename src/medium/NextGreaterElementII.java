@@ -1,8 +1,6 @@
 package medium;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
 public class NextGreaterElementII {
@@ -15,39 +13,18 @@ public class NextGreaterElementII {
 	public static int[] nextGreaterElements(int[] nums) {
 		int n = nums.length;
 		int[] res = new int[n];
-		Arrays.fill(res, -1);
 		Stack<Integer> stack = new Stack<>();
 		for (int i = 0; i < n * 2; i++) {
-			int num = nums[i % n];
-			while (!stack.isEmpty() && num > nums[stack.peek()]) {
-				res[stack.pop()] = num;
+			while (!stack.isEmpty() && nums[i % n] > nums[stack.peek()]) {
+				res[stack.pop()] = nums[i % n];
 			}
 			if (i < n) {
 				stack.push(i);
 			}
 		}
+		while (!stack.isEmpty()) {
+			res[stack.pop()] = -1;
+		}
 		return res;
 	}
-//	public static int[] nextGreaterElements(int[] nums) {
-//		int n = nums.length;
-//		int[] res = new int[n];
-//		Stack<Integer> stack = new Stack<>();
-//		for (int i = 0; i < n; i++) {
-//			int num = nums[i];
-//			while (!stack.isEmpty() && num > nums[stack.peek()]) {
-//				res[stack.pop()] = num;
-//			}
-//			stack.push(i);
-//		}
-//		for (int i = 0; i < n; i++) {
-//			int num = nums[i];
-//			while (!stack.isEmpty() && num > nums[stack.peek()]) {
-//				res[stack.pop()] = num;
-//			}
-//		}
-//		while (!stack.empty()) {
-//			res[stack.pop()] = -1;
-//		}
-//		return res;
-//	}
 }

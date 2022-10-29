@@ -5,24 +5,20 @@ import java.util.Arrays;
 public class SortColors {
 	
 	public static void main(String[] args) {
-		int[] nums = new int[]{2, 0, 2, 1, 1, 0};
+		int[] nums = new int[]{2, 0, 1};
 		sortColors(nums);
 		Arrays.stream(nums).forEach(System.out::print);
 	}
 	
 	public static void sortColors(int[] nums) {
-		int n = nums.length, i = 0, l = 0, r = n - 1;
-		while (i <= r) {
-			int num = nums[i];
-			if (num == 0) {
-				swap(nums, i, l);
-				i++;
-				l++;
-			} else if (num == 2) {
-				swap(nums, i, r);
-				r--;
+		int zero = 0, two = nums.length - 1, one = 0;
+		while (one <= two) {
+			if (nums[one] == 0) {
+				swap(nums, zero++, one++);
+			} else if (nums[one] == 2) {
+				swap(nums, one, two--);
 			} else {
-				i++;
+				one++;
 			}
 		}
 	}

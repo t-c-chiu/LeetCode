@@ -1,6 +1,8 @@
 package medium;
 
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class FindAndReplaceInString {
 	
@@ -10,20 +12,32 @@ public class FindAndReplaceInString {
 	}
 	
 	public static String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
-		TreeMap<Integer, Integer> treeMap = new TreeMap<>();
-		for (int i = 0; i < indices.length; i++) {
-			treeMap.put(indices[i], i);
-		}
 		StringBuilder builder = new StringBuilder(s);
-		for (int from : treeMap.descendingKeySet()) {
-			int i = treeMap.get(from);
-			String source = sources[i];
-			String target = targets[i];
-			int to = from + source.length();
-			if (s.startsWith(source, from)) {
-				builder.replace(from, to, target);
+		List<Replacement> list = new ArrayList<>();
+		for (int i = 0; i < indices.length; i++) {
+			list.add(new Replacement(indices[i], sources[i], targets[i]));
+		}
+		list.sort(Comparator.comparingInt(replacement -> -replacement.index));
+		for (Replacement replacement : list) {
+			int index = replacement.index;
+			String source = replacement.source;
+			String target = replacement.target;
+			if (s.startsWith(source, index)) {
+				builder.replace(index, index + source.length(), target);
 			}
 		}
 		return builder.toString();
+	}
+	
+	static class Replacement {
+		int index;
+		String source;
+		String target;
+		
+		public Replacement(int index, String source, String target) {
+			this.index = index;
+			this.source = source;
+			this.target = target;
+		}
 	}
 }

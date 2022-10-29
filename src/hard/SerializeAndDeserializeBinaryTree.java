@@ -17,8 +17,8 @@ public class SerializeAndDeserializeBinaryTree {
 	
 	public static class Codec {
 		
-		String splitter = ",";
 		String nullChar = "#";
+		String splitter = ",";
 		
 		// Encodes a tree to a single string.
 		public String serialize(TreeNode root) {
@@ -27,33 +27,33 @@ public class SerializeAndDeserializeBinaryTree {
 			return sb.toString();
 		}
 		
-		private void serialize(TreeNode root, StringBuilder sb) {
-			if (root == null) {
+		private void serialize(TreeNode node, StringBuilder sb) {
+			if (node == null) {
 				sb.append(nullChar).append(splitter);
 			} else {
-				sb.append(root.val).append(splitter);
-				serialize(root.left, sb);
-				serialize(root.right, sb);
+				sb.append(node.val).append(splitter);
+				serialize(node.left, sb);
+				serialize(node.right, sb);
 			}
 		}
 		
 		// Decodes your encoded data to tree.
 		public TreeNode deserialize(String data) {
-			Queue<String> q = new LinkedList<>();
-			for (String v : data.split(splitter)) {
-				q.offer(v);
+			Queue<String> queue = new LinkedList<>();
+			for (String s : data.split(splitter)) {
+				queue.offer(s);
 			}
-			return deserialize(q);
+			return deserialize(queue);
 		}
 		
-		private TreeNode deserialize(Queue<String> q) {
-			String val = q.poll();
-			if (nullChar.equals(val)) {
+		private TreeNode deserialize(Queue<String> queue) {
+			String s = queue.poll();
+			if (nullChar.equals(s)) {
 				return null;
 			}
-			TreeNode node = new TreeNode(Integer.parseInt(val));
-			node.left = deserialize(q);
-			node.right = deserialize(q);
+			TreeNode node = new TreeNode(Integer.parseInt(s));
+			node.left = deserialize(queue);
+			node.right = deserialize(queue);
 			return node;
 		}
 	}

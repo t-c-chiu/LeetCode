@@ -14,42 +14,27 @@ public class SmallestRangeCoveringElementsFromKLists {
 	}
 	
 	public static int[] smallestRange(List<List<Integer>> nums) {
-		TreeMap<Integer, List<Integer>> map = new TreeMap<>();
-		int n = nums.size();
-		for (int i = 0; i < n; i++) {
-			for (Integer num : nums.get(i)) {
-				map.putIfAbsent(num, new ArrayList<>());
-				map.get(num).add(i);
+		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[2]));
+		int start = -100000, end = 100000, max = Integer.MIN_VALUE;
+		for (int i = 0; i < nums.size(); i++) {
+			Integer num = nums.get(i).get(0);
+			pq.offer(new int[]{i, 0, num});
+			max = Math.max(max, num);
+		}
+		while (pq.size() == nums.size()) {
+			int[] poll = pq.poll();
+			int i = poll[0], j = poll[1], num = poll[2];
+			if (max - num < end - start) {
+				start = num;
+				end = max;
+			}
+			if (j + 1 < nums.get(i).size()) {
+				Integer next = nums.get(i).get(j + 1);
+				max = Math.max(max, next);
+				pq.offer(new int[]{i, j + 1, next});
 			}
 		}
-		int[] res = new int[]{map.firstKey(), map.lastKey()};
-		int[] count = new int[n];
-		List<Integer> list = new ArrayList<>(map.keySet());
-		int l = 0, r = 0;
-		while (l < list.size()) {
-			while (r < list.size() && !allIn(count)) {
-				for (Integer i : map.get(list.get(r))) {
-					count[i]++;
-				}
-				r++;
-			}
-			if (allIn(count) && list.get(r - 1) - list.get(l) < res[1] - res[0]) {
-				res = new int[]{list.get(l), list.get(r - 1)};
-			}
-			for (Integer i : map.get(list.get(l))) {
-				count[i]--;
-			}
-			l++;
-		}
-		return res;
+		return new int[]{start, end};
 	}
 	
-	private static boolean allIn(int[] count) {
-		for (int i : count) {
-			if (i == 0) {
-				return false;
-			}
-		}
-		return true;
-	}
 }

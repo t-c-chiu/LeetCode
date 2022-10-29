@@ -7,21 +7,25 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 		System.out.println(res);
 	}
 	
-	// buy -> buy or sell
-	// sell -> rest
-	// rest -> rest or buy
-	// 陣列[i] = 第i + 1天狀態為該操作的最大收益
 	public static int maxProfit(int[] prices) {
-		int n = prices.length;
-		int[] buy = new int[n];
-		int[] sell = new int[n];
-		int[] rest = new int[n];
-		buy[0] = -prices[0];
-		for (int i = 1; i < n; i++) {
-			buy[i] = Math.max(buy[i - 1], rest[i - 1] - prices[i]);
-			sell[i] = Math.max(sell[i - 1], buy[i - 1] + prices[i]);
-			rest[i] = Math.max(rest[i - 1], sell[i - 1]);
+		int buy = Integer.MIN_VALUE, sell = 0, preSell = 0;
+		for (int price : prices) {
+			int preBuy = buy;
+			buy = Math.max(buy, preSell - price);
+			preSell = sell;
+			sell = Math.max(sell, preBuy + price);
 		}
-		return sell[n - 1];
+		return sell;
 	}
+//	public static int maxProfit(int[] prices) {
+//		int n = prices.length;
+//		int[] buy = new int[n], sell = new int[n], rest = new int[n];
+//		buy[0] = -prices[0];
+//		for (int i = 1; i < n; i++) {
+//			buy[i] = Math.max(buy[i - 1], rest[i - 1] - prices[i]);
+//			sell[i] = Math.max(sell[i - 1], buy[i - 1] + prices[i]);
+//			rest[i] = Math.max(rest[i - 1], sell[i - 1]);
+//		}
+//		return sell[n - 1];
+//	}
 }

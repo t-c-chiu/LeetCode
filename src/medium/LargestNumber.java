@@ -11,14 +11,14 @@ public class LargestNumber {
 	
 	public static String largestNumber(int[] nums) {
 		int n = nums.length;
-		String[] numStr = new String[n];
+		String[] strings = new String[n];
 		for (int i = 0; i < n; i++) {
-			numStr[i] = String.valueOf(nums[i]);
+			strings[i] = String.valueOf(nums[i]);
 		}
-		Arrays.sort(numStr, (a, b) -> (b + a).compareTo(a + b));
+		Arrays.sort(strings, (a, b) -> -(a + b).compareTo(b + a));
 		StringBuilder sb = new StringBuilder();
-		for (String s : numStr) {
-			sb.append(s);
+		for (String string : strings) {
+			sb.append(string);
 		}
 		return sb.charAt(0) == '0' ? "0" : sb.toString();
 	}

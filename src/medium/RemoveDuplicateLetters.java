@@ -10,28 +10,28 @@ public class RemoveDuplicateLetters {
 	}
 	
 	public static String removeDuplicateLetters(String s) {
-		int n = s.length();
-		Map<Character, Integer> lastIndex = new HashMap<>();
-		Set<Character> seen = new HashSet<>();
 		Stack<Character> stack = new Stack<>();
+		Set<Character> seen = new HashSet<>();
+		int n = s.length();
+		int[] last = new int[26];
 		for (int i = 0; i < n; i++) {
-			lastIndex.put(s.charAt(i), i);
+			last[s.charAt(i) - 'a'] = i;
 		}
 		for (int i = 0; i < n; i++) {
 			char c = s.charAt(i);
 			if (seen.contains(c)) {
 				continue;
 			}
-			while (!stack.isEmpty() && c < stack.peek() && lastIndex.get(stack.peek()) > i) {
+			while (!stack.isEmpty() && c < stack.peek() && last[stack.peek() - 'a'] > i) {
 				seen.remove(stack.pop());
 			}
 			seen.add(c);
-			stack.add(c);
+			stack.push(c);
 		}
-		StringBuilder builder = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		for (Character c : stack) {
-			builder.append(c);
+			sb.append(c);
 		}
-		return builder.toString();
+		return sb.toString();
 	}
 }
