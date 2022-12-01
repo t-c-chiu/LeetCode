@@ -5,7 +5,7 @@ import java.util.*;
 public class LongestStringChain {
 	
 	public static void main(String[] args) {
-		int res = longestStrChain(new String[]{"xbc", "pcxbcf", "xb", "cxbc", "pcxbc"});
+		int res = longestStrChain(new String[]{"a", "b", "ba", "bca", "bda", "bdca"});
 		System.out.println(res);
 	}
 	
@@ -14,14 +14,15 @@ public class LongestStringChain {
 		Map<String, Integer> map = new HashMap<>();
 		int res = 0;
 		for (String word : words) {
-			int max = 1;
+			int max = 0;
 			for (int i = 0; i < word.length(); i++) {
-				String prevWord = word.substring(0, i) + word.substring(i + 1);
-				max = Math.max(max, map.getOrDefault(prevWord, 0) + 1);
+				String prev = word.substring(0, i) + word.substring(i + 1);
+				max = Math.max(max, map.getOrDefault(prev, 0) + 1);
 			}
-			res = Math.max(res, max);
 			map.put(word, max);
+			res = Math.max(res, max);
 		}
 		return res;
 	}
+	
 }

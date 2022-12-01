@@ -12,15 +12,7 @@ public class TaskScheduler {
 		System.out.println(res);
 	}
 	
-	// n = 3, partCount = 2, emptySlot = 2, availableTasks = 4, idles = 0
-	// A B C _ A B C _ A B C
-	// A B C D E A B C D E A B C
-	//
-	// n = 5, partCount = 2, emptySlot = 6, availableTasks = 4, idles = 2
-	// A B C _ _ _ A B C _ _ _ A B C
-	// A B C D E _ A B C D E _ A B C
 	public static int leastInterval(char[] tasks, int n) {
-		int res = 0;
 		int[] count = new int[26];
 		for (char task : tasks) {
 			count[task - 'A']++;
@@ -31,13 +23,14 @@ public class TaskScheduler {
 				pq.offer(i);
 			}
 		}
+		int res = 0;
 		while (!pq.isEmpty()) {
 			int k = n + 1;
 			List<Integer> nextTasks = new ArrayList<>();
 			while (k > 0 && !pq.isEmpty()) {
 				int remain = pq.poll();
-				if (remain > 1) {
-					nextTasks.add(remain - 1);
+				if (--remain > 0) {
+					nextTasks.add(remain);
 				}
 				res++;
 				k--;

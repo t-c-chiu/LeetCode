@@ -13,16 +13,16 @@ public class RaceCar {
 	}
 	
 	public static int racecar(int target) {
-		int res = 0;
 		Set<String> seen = new HashSet<>();
 		Queue<int[]> queue = new LinkedList<>();
+		int res = 0;
 		seen.add(0 + "," + 1);
 		queue.offer(new int[]{0, 1});
 		while (!queue.isEmpty()) {
 			for (int i = queue.size(); i > 0; i--) {
-				int[] cur = queue.poll();
-				int pos = cur[0];
-				int speed = cur[1];
+				int[] poll = queue.poll();
+				int pos = poll[0];
+				int speed = poll[1];
 				if (pos == target) {
 					return res;
 				}
@@ -34,13 +34,13 @@ public class RaceCar {
 				}
 				int[] reverse = new int[]{pos, speed > 0 ? -1 : 1};
 				key = reverse[0] + "," + reverse[1];
-				if (!seen.contains(key) && Math.abs(reverse[0] - target) < target) {
+				if (!seen.contains(key)) {
 					seen.add(key);
 					queue.offer(reverse);
 				}
 			}
 			res++;
 		}
-		return res;
+		return -1;
 	}
 }

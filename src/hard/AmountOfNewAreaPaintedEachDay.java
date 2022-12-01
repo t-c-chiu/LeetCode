@@ -6,10 +6,15 @@ import java.util.TreeMap;
 public class AmountOfNewAreaPaintedEachDay {
 	
 	public static void main(String[] args) {
-		int[] res = amountPainted(new int[][]{{1, 4}, {5, 8}, {4, 7}});
+		int[] res = amountPainted(new int[][]{{2, 5}, {7, 10}, {3, 9}});
 		System.out.println(Arrays.toString(res));
 	}
 	
+	/**
+	 * | |
+	 * | |
+	 * |  |
+	 */
 	public static int[] amountPainted(int[][] paints) {
 		TreeMap<Integer, Integer> map = new TreeMap<>();
 		int n = paints.length;
@@ -26,12 +31,12 @@ public class AmountOfNewAreaPaintedEachDay {
 					break;
 				}
 				area -= Math.min(end, preEnd) - Math.max(start, preStart);
+				map.remove(preStart);
 				start = Math.min(start, preStart);
 				end = Math.max(end, preEnd);
-				map.remove(preStart);
 			}
-			res[i] = area;
 			map.put(start, end);
+			res[i] = area;
 		}
 		return res;
 	}

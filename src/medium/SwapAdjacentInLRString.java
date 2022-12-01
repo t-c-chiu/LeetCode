@@ -19,8 +19,9 @@ public class SwapAdjacentInLRString {
 			if (i == m || j == n) {
 				break;
 			}
-			char c = start.charAt(i);
-			if (c != end.charAt(j) || c == 'R' && i > j || c == 'L' && i < j) {
+			char c1 = start.charAt(i);
+			char c2 = end.charAt(j);
+			if (c1 != c2 || c1 == 'R' && i > j || c1 == 'L' && i < j) {
 				return false;
 			}
 			i++;

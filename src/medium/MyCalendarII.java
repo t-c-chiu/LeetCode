@@ -19,22 +19,23 @@ public class MyCalendarII {
 	
 	static class MyCalendarTwo {
 		
-		List<int[]> books = new ArrayList<>();
-		List<int[]> overlaps = new ArrayList<>();
+		List<int[]> books;
+		List<int[]> doubleBooks;
 		
 		public MyCalendarTwo() {
-		
+			books = new ArrayList<>();
+			doubleBooks = new ArrayList<>();
 		}
 		
 		public boolean book(int start, int end) {
-			for (int[] overlap : overlaps) {
-				if (start < overlap[1] && end > overlap[0]) {
+			for (int[] doubleBook : doubleBooks) {
+				if (start < doubleBook[1] && end > doubleBook[0]) {
 					return false;
 				}
 			}
 			for (int[] book : books) {
 				if (start < book[1] && end > book[0]) {
-					overlaps.add(new int[]{Math.max(start, book[0]), Math.min(end, book[1])});
+					doubleBooks.add(new int[]{Math.max(start, book[0]), Math.min(end, book[1])});
 				}
 			}
 			books.add(new int[]{start, end});

@@ -19,11 +19,10 @@ public class TheNumberOfWeakCharactersInTheGame {
 	}
 	
 	public static int numberOfWeakCharacters(int[][] properties) {
-		int res = 0;
-		Arrays.sort(properties, ((o1, o2) -> o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0]));
-		int maxDefense = 0;
+		Arrays.sort(properties, (a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);
+		int maxDefense = 0, res = 0;
 		for (int[] property : properties) {
-			if (property[1] < maxDefense) {
+			if (maxDefense > property[1]) {
 				res++;
 			}
 			maxDefense = Math.max(maxDefense, property[1]);

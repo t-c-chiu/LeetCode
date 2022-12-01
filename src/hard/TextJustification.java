@@ -6,7 +6,7 @@ import java.util.List;
 public class TextJustification {
 	
 	public static void main(String[] args) {
-		List<String> res = fullJustify(new String[]{"What", "must", "be", "acknowledgment", "shall", "be"}, 16);
+		List<String> res = fullJustify(new String[]{"This", "is", "an", "example", "of", "text", "justification."}, 16);
 		for (String re : res) {
 			System.out.println("[" + re + "]");
 		}
@@ -14,65 +14,74 @@ public class TextJustification {
 	
 	public static List<String> fullJustify(String[] words, int maxWidth) {
 		List<String> res = new ArrayList<>();
-		int len = words[0].length();
-		int start = 0;
-		for (int i = 0; i < words.length - 1; i++) {
-			len += words[i + 1].length() + 1;
-			if (len > maxWidth) {
-				res.add(justyfy(words, start, i, maxWidth));
-				start = i + 1;
-				len = words[i + 1].length();
+		int start = 0, n = words.length;
+		while (start < n) {
+			int i = start, len = words[i].length();
+			while (i + 1 < n) {
+				if (len + words[i + 1].length() + 1 > maxWidth) {
+					add(res, words, start, i, maxWidth);
+					start = i + 1;
+					break;
+				} else {
+					len += words[i + 1].length() + 1;
+					i++;
+				}
+			}
+			if (i == n - 1) {
+				break;
 			}
 		}
-		res.add(justyfyLastLine(words, start, words.length - 1, maxWidth));
+		addLast(res, words, start, maxWidth);
 		return res;
 	}
 	
-	private static String justyfy(String[] words, int start, int end, int maxWidth) {
-		int spaceCount = end - start;
-		int wordsLen = 0;
-		for (int i = start; i <= end; i++) {
-			wordsLen += words[i].length();
+	private static void add(List<String> res, String[] words, int start, int end, int maxWith) {
+		int count = end - start, len = 0;
+		if (count == 0) {
+			addOne(res, words, start, maxWith);
+			return;
 		}
-		int spaceLength = maxWidth - wordsLen;
+		for (int i = start; i <= end; i++) {
+			len += words[i].length();
+		}
+		int space = maxWith - len;
 		StringBuilder builder = new StringBuilder();
 		for (int i = start; i <= end; i++) {
 			builder.append(words[i]);
 			if (i < end) {
-				builder.append(createSpace(spaceLength / spaceCount, spaceLength % spaceCount, i - start));
+				builder.append(getSpace(space / count, space % count, i - start));
 			}
 		}
-		addSpaces(builder, maxWidth);
-		return builder.toString();
+		res.add(builder.toString());
 	}
 	
-	private static String createSpace(int spaceLength, int oneMoreSpaceIdx, int i) {
-		StringBuilder builder = new StringBuilder();
-		for (int j = 0; j < spaceLength; j++) {
-			builder.append(" ");
-		}
-		if (i < oneMoreSpaceIdx) {
-			builder.append(" ");
-		}
-		return builder.toString();
+	private static void addOne(List<String> res, String[] words, int i, int maxWith) {
+		StringBuilder builder = new StringBuilder(words[i]);
+		builder.append(" ".repeat(maxWith - builder.length()));
+		res.add(builder.toString());
 	}
 	
-	
-	private static String justyfyLastLine(String[] words, int start, int end, int maxWidth) {
+	private static StringBuilder getSpace(int count, int addOne, int i) {
 		StringBuilder builder = new StringBuilder();
-		for (int i = start; i <= end; i++) {
+		for (int j = 0; j < count; j++) {
+			builder.append(" ");
+		}
+		if (i < addOne) {
+			builder.append(" ");
+		}
+		return builder;
+	}
+	
+	private static void addLast(List<String> res, String[] words, int start, int maxWith) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = start; i < words.length; i++) {
 			builder.append(words[i]);
-			if (builder.length() < maxWidth) {
+			if (builder.length() < maxWith) {
 				builder.append(" ");
 			}
 		}
-		addSpaces(builder, maxWidth);
-		return builder.toString();
+		builder.append(" ".repeat(maxWith - builder.length()));
+		res.add(builder.toString());
 	}
 	
-	private static void addSpaces(StringBuilder builder, int maxWidth) {
-		for (int i = builder.length(); i < maxWidth; i++) {
-			builder.append(" ");
-		}
-	}
 }

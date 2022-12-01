@@ -22,31 +22,33 @@ public class ShortestPathInAGridWithObstaclesElimination {
 	public static int shortestPath(int[][] grid, int k) {
 		int m = grid.length, n = grid[0].length, res = 0;
 		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-		int[][] maxK = new int[m][n];
-		for (int[] row : maxK) {
+		int[][] maxKLeft = new int[m][n];
+		for (int[] row : maxKLeft) {
 			Arrays.fill(row, -1);
 		}
-		maxK[0][0] = k;
-		Queue<int[]> q = new LinkedList<>();
-		q.offer(new int[]{0, 0, k});
-		while (!q.isEmpty()) {
-			for (int i = q.size(); i > 0; i--) {
-				int[] cur = q.poll();
-				int x = cur[0], y = cur[1];
-				if (x == m - 1 && y == n - 1) {
+		maxKLeft[0][0] = k;
+		Queue<int[]> queue = new LinkedList<>();
+		queue.offer(new int[]{0, 0, k});
+		while (!queue.isEmpty()) {
+			for (int i = queue.size(); i > 0; i--) {
+				int[] cur = queue.poll();
+				int r = cur[0];
+				int c = cur[1];
+				if (r == m - 1 && c == n - 1) {
 					return res;
 				}
 				for (int[] dir : dirs) {
-					int nextX = x + dir[0], nextY = y + dir[1], kLeft = cur[2];
-					if (nextX < 0 || nextX == m || nextY < 0 || nextY == n ||
-							grid[nextX][nextY] == 1 && kLeft == 0 || maxK[nextX][nextY] >= kLeft) {
+					int nr = r + dir[0];
+					int nc = c + dir[1];
+					int kLeft = cur[2];
+					if (nr < 0 || nr == m || nc < 0 || nc == n || grid[nr][nc] == 1 && kLeft == 0 || maxKLeft[nr][nc] >= kLeft) {
 						continue;
 					}
-					if (grid[nextX][nextY] == 1) {
+					if (grid[nr][nc] == 1) {
 						kLeft--;
 					}
-					maxK[nextX][nextY] = kLeft;
-					q.offer(new int[]{nextX, nextY, kLeft});
+					maxKLeft[nr][nc] = kLeft;
+					queue.offer(new int[]{nr, nc, kLeft});
 				}
 			}
 			res++;

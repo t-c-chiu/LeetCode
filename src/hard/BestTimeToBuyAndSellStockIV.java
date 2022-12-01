@@ -9,9 +9,6 @@ public class BestTimeToBuyAndSellStockIV {
 	
 	public static int maxProfit(int k, int[] prices) {
 		int n = prices.length;
-		if (n < 2) {
-			return 0;
-		}
 		int[][] dp = new int[k + 1][n];
 		for (int i = 1; i <= k; i++) {
 			int maxAfterBuy = -prices[0];
