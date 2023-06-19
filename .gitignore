@@ -3,3 +3,4 @@ out
 *.iml
 src/TitleModifier.java
 src/StringReplacer.java
+src/Test.java

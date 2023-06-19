@@ -1,27 +1,42 @@
 package medium;
 
-import util.ListNode;
+import java.util.Stack;
 
 public class RemoveNthNodeFromEndOfList {
 	
 	public static void main(String[] args) {
-		ListNode res = removeNthFromEnd(ListNode.generateHead(new int[]{1, 2, 3}), 3);
-		System.out.println(res);
+		String s = simplifyPath("/home/");
+		System.out.println(s);
+		s = simplifyPath("/../");
+		System.out.println(s);
+		s = simplifyPath("/home//foo/");
+		System.out.println(s);
+		s = simplifyPath("/a/./b/../../c/");
+		System.out.println(s);
 	}
 	
-	public static ListNode removeNthFromEnd(ListNode head, int n) {
-		ListNode dummy = new ListNode(0);
-		dummy.next = head;
-		ListNode prev = dummy, slow = head, fast = head;
-		for (int i = 0; i < n; i++) {
-			fast = fast.next;
+	static String simplifyPath(String path) {
+		Stack<String> stack = new Stack<>();
+		String[] arr = path.split("/");
+		for (String s : arr) {
+			if (s.isEmpty() || s.equals(".")) {
+				continue;
+			}
+			if (s.equals("..")) {
+				if (!stack.isEmpty()) {
+					stack.pop();
+				}
+			} else {
+				stack.push(s);
+			}
 		}
-		while (fast != null) {
-			prev = slow;
-			slow = slow.next;
-			fast = fast.next;
+		StringBuilder sb = new StringBuilder("/");
+		for (String s : stack) {
+			sb.append(s).append("/");
 		}
-		prev.next = slow.next;
-		return dummy.next;
+		if (sb.length() > 1) {
+			sb.deleteCharAt(sb.length() - 1);
+		}
+		return sb.toString();
 	}
 }

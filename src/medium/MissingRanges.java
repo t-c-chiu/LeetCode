@@ -1,20 +1,21 @@
 package medium;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MissingRanges {
 	
 	public static void main(String[] args) {
-		List<String> res = findMissingRanges(new int[]{0, 1, 3, 50, 75}, -2, 99);
+		List<List<Integer>> res = findMissingRanges(new int[]{0, 1, 3, 50, 75}, -2, 99);
 		System.out.println(res);
 	}
 	
-	public static List<String> findMissingRanges(int[] nums, int lower, int upper) {
-		List<String> res = new ArrayList<>();
+	public static List<List<Integer>> findMissingRanges(int[] nums, int lower, int upper) {
+		List<List<Integer>> res = new ArrayList<>();
 		int n = nums.length;
 		if (n == 0) {
-			helper(res, lower, upper);
+			res.add(Arrays.asList(lower, upper));
 			return res;
 		}
 		helper(res, lower, nums[0] - 1);
@@ -25,11 +26,9 @@ public class MissingRanges {
 		return res;
 	}
 	
-	private static void helper(List<String> res, int from, int to) {
-		if (from == to) {
-			res.add(String.valueOf(from));
-		} else if (from < to) {
-			res.add(from + "->" + to);
+	private static void helper(List<List<Integer>> res, int from, int to) {
+		if (from <= to) {
+			res.add(Arrays.asList(from, to));
 		}
 	}
 }

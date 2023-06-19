@@ -8,31 +8,32 @@ import java.util.Queue;
 public class MaximumLevelSumOfABinaryTree {
 	
 	public static void main(String[] args) {
-		MaximumLevelSumOfABinaryTree test = new MaximumLevelSumOfABinaryTree();
-		int res = test.maxLevelSum(TreeNode.generateRoot(new Integer[]{1, 7, 0, 7, -8}));
+		int res = maxLevelSum(TreeNode.generateRoot(new Integer[]{1, 7, 0, 7, -8}));
 		System.out.println(res);
 	}
 	
-	public int maxLevelSum(TreeNode root) {
-		int maxLevel = 1, level = 1, maxSum = Integer.MIN_VALUE;
+	public static int maxLevelSum(TreeNode root) {
+		int res = 1, level = 1, max = Integer.MIN_VALUE;
 		Queue<TreeNode> queue = new LinkedList<>();
-		queue.add(root);
+		queue.offer(root);
 		while (!queue.isEmpty()) {
 			int sum = 0;
 			for (int i = queue.size(); i > 0; i--) {
 				TreeNode node = queue.poll();
 				sum += node.val;
-				if (node.left != null)
+				if (node.left != null) {
 					queue.offer(node.left);
-				if (node.right != null)
+				}
+				if (node.right != null) {
 					queue.offer(node.right);
+				}
 			}
-			if (sum > maxSum) {
-				maxSum = sum;
-				maxLevel = level;
+			if (sum > max) {
+				max = sum;
+				res = level;
 			}
 			level++;
 		}
-		return maxLevel;
+		return res;
 	}
 }

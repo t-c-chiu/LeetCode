@@ -10,27 +10,27 @@ public class CourseSchedule {
 	}
 	
 	public static boolean canFinish(int numCourses, int[][] prerequisites) {
-		Map<Integer, List<Integer>> map = new HashMap<>();
 		Map<Integer, Integer> inDegree = new HashMap<>();
+		Map<Integer, List<Integer>> graph = new HashMap<>();
 		for (int i = 0; i < numCourses; i++) {
-			map.put(i, new ArrayList<>());
 			inDegree.put(i, 0);
+			graph.put(i, new ArrayList<>());
 		}
 		for (int[] prerequisite : prerequisites) {
-			int pre = prerequisite[0], post = prerequisite[1];
-			map.get(pre).add(post);
+			int post = prerequisite[0], pre = prerequisite[1];
 			inDegree.put(post, inDegree.get(post) + 1);
+			graph.get(pre).add(post);
 		}
 		Queue<Integer> queue = new LinkedList<>();
-		for (Integer course : inDegree.keySet()) {
-			if (inDegree.get(course) == 0) {
-				queue.offer(course);
+		for (Integer i : inDegree.keySet()) {
+			if (inDegree.get(i) == 0) {
+				queue.offer(i);
 			}
 		}
 		while (!queue.isEmpty()) {
-			Integer cur = queue.poll();
 			numCourses--;
-			for (Integer next : map.get(cur)) {
+			Integer i = queue.poll();
+			for (Integer next : graph.get(i)) {
 				inDegree.put(next, inDegree.get(next) - 1);
 				if (inDegree.get(next) == 0) {
 					queue.offer(next);

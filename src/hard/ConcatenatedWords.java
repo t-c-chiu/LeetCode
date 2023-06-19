@@ -14,7 +14,7 @@ public class ConcatenatedWords {
 		List<String> res = new ArrayList<>();
 		Set<String> set = new HashSet<>();
 		for (String word : words) {
-			if (helper(word, set)) {
+			if (isConcatenated(word, set)) {
 				res.add(word);
 			}
 			set.add(word);
@@ -22,7 +22,7 @@ public class ConcatenatedWords {
 		return res;
 	}
 	
-	private static boolean helper(String word, Set<String> set) {
+	private static boolean isConcatenated(String word, Set<String> set) {
 		int n = word.length();
 		boolean[] dp = new boolean[n + 1];
 		dp[0] = true;

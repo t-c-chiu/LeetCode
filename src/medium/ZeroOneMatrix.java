@@ -21,6 +21,8 @@ public class ZeroOneMatrix {
 	
 	public static int[][] updateMatrix(int[][] mat) {
 		int m = mat.length, n = mat[0].length;
+		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+		int[][] res = new int[m][n];
 		boolean[][] visited = new boolean[m][n];
 		Queue<int[]> queue = new LinkedList<>();
 		for (int i = 0; i < m; i++) {
@@ -31,21 +33,20 @@ public class ZeroOneMatrix {
 				}
 			}
 		}
-		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 		while (!queue.isEmpty()) {
 			int[] poll = queue.poll();
-			int i = poll[0], j = poll[1], dis = poll[2];
-			mat[i][j] = dis;
+			int x = poll[0], y = poll[1], dis = poll[2];
+			res[x][y] = dis;
 			for (int[] dir : dirs) {
-				int r = i + dir[0], c = j + dir[1];
-				if (r < 0 || r == m || c < 0 || c == n || visited[r][c]) {
+				int nx = x + dir[0], ny = y + dir[1];
+				if (nx < 0 || nx == m || ny < 0 || ny == n || visited[nx][ny]) {
 					continue;
 				}
-				visited[r][c] = true;
-				queue.offer(new int[]{r, c, dis + 1});
+				visited[nx][ny] = true;
+				queue.offer(new int[]{nx, ny, dis + 1});
 			}
 		}
-		return mat;
+		return res;
 	}
 	
 }
