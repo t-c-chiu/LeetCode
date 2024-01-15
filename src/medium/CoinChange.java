@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class CoinChange {
 	
 	public static void main(String[] args) {
-		int res = coinChange(new int[]{2}, 3);
+		int res = coinChange(new int[]{1, 2, 5}, 11);
 		System.out.println(res);
 	}
 	
@@ -15,8 +15,8 @@ public class CoinChange {
 		dp[0] = 0;
 		for (int i = 1; i <= amount; i++) {
 			for (int coin : coins) {
-				if (i >= coin && dp[i - coin] != Integer.MAX_VALUE) {
-					dp[i] = Math.min(dp[i], 1 + dp[i - coin]);
+				if (coin <= i && dp[i - coin] != Integer.MAX_VALUE) {
+					dp[i] = Math.min(dp[i], dp[i - coin] + 1);
 				}
 			}
 		}

@@ -11,8 +11,8 @@ public class LongestArithmeticSubsequence {
 	}
 	
 	public static int longestArithSeqLength(int[] nums) {
-		int res = 2, n = nums.length;
-		Map<Integer, Integer>[] dp = new HashMap[n];
+		int n = nums.length, res = 0;
+		Map<Integer, Integer>[] dp = new Map[n];
 		for (int i = 0; i < n; i++) {
 			dp[i] = new HashMap<>();
 			for (int j = 0; j < i; j++) {

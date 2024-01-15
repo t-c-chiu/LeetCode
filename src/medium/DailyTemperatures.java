@@ -7,7 +7,7 @@ public class DailyTemperatures {
 	
 	public static void main(String[] args) {
 		int[] res = dailyTemperatures(new int[]{73, 74, 75, 71, 69, 72, 76, 73});
-		Arrays.stream(res).forEach(i -> System.out.print(i + " "));
+		System.out.println(Arrays.toString(res));
 	}
 	
 	public static int[] dailyTemperatures(int[] temperatures) {
@@ -15,7 +15,8 @@ public class DailyTemperatures {
 		int[] res = new int[n];
 		Stack<Integer> stack = new Stack<>();
 		for (int i = 0; i < n; i++) {
-			while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]) {
+			int temp = temperatures[i];
+			while (!stack.empty() && temp > temperatures[stack.peek()]) {
 				int j = stack.pop();
 				res[j] = i - j;
 			}

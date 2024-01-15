@@ -1,6 +1,9 @@
 package medium;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RankTeamsByVotes {
 	
@@ -10,13 +13,13 @@ public class RankTeamsByVotes {
 	}
 	
 	public static String rankTeams(String[] votes) {
-		int n = votes[0].length();
 		Map<Character, int[]> map = new HashMap<>();
+		int n = votes[0].length();
 		for (int i = 0; i < n; i++) {
 			for (String vote : votes) {
-				char team = vote.charAt(i);
-				map.putIfAbsent(team, new int[n]);
-				map.get(team)[i]++;
+				char c = vote.charAt(i);
+				map.putIfAbsent(c, new int[n]);
+				map.get(c)[i]++;
 			}
 		}
 		List<Character> list = new ArrayList<>(map.keySet());
@@ -30,10 +33,11 @@ public class RankTeamsByVotes {
 			}
 			return a - b;
 		});
-		StringBuilder sb = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		for (Character c : list) {
-			sb.append(c);
+			builder.append(c);
 		}
-		return sb.toString();
+		return builder.toString();
 	}
+	
 }

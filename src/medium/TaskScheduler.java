@@ -1,9 +1,6 @@
 package medium;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class TaskScheduler {
 	
@@ -27,19 +24,18 @@ public class TaskScheduler {
 		while (!pq.isEmpty()) {
 			int k = n + 1;
 			List<Integer> nextTasks = new ArrayList<>();
-			while (k > 0 && !pq.isEmpty()) {
-				int remain = pq.poll();
-				if (--remain > 0) {
-					nextTasks.add(remain);
+			while (!pq.isEmpty() && k > 0) {
+				int i = pq.poll();
+				if (--i > 0) {
+					nextTasks.add(i);
 				}
 				res++;
 				k--;
 			}
-			pq.addAll(nextTasks);
-			if (pq.isEmpty()) {
-				break;
+			if (!nextTasks.isEmpty()) {
+				pq.addAll(nextTasks);
+				res += k;
 			}
-			res += k;
 		}
 		return res;
 	}

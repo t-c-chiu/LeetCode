@@ -13,14 +13,14 @@ public class FindKPairsWithSmallestSums {
 		int m = nums1.length, n = nums2.length;
 		List<List<Integer>> res = new ArrayList<>();
 		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> nums1[o[0]] + nums2[o[1]]));
-		for (int i = 0; i < m && i < k; i++) {
+		for (int i = 0; i < m; i++) {
 			pq.offer(new int[]{i, 0});
 		}
 		while (!pq.isEmpty() && res.size() < k) {
-			int[] ij = pq.poll();
-			int i = ij[0], j = ij[1];
+			int[] poll = pq.poll();
+			int i = poll[0], j = poll[1];
 			res.add(Arrays.asList(nums1[i], nums2[j]));
-			if (j + 1 < n) {
+			if (j < n - 1) {
 				pq.offer(new int[]{i, j + 1});
 			}
 		}

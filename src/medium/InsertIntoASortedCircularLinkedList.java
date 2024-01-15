@@ -13,9 +13,10 @@ public class InsertIntoASortedCircularLinkedList {
 		}
 		Node cur = head;
 		while (true) {
-			if (cur.val < cur.next.val && cur.val <= insertVal && insertVal <= cur.next.val ||
-					cur.val > cur.next.val && (cur.val <= insertVal || insertVal <= cur.next.val) ||
-					cur.next == head) {
+			Node next = cur.next;
+			if (cur.val <= next.val && cur.val <= insertVal && insertVal <= next.val
+					|| cur.val > next.val && (cur.val <= insertVal || insertVal <= next.val)
+					|| next == head) {
 				newNode.next = cur.next;
 				cur.next = newNode;
 				break;

@@ -10,34 +10,42 @@ public class CourseScheduleII {
 	}
 	
 	public static int[] findOrder(int numCourses, int[][] prerequisites) {
-		Map<Integer, Set<Integer>> graph = new HashMap<>();
-		Map<Integer, Integer> inDegree = new HashMap<>();
+		Map<Integer, List<Integer>> map = new HashMap<>();
+		Map<Integer, Integer> preCount = new HashMap<>();
 		for (int i = 0; i < numCourses; i++) {
-			graph.put(i, new HashSet<>());
-			inDegree.put(i, 0);
+			map.put(i, new ArrayList<>());
+			preCount.put(i, 0);
 		}
-		for (int[] pre : prerequisites) {
-			graph.get(pre[1]).add(pre[0]);
-			inDegree.put(pre[0], inDegree.get(pre[0]) + 1);
+		for (int[] prerequisite : prerequisites) {
+			int pre = prerequisite[1], post = prerequisite[0];
+			map.get(pre).add(post);
+			preCount.put(post, preCount.get(post) + 1);
 		}
 		Queue<Integer> queue = new LinkedList<>();
-		for (Integer course : inDegree.keySet()) {
-			if (inDegree.get(course) == 0) {
+		for (Integer course : preCount.keySet()) {
+			if (preCount.get(course) == 0) {
 				queue.offer(course);
 			}
 		}
-		int i = 0;
-		int[] res = new int[numCourses];
+		List<Integer> res = new ArrayList<>();
 		while (!queue.isEmpty()) {
-			Integer cur = queue.poll();
-			res[i++] = cur;
-			for (Integer next : graph.get(cur)) {
-				inDegree.put(next, inDegree.get(next) - 1);
-				if (inDegree.get(next) == 0) {
+			Integer course = queue.poll();
+			res.add(course);
+			numCourses--;
+			for (Integer next : map.get(course)) {
+				preCount.put(next, preCount.get(next) - 1);
+				if (preCount.get(next) == 0) {
 					queue.offer(next);
 				}
 			}
 		}
-		return i == numCourses ? res : new int[0];
+		if (numCourses != 0) {
+			return new int[]{};
+		}
+		int[] resArr = new int[res.size()];
+		for (int i = 0; i < res.size(); i++) {
+			resArr[i] = res.get(i);
+		}
+		return resArr;
 	}
 }

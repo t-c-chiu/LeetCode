@@ -10,33 +10,19 @@ public class BuildingsWithAnOceanView {
 	}
 	
 	public static int[] findBuildings(int[] heights) {
-		int highest = 0;
-		List<Integer> list = new ArrayList<>();
-		for (int i = heights.length - 1; i >= 0; i--) {
-			if (heights[i] > highest) {
-				list.add(i);
-				highest = heights[i];
+		int n = heights.length, max = 0;
+		Stack<Integer> stack = new Stack<>();
+		for (int i = n - 1; i >= 0; i--) {
+			if (heights[i] > max) {
+				stack.push(i);
+				max = heights[i];
 			}
 		}
-		int[] res = new int[list.size()];
-		for (int i = list.size() - 1, j = 0; i >= 0; i--, j++) {
-			res[j] = list.get(i);
+		int[] res = new int[stack.size()];
+		int i = 0;
+		while (!stack.isEmpty()) {
+			res[i++] = stack.pop();
 		}
 		return res;
 	}
-//	public static int[] findBuildings(int[] heights) {
-//		Stack<Integer> stack = new Stack<>();
-//		for (int i = 0; i < heights.length; i++) {
-//			while (!stack.isEmpty() && heights[i] >= heights[stack.peek()]) {
-//				stack.pop();
-//			}
-//			stack.push(i);
-//		}
-//		int[] res = new int[stack.size()];
-//		int i = 0;
-//		for (Integer index : stack) {
-//			res[i++] = index;
-//		}
-//		return res;
-//	}
 }

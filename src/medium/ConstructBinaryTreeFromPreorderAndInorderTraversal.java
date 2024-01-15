@@ -13,17 +13,16 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 		return helper(preorder, inorder, 0, 0, inorder.length - 1);
 	}
 	
-	private static TreeNode helper(int[] preorder, int[] inorder, int i, int inStart, int inEnd) {
-		if (i == preorder.length || inStart > inEnd) {
+	private static TreeNode helper(int[] preorder, int[] inorder, int preStart, int inStart, int inEnd) {
+		if (preStart == preorder.length || inStart > inEnd) {
 			return null;
 		}
-		int val = preorder[i];
+		int val = preorder[preStart];
 		TreeNode node = new TreeNode(val);
-		for (int j = inStart; j <= inEnd; j++) {
-			if (val == inorder[j]) {
-				node.left = helper(preorder, inorder, i + 1, inStart, j - 1);
-				node.right = helper(preorder, inorder, i + j - inStart + 1, j + 1, inEnd);
-				break;
+		for (int i = inStart; i <= inEnd; i++) {
+			if (inorder[i] == val) {
+				node.left = helper(preorder, inorder, preStart + 1, inStart, i - 1);
+				node.right = helper(preorder, inorder, preStart + i - inStart + 1, i + 1, inEnd);
 			}
 		}
 		return node;

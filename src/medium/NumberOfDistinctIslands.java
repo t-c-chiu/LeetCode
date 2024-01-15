@@ -31,11 +31,12 @@ public class NumberOfDistinctIslands {
 	}
 	
 	private static void dfs(int[][] grid, int i, int j, int x, int y, StringBuilder builder) {
-		if (i < 0 || j < 0 || i == grid.length || j == grid[0].length || grid[i][j] == 0) {
+		int m = grid.length, n = grid[0].length;
+		if (i < 0 || i == m || j < 0 || j == n || grid[i][j] == 0) {
 			return;
 		}
-		builder.append(x).append(y);
 		grid[i][j] = 0;
+		builder.append(x).append(",").append(y).append("|");
 		dfs(grid, i + 1, j, x + 1, y, builder);
 		dfs(grid, i - 1, j, x - 1, y, builder);
 		dfs(grid, i, j + 1, x, y + 1, builder);

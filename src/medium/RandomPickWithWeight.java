@@ -21,11 +21,9 @@ public class RandomPickWithWeight {
 	
 	static class Solution {
 		
-		int[] w;
 		int[] preSum;
 		
 		public Solution(int[] w) {
-			this.w = w;
 			int n = w.length;
 			preSum = new int[n];
 			preSum[0] = w[0];
@@ -35,7 +33,8 @@ public class RandomPickWithWeight {
 		}
 		
 		public int pickIndex() {
-			int n = preSum.length, target = new Random().nextInt(preSum[n - 1]) + 1, lo = 0, hi = n;
+			int target = new Random().nextInt(preSum[preSum.length - 1]) + 1;
+			int lo = 0, hi = preSum.length - 1;
 			while (lo < hi) {
 				int mid = (lo + hi) / 2;
 				if (preSum[mid] < target) {

@@ -10,33 +10,34 @@ public class PathWithMaximumProbability {
 	}
 	
 	public static double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
-		Map<Integer, List<double[]>> graph = new HashMap<>();
+		Map<Integer, List<double[]>> map = new HashMap<>();
 		for (int i = 0; i < n; i++) {
-			graph.put(i, new ArrayList<>());
+			map.put(i, new ArrayList<>());
 		}
 		for (int i = 0; i < edges.length; i++) {
 			int[] edge = edges[i];
-			graph.get(edge[0]).add(new double[]{edge[1], succProb[i]});
-			graph.get(edge[1]).add(new double[]{edge[0], succProb[i]});
+			int u = edge[0], v = edge[1];
+			map.get(u).add(new double[]{v, succProb[i]});
+			map.get(v).add(new double[]{u, succProb[i]});
 		}
-		double[] prob = new double[n];
-		PriorityQueue<Double[]> queue = new PriorityQueue<>((o1, o2) -> o2[1].compareTo(o1[1]));
-		queue.offer(new Double[]{(double) start, 1d});
-		while (!queue.isEmpty()) {
-			Double[] cur = queue.poll();
-			if (cur[0] == end) {
-				return cur[1];
+		double[] probs = new double[n];
+		PriorityQueue<double[]> pq = new PriorityQueue<>(Comparator.comparingDouble(o -> -o[1]));
+		pq.offer(new double[]{start, 1d});
+		while (!pq.isEmpty()) {
+			double[] poll = pq.poll();
+			int index = (int) poll[0];
+			double prob = poll[1];
+			if (index == end) {
+				return prob;
 			}
-			
-			for (double[] next : graph.get(cur[0].intValue())) {
-				int index = (int) next[0];
-				double curProb = cur[1], nextProb = next[1];
-				if (curProb * nextProb > prob[index]) {
-					prob[index] = curProb * nextProb;
-					queue.offer(new Double[]{(double) index, prob[index]});
+			for (double[] next : map.get(index)) {
+				int nextIndex = (int) next[0];
+				if (prob * next[1] > probs[nextIndex]) {
+					probs[nextIndex] = prob * next[1];
+					pq.offer(new double[]{nextIndex, probs[nextIndex]});
 				}
 			}
 		}
-		return prob[end];
+		return 0;
 	}
 }

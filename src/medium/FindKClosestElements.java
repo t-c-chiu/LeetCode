@@ -12,7 +12,7 @@ public class FindKClosestElements {
 	
 	public static List<Integer> findClosestElements(int[] arr, int k, int x) {
 		int lo = 0, hi = arr.length - 1;
-		while (hi - lo >= k) {
+		while (hi - lo + 1 > k) {
 			if (Math.abs(arr[lo] - x) <= Math.abs(arr[hi] - x)) {
 				hi--;
 			} else {

@@ -14,6 +14,18 @@ public class MeetingRoomsII {
 		});
 		System.out.println(res);
 	}
+
+//	public static int minMeetingRooms(int[][] intervals) {
+//		Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
+//		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
+//		for (int[] interval : intervals) {
+//			if (!pq.isEmpty() && pq.peek()[1] <= interval[0]) {
+//				pq.poll();
+//			}
+//			pq.offer(interval);
+//		}
+//		return pq.size();
+//	}
 	
 	public static int minMeetingRooms(int[][] intervals) {
 		int n = intervals.length;
@@ -25,15 +37,16 @@ public class MeetingRoomsII {
 		}
 		Arrays.sort(start);
 		Arrays.sort(end);
-		int endIdx = 0, room = 0;
+		int rooms = 0, endIndex = 0;
 		for (int i = 0; i < n; i++) {
-			if (start[i] < end[endIdx]) {
-				room++;
+			if (start[i] < end[endIndex]) {
+				rooms++;
 			} else {
-				endIdx++;
+				endIndex++;
 			}
 		}
-		return room;
+		return rooms;
 	}
+	
 	
 }

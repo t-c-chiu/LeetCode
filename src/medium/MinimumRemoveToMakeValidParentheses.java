@@ -1,5 +1,7 @@
 package medium;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 public class MinimumRemoveToMakeValidParentheses {
@@ -16,36 +18,30 @@ public class MinimumRemoveToMakeValidParentheses {
 	}
 	
 	public static String minRemoveToMakeValid(String s) {
-		StringBuilder builder = new StringBuilder(s);
+		int n = s.length();
 		Stack<Integer> stack = new Stack<>();
-		for (int i = 0; i < s.length(); i++) {
+		Set<Integer> toRemove = new HashSet<>();
+		for (int i = 0; i < n; i++) {
 			char c = s.charAt(i);
-			switch (c) {
-				case '(':
-					stack.push(i);
-					break;
-				case ')':
-					if (stack.isEmpty()) {
-						builder.setCharAt(i, ' ');
-					} else {
-						stack.pop();
-					}
-					break;
+			if (c == '(') {
+				stack.push(i);
+			}
+			if (c == ')') {
+				if (stack.isEmpty() || s.charAt(stack.peek()) != '(') {
+					toRemove.add(i);
+				} else {
+					stack.pop();
+				}
 			}
 		}
-		while (!stack.isEmpty()) {
-			builder.setCharAt(stack.pop(), ' ');
+		toRemove.addAll(stack);
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < n; i++) {
+			if (!toRemove.contains(i)) {
+				builder.append(s.charAt(i));
+			}
 		}
-		return builder.toString().replaceAll(" ", "");
+		return builder.toString();
 	}
 	
-	public static class Bracket {
-		boolean open;
-		int index;
-		
-		public Bracket(boolean open, int index) {
-			this.open = open;
-			this.index = index;
-		}
-	}
 }

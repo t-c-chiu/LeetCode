@@ -21,67 +21,67 @@ public class DesignInMemoryFileSystem {
 		File root;
 		
 		public FileSystem() {
-			root = new File("/", true);
+			root = new File("", true);
 		}
 		
 		public List<String> ls(String path) {
-			String[] split = path.split("/");
-			File cur = root;
-			for (int i = 1; i < split.length; i++) {
-				cur = cur.next.get(split[i]);
+			File file = mkdirAndReturn(path);
+			List<String> res = new ArrayList<>();
+			if (file.isDir) {
+				res.addAll(file.map.keySet());
+				res.sort(Comparator.naturalOrder());
+			} else {
+				res.add(file.name);
 			}
-			if (cur.isDirectory) {
-				List<String> list = new ArrayList<>(cur.next.keySet());
-				list.sort(Comparator.naturalOrder());
-				return list;
-			}
-			return Collections.singletonList(cur.name);
+			return res;
 		}
 		
 		public void mkdir(String path) {
-			mkdirWithReturn(path);
+			mkdirAndReturn(path);
 		}
 		
-		public File mkdirWithReturn(String path) {
-			File cur = root;
+		private File mkdirAndReturn(String path) {
 			String[] split = path.split("/");
+			File cur = root;
 			for (int i = 1; i < split.length; i++) {
 				String name = split[i];
-				if (!cur.next.containsKey(name)) {
-					cur.next.put(name, new File(name, true));
+				if (!cur.map.containsKey(name)) {
+					cur.map.put(name, new File(name, true));
 				}
-				cur = cur.next.get(name);
+				cur = cur.map.get(name);
 			}
 			return cur;
 		}
 		
 		public void addContentToFile(String filePath, String content) {
-			int lastSlash = filePath.lastIndexOf('/');
-			String fileName = filePath.substring(lastSlash + 1);
-			File dir = mkdirWithReturn(filePath.substring(0, lastSlash));
-			dir.next.putIfAbsent(fileName, new File(fileName, false));
-			dir.next.get(fileName).content += content;
+			int i = filePath.lastIndexOf("/");
+			String dirPath = filePath.substring(0, i);
+			String fileName = filePath.substring(i + 1);
+			File dir = mkdirAndReturn(dirPath);
+			if (!dir.map.containsKey(fileName)) {
+				dir.map.put(fileName, new File(fileName, false));
+			}
+			dir.map.get(fileName).content += content;
 		}
 		
 		public String readContentFromFile(String filePath) {
-			int lastSlash = filePath.lastIndexOf('/');
-			String fileName = filePath.substring(lastSlash + 1);
-			File dir = mkdirWithReturn(filePath.substring(0, lastSlash));
-			return dir.next.get(fileName).content;
+			File file = mkdirAndReturn(filePath);
+			return file.content;
 		}
 		
 		class File {
+			boolean isDir;
 			String name;
 			String content;
-			boolean isDirectory;
-			Map<String, File> next;
+			Map<String, File> map;
 			
-			File(String name, boolean isDirectory) {
+			File(String name, boolean isDir) {
 				this.name = name;
-				this.content = "";
-				this.isDirectory = isDirectory;
-				next = new HashMap<>();
+				this.isDir = isDir;
+				content = "";
+				map = new HashMap<>();
 			}
 		}
 	}
+	
 }

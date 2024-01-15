@@ -11,9 +11,9 @@ public class DecodeString {
 	}
 	
 	public static String decodeString(String s) {
+		StringBuilder builder = new StringBuilder();
 		Stack<Integer> countStack = new Stack<>();
 		Stack<String> strStack = new Stack<>();
-		StringBuilder builder = new StringBuilder();
 		int i = 0, n = s.length();
 		while (i < n) {
 			char c = s.charAt(i);
@@ -25,17 +25,18 @@ public class DecodeString {
 				}
 				countStack.push(num);
 			} else {
-				if (Character.isLetter(c)) {
-					builder.append(c);
-				} else if (c == '[') {
+				if (c == '[') {
 					strStack.push(builder.toString());
 					builder = new StringBuilder();
-				} else {
+				} else if (c == ']') {
+					int count = countStack.pop();
 					StringBuilder temp = new StringBuilder(strStack.pop());
-					for (int j = countStack.pop(); j > 0; j--) {
+					for (int j = 0; j < count; j++) {
 						temp.append(builder);
 					}
 					builder = temp;
+				} else {
+					builder.append(c);
 				}
 				i++;
 			}

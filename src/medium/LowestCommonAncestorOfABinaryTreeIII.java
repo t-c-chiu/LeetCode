@@ -11,7 +11,7 @@ public class LowestCommonAncestorOfABinaryTreeIII {
 			p = p.parent;
 			pDepth--;
 		}
-		while (qDepth > pDepth) {
+		while (pDepth < qDepth) {
 			q = q.parent;
 			qDepth--;
 		}
@@ -22,23 +22,29 @@ public class LowestCommonAncestorOfABinaryTreeIII {
 		return p;
 	}
 	
-	private static int getDepth(Node n) {
+	private static int getDepth(Node node) {
 		int depth = 0;
-		while (n.parent != null) {
-			n = n.parent;
+		while (node != null) {
 			depth++;
+			node = node.parent;
 		}
 		return depth;
 	}
-
 //	public static Node lowestCommonAncestor(Node p, Node q) {
-//		Node a = p, b = q;
-//		while (a != b) {
-//			a = a.parent == null ? q : a.parent;
-//			b = b.parent == null ? p : b.parent;
+//		Set<Node> parents = new HashSet<>();
+//		while (p != null) {
+//			parents.add(p);
+//			p = p.parent;
 //		}
-//		return a;
+//		while (q != null) {
+//			if (parents.contains(q)) {
+//				return q;
+//			}
+//			q = q.parent;
+//		}
+//		return null;
 //	}
+	
 	
 	class Node {
 		public int val;

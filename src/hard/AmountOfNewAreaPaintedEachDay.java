@@ -10,19 +10,13 @@ public class AmountOfNewAreaPaintedEachDay {
 		System.out.println(Arrays.toString(res));
 	}
 	
-	/**
-	 * | |
-	 * | |
-	 * |  |
-	 */
-	public static int[] amountPainted(int[][] paints) {
+	public static int[] amountPainted(int[][] paint) {
 		TreeMap<Integer, Integer> map = new TreeMap<>();
-		int n = paints.length;
+		int n = paint.length;
 		int[] res = new int[n];
 		for (int i = 0; i < n; i++) {
-			int[] paint = paints[i];
-			int start = paint[0];
-			int end = paint[1];
+			int start = paint[i][0];
+			int end = paint[i][1];
 			int area = end - start;
 			while (map.floorKey(end) != null) {
 				int preStart = map.floorKey(end);
@@ -35,8 +29,8 @@ public class AmountOfNewAreaPaintedEachDay {
 				start = Math.min(start, preStart);
 				end = Math.max(end, preEnd);
 			}
-			map.put(start, end);
 			res[i] = area;
+			map.put(start, end);
 		}
 		return res;
 	}

@@ -2,9 +2,6 @@ package medium;
 
 import util.TreeNode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SumRootToLeafNumbers {
 	
 	public static void main(String[] args) {
@@ -27,27 +24,6 @@ public class SumRootToLeafNumbers {
 		return dfs(node.left, val) + dfs(node.right, val);
 	}
 	
-	//	static int sum = 0;
-//
-//	public static int sumNumbers(TreeNode root) {
-//		dfs(root, 0);
-//		return sum;
-//	}
-//
-//	private static void dfs(TreeNode node, int num) {
-//		if (node == null) {
-//			return;
-//		}
-//		num *= 10;
-//		num += node.val;
-//		if (isLeaf(node)) {
-//			sum += num;
-//			return;
-//		}
-//		dfs(node.left, num);
-//		dfs(node.right, num);
-//	}
-//
 	private static boolean isLeaf(TreeNode node) {
 		return node != null && node.left == null && node.right == null;
 	}

@@ -14,9 +14,10 @@ public class NumberOfGoodPaths {
 		TreeMap<Integer, List<Integer>> sameValue = new TreeMap<>();
 		Map<Integer, Set<Integer>> graph = new HashMap<>();
 		for (int i = 0; i < n; i++) {
-			sameValue.putIfAbsent(vals[i], new ArrayList<>());
-			sameValue.get(vals[i]).add(i);
-			graph.put(i, new HashSet<>());
+			int val = vals[i];
+			sameValue.putIfAbsent(val, new ArrayList<>());
+			sameValue.get(val).add(i);
+			graph.put(i,new HashSet<>());
 		}
 		for (int[] edge : edges) {
 			int u = edge[0], v = edge[1];
@@ -31,25 +32,25 @@ public class NumberOfGoodPaths {
 		for (int i = 0; i < n; i++) {
 			parent[i] = i;
 		}
-		for (Integer val : sameValue.keySet()) {
-			List<Integer> nodes = sameValue.get(val);
-			for (Integer u : nodes) {
-				for (Integer v : graph.get(u)) {
-					int p1 = find(parent, u);
-					int p2 = find(parent, v);
+		for (Integer key : sameValue.keySet()) {
+			List<Integer> nodes = sameValue.get(key);
+			for (Integer i : nodes) {
+				for (Integer j : graph.get(i)) {
+					int p1 = find(parent, i);
+					int p2 = find(parent, j);
 					if (p1 != p2) {
 						parent[p1] = p2;
 					}
 				}
 			}
 			Map<Integer, Integer> group = new HashMap<>();
-			for (Integer u : nodes) {
-				int p = find(parent, u);
+			for (Integer node : nodes) {
+				int p = find(parent, node);
 				group.put(p, group.getOrDefault(p, 0) + 1);
 			}
 			res += nodes.size();
 			for (Integer p : group.keySet()) {
-				int size = group.get(p);
+				Integer size = group.get(p);
 				res += size * (size - 1) / 2;
 			}
 		}

@@ -1,34 +1,30 @@
 package medium;
 
-import java.util.Stack;
-
 public class MinimumAddToMakeParenthesesValid {
-
+	
 	public static void main(String[] args) {
-		MinimumAddToMakeParenthesesValid minimumAddToMakeParenthesesValid = new MinimumAddToMakeParenthesesValid();
-		System.out.println(minimumAddToMakeParenthesesValid.minAddToMakeValid("())"));
-		System.out.println(minimumAddToMakeParenthesesValid.minAddToMakeValid("((("));
-		System.out.println(minimumAddToMakeParenthesesValid.minAddToMakeValid("()"));
-		System.out.println(minimumAddToMakeParenthesesValid.minAddToMakeValid("()))(("));
-		System.out.println(minimumAddToMakeParenthesesValid.minAddToMakeValid(")))()((("));
-		System.out.println(minimumAddToMakeParenthesesValid.minAddToMakeValid("))(()())("));
+		System.out.println(minAddToMakeValid("())"));
+		System.out.println(minAddToMakeValid("((("));
+		System.out.println(minAddToMakeValid("()"));
+		System.out.println(minAddToMakeValid("()))(("));
+		System.out.println(minAddToMakeValid(")))()((("));
+		System.out.println(minAddToMakeValid("))(()())("));
 	}
-
-	public int minAddToMakeValid(String S) {
-		int rightParenthesis = 0;
-		Stack<Character> leftParenthesis = new Stack<>();
-		for (char c : S.toCharArray()) {
-			switch (c) {
-				case '(':
-					leftParenthesis.push(c);
-					break;
-				case ')':
-					if (leftParenthesis.isEmpty())
-						rightParenthesis++;
-					else
-						leftParenthesis.pop();
+	
+	public static int minAddToMakeValid(String s) {
+		int open = 0, close = 0;
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (c == '(') {
+				open++;
+			} else {
+				if (open == 0) {
+					close++;
+				} else {
+					open--;
+				}
 			}
 		}
-		return leftParenthesis.size() + rightParenthesis;
+		return open + close;
 	}
 }

@@ -14,16 +14,16 @@ public class ChampagneTower {
 		List<Double> prevRow = new ArrayList<>();
 		prevRow.add((double) poured);
 		for (int i = 1; i <= query_row; i++) {
-			List<Double> curRow = new ArrayList<>();
-			double sideGlass = Math.max(0, (prevRow.get(0) - 1) / 2);
-			curRow.add(sideGlass);
+			List<Double> row = new ArrayList<>();
+			double side = Math.max(0, (prevRow.get(0) - 1) / 2);
+			row.add(side);
 			for (int j = 1; j < prevRow.size(); j++) {
-				curRow.add(Math.max(0, (prevRow.get(j - 1) - 1) / 2) + Math.max(0, (prevRow.get(j) - 1) / 2));
+				double prevLeft = Math.max(0, (prevRow.get(j - 1) - 1) / 2), prevRight = Math.max(0, (prevRow.get(j) - 1) / 2);
+				row.add(prevLeft + prevRight);
 			}
-			curRow.add(sideGlass);
-			prevRow = curRow;
+			row.add(side);
+			prevRow = row;
 		}
-		
 		return Math.min(1, prevRow.get(query_glass));
 	}
 }

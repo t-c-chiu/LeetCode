@@ -1,8 +1,5 @@
 package medium;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Stack;
 
 public class SimplifyPath {
@@ -15,18 +12,25 @@ public class SimplifyPath {
 	public static String simplifyPath(String path) {
 		String[] split = path.split("/");
 		Stack<String> stack = new Stack<>();
-		Set<String> skip = new HashSet<>(Arrays.asList("", ".", ".."));
 		for (String s : split) {
-			if ("..".equals(s) && !stack.isEmpty()) {
-				stack.pop();
-			} else if (!skip.contains(s)) {
+			if (s.isEmpty() || ".".equals(s)) {
+				continue;
+			}
+			if ("..".equals(s)) {
+				if (!stack.isEmpty()) {
+					stack.pop();
+				}
+			} else {
 				stack.push(s);
 			}
+		}
+		if (stack.isEmpty()) {
+			return "/";
 		}
 		StringBuilder builder = new StringBuilder();
 		for (String s : stack) {
 			builder.append("/").append(s);
 		}
-		return builder.isEmpty() ? "/" : builder.toString();
+		return builder.toString();
 	}
 }

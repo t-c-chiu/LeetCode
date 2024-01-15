@@ -11,47 +11,37 @@ public class BinaryTreeVerticalOrderTraversal {
 		System.out.println(res);
 	}
 	
-	
-	static int min, max;
-	
 	public static List<List<Integer>> verticalOrder(TreeNode root) {
 		List<List<Integer>> res = new ArrayList<>();
 		if (root == null) {
 			return res;
 		}
-		findRange(root, 0);
-		for (int i = min; i <= max; i++) {
-			res.add(new ArrayList<>());
-		}
-		Queue<TreeNode> q = new LinkedList<>();
-		Queue<Integer> idx = new LinkedList<>();
-		q.offer(root);
-		idx.offer(-min);
-		while (!q.isEmpty()) {
-			TreeNode node = q.poll();
-			int i = idx.poll();
-			res.get(i).add(node.val);
+		Map<Integer, List<Integer>> map = new HashMap<>();
+		Queue<TreeNode> queue = new LinkedList<>();
+		Queue<Integer> col = new LinkedList<>();
+		queue.offer(root);
+		col.offer(0);
+		int min = 0, max = 0;
+		while (!queue.isEmpty()) {
+			TreeNode node = queue.poll();
+			Integer c = col.poll();
+			map.putIfAbsent(c, new ArrayList<>());
+			map.get(c).add(node.val);
+			min = Math.min(min, c);
+			max = Math.max(max, c);
 			if (node.left != null) {
-				q.offer(node.left);
-				idx.offer(i - 1);
+				queue.offer(node.left);
+				col.offer(c - 1);
 			}
 			if (node.right != null) {
-				q.offer(node.right);
-				idx.offer(i + 1);
+				queue.offer(node.right);
+				col.offer(c + 1);
 			}
+		}
+		for (int i = min; i <= max; i++) {
+			res.add(map.get(i));
 		}
 		return res;
 	}
-	
-	private static void findRange(TreeNode root, int i) {
-		if (root == null) {
-			return;
-		}
-		min = Math.min(min, i);
-		max = Math.max(max, i);
-		findRange(root.left, i - 1);
-		findRange(root.right, i + 1);
-	}
-	
 	
 }

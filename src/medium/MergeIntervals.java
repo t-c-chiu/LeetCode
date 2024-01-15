@@ -22,35 +22,19 @@ public class MergeIntervals {
 		List<int[]> list = new ArrayList<>();
 		list.add(intervals[0]);
 		for (int i = 1; i < intervals.length; i++) {
-			int[] cur = list.get(list.size() - 1);
-			if (cur[1] >= intervals[i][0]) {
-				cur[1] = Math.max(cur[1], intervals[i][1]);
+			int[] last = list.get(list.size() - 1);
+			int[] cur = intervals[i];
+			if (last[1] >= cur[0]) {
+				last[1] = Math.max(last[1], cur[1]);
 			} else {
-				list.add(intervals[i]);
+				list.add(cur);
 			}
 		}
 		int[][] res = new int[list.size()][2];
-		for (int i = 0; i < res.length; i++) {
+		for (int i = 0; i < list.size(); i++) {
 			res[i] = list.get(i);
 		}
 		return res;
 	}
-
-//	public static int[][] merge(int[][] intervals) {
-//		Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
-//		List<int[]> list = new ArrayList<>();
-//		int start = intervals[0][0], end = intervals[0][1];
-//		for (int i = 1; i < intervals.length; i++) {
-//			int[] interval = intervals[i];
-//			if (interval[0] <= end) {
-//				end = Math.max(end, interval[1]);
-//			} else {
-//				list.add(new int[]{start, end});
-//				start = interval[0];
-//				end = interval[1];
-//			}
-//		}
-//		list.add(new int[]{start, end});
-//		return list.toArray(new int[list.size()][]);
-//	}
+	
 }

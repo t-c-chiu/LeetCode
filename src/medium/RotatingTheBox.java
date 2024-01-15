@@ -6,37 +6,17 @@ public class RotatingTheBox {
 	
 	public static void main(String[] args) {
 		char[][] res = rotateTheBox(new char[][]{
-				{'#', '#', '*', '.', '*', '.' },
-				{'#', '#', '#', '*', '.', '.' },
-				{'#', '#', '#', '.', '#', '.' }});
-		Arrays.stream(res).forEach(chars -> {
-			for (char c : chars) {
-				System.out.print(c + " ");
-			}
-			System.out.println();
-		});
+				{'#', '#', '*', '.', '*', '.'},
+				{'#', '#', '#', '*', '.', '.'},
+				{'#', '#', '#', '.', '#', '.'}});
+		Arrays.stream(res).forEach(row -> System.out.println(Arrays.toString(row)));
 	}
 	
 	public static char[][] rotateTheBox(char[][] box) {
 		int m = box.length, n = box[0].length;
-		// shift
-		for (int i = 0; i < m; i++) {
-			int pos = n - 1;
-			for (int j = n - 1; j >= 0; j--) {
-				if (box[i][j] == '#') {
-					box[i][pos--] = '#';
-				} else if (box[i][j] == '*') {
-					while (pos > j) {
-						box[i][pos--] = '.';
-					}
-					pos--;
-				}
-			}
-			while (pos >= 0) {
-				box[i][pos--] = '.';
-			}
+		for (char[] row : box) {
+			toRight(row);
 		}
-		// rotate
 		char[][] res = new char[n][m];
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -45,4 +25,20 @@ public class RotatingTheBox {
 		}
 		return res;
 	}
+	
+	private static void toRight(char[] row) {
+		int n = row.length, empty = n - 1;
+		for (int i = n - 1; i >= 0; i--) {
+			int cell = row[i];
+			if (cell == '*') {
+				empty = i - 1;
+			}
+			if (cell == '#') {
+				row[i] = '.';
+				row[empty] = '#';
+				empty--;
+			}
+		}
+	}
+	
 }

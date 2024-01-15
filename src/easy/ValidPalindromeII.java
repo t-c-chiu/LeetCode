@@ -8,23 +8,23 @@ public class ValidPalindromeII {
 	}
 	
 	public static boolean validPalindrome(String s) {
-		int left = 0;
-		int right = s.length() - 1;
-		while (left < right && s.charAt(left) == s.charAt(right)) {
-			left++;
-			right--;
+		int l = 0, r = s.length() - 1;
+		while (l < r && s.charAt(l) == s.charAt(r)) {
+			l++;
+			r--;
 		}
-		return validPalindrome(s, left + 1, right) || validPalindrome(s, left, right - 1);
+		return validPalindrome(s, l + 1, r) || validPalindrome(s, l, r - 1);
 	}
 	
-	private static boolean validPalindrome(String s, int left, int right) {
-		while (left < right) {
-			if (s.charAt(left) != s.charAt(right)) {
+	private static boolean validPalindrome(String s, int l, int r) {
+		while (l < r) {
+			if (s.charAt(l) != s.charAt(r)) {
 				return false;
 			}
-			left++;
-			right--;
+			l++;
+			r--;
 		}
 		return true;
 	}
+	
 }

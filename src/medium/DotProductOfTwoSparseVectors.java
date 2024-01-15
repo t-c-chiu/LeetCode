@@ -25,18 +25,19 @@ public class DotProductOfTwoSparseVectors {
 			}
 		}
 		
-		// Return the dotProduct of two sparse vectors
 		public int dotProduct(SparseVector vec) {
-			if (vec.map.size() < map.size()) {
+			Map<Integer, Integer> vecMap = vec.map;
+			if (map.size() > vecMap.size()) {
 				return vec.dotProduct(this);
 			}
-			int res = 0;
+			int product = 0;
 			for (Integer i : map.keySet()) {
-				if (vec.map.containsKey(i)) {
-					res += map.get(i) * vec.map.get(i);
+				if (vecMap.containsKey(i)) {
+					product += map.get(i) * vecMap.get(i);
 				}
 			}
-			return res;
+			return product;
 		}
+		
 	}
 }

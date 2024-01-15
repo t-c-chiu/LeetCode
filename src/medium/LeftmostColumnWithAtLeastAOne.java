@@ -12,19 +12,24 @@ public class LeftmostColumnWithAtLeastAOne {
 	
 	public static int leftMostColumnWithOne(BinaryMatrix binaryMatrix) {
 		List<Integer> dimensions = binaryMatrix.dimensions();
-		int rows = dimensions.get(0);
-		int cols = dimensions.get(1);
-		int curRow = 0;
-		int curCol = cols - 1;
-		while (curRow < rows && curCol >= 0) {
-			int value = binaryMatrix.get(curRow, curCol);
-			if (value == 1) {
-				curCol--;
+		int m = dimensions.get(0), n = dimensions.get(1), res = n;
+		for (int i = 0; i < m; i++) {
+			res = Math.min(res, binarySearch(binaryMatrix, i));
+		}
+		return res == n ? -1 : res;
+	}
+	
+	private static int binarySearch(BinaryMatrix binaryMatrix, int row) {
+		int lo = 0, hi = binaryMatrix.dimensions().get(1);
+		while (lo < hi) {
+			int mid = (lo + hi) / 2;
+			if (binaryMatrix.get(row, mid) == 0) {
+				lo = mid + 1;
 			} else {
-				curRow++;
+				hi = mid;
 			}
 		}
-		return curCol == cols - 1 ? -1 : curCol + 1;
+		return lo;
 	}
 	
 	static class BinaryMatrix {

@@ -16,37 +16,38 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 		if (root == null) {
 			return res;
 		}
-		Deque<TreeNode> dq = new ArrayDeque<>();
+		Deque<TreeNode> q = new LinkedList<>();
+		q.offer(root);
 		boolean odd = true;
-		dq.offer(root);
-		while (!dq.isEmpty()) {
+		while (!q.isEmpty()) {
 			List<Integer> list = new ArrayList<>();
-			for (int i = dq.size(); i > 0; i--) {
+			for (int i = q.size(); i > 0; i--) {
 				if (odd) {
-					TreeNode cur = dq.pollFirst();
-					list.add(cur.val);
-					if (cur.left != null) {
-						dq.offerLast(cur.left);
+					TreeNode node = q.pollFirst();
+					list.add(node.val);
+					if (node.left != null) {
+						q.offerLast(node.left);
 					}
-					if (cur.right != null) {
-						dq.offerLast(cur.right);
+					if (node.right != null) {
+						q.offerLast(node.right);
 					}
 				} else {
-					TreeNode cur = dq.pollLast();
-					list.add(cur.val);
-					if (cur.right != null) {
-						dq.offerFirst(cur.right);
+					TreeNode node = q.pollLast();
+					list.add(node.val);
+					if (node.right != null) {
+						q.offerFirst(node.right);
 					}
-					if (cur.left != null) {
-						dq.offerFirst(cur.left);
+					if (node.left != null) {
+						q.offerFirst(node.left);
 					}
 				}
 			}
-			odd = !odd;
 			res.add(list);
+			odd = !odd;
 		}
 		return res;
 	}
+
 //	public static List<List<Integer>> zigzagLevelOrder(TreeNode root) {
 //		List<List<Integer>> res = new ArrayList<>();
 //		helper(res, root, true, 0);

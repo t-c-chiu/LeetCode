@@ -19,25 +19,23 @@ public class VideoStitching {
 	
 	public int videoStitching(int[][] clips, int time) {
 		Arrays.sort(clips, Comparator.comparingInt(o -> o[0]));
-		int start = 0;
-		int count = 0;
-		int i = 0;
-		while (start < time) {
+		int i = 0, start = 0, count = 0, n = clips.length;
+		while (i < n) {
 			count++;
-			int newStart = start;
-			while (i < clips.length && clips[i][0] <= start) {
-				newStart = Math.max(newStart, clips[i][1]);
-				if (newStart >= time) {
+			int nextStart = start;
+			while (i < n && clips[i][0] <= start) {
+				nextStart = Math.max(nextStart, clips[i][1]);
+				if (nextStart >= time) {
 					return count;
 				}
 				i++;
 			}
-			if (start == newStart) {
+			if (nextStart == start) {
 				return -1;
 			}
-			start = newStart;
+			start = nextStart;
 		}
-		return count;
+		return -1;
 	}
 	
 }

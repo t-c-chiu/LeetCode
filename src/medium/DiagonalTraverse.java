@@ -13,32 +13,28 @@ public class DiagonalTraverse {
 	}
 	
 	public static int[] findDiagonalOrder(int[][] mat) {
-		int m = mat.length, n = mat[0].length, i = 0, j = 0, k = 0;
+		int m = mat.length, n = mat[0].length;
 		int[] res = new int[m * n];
-		while (k < m * n) {
-			while (i >= 0 && j < n) {
-				res[k++] = mat[i][j];
-				i--;
-				j++;
-			}
-			i++;
-			j--;
-			if (j + 1 < n) {
-				j++;
+		for (int i = 0, r = 0, c = 0; i < res.length; i++) {
+			res[i] = mat[r][c];
+			if ((r + c) % 2 == 0) {
+				if (c == n - 1) {
+					r++;
+				} else if (r == 0) {
+					c++;
+				} else {
+					r--;
+					c++;
+				}
 			} else {
-				i++;
-			}
-			while (i < m && j >= 0) {
-				res[k++] = mat[i][j];
-				i++;
-				j--;
-			}
-			i--;
-			j++;
-			if (i + 1 < m) {
-				i++;
-			} else {
-				j++;
+				if (r == m - 1) {
+					c++;
+				} else if (c == 0) {
+					r++;
+				} else {
+					r++;
+					c--;
+				}
 			}
 		}
 		return res;

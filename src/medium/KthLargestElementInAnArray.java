@@ -1,51 +1,48 @@
 package medium;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KthLargestElementInAnArray {
 	
 	public static void main(String[] args) {
-		int res = findKthLargest(new int[]{3, 2, 2, 2, 1, 4}, 3);
+		int res = findKthLargest(new int[]{3, 2, 1, 5, 6, 4}, 2);
 		System.out.println(res);
 	}
 	
+	/**
+	 * Quick Select
+	 * 1. pick a num, put the smaller to its left and bigger to its right
+	 * 2. check the num's index, if index == k, return num
+	 * 3. recursive
+	 */
 	public static int findKthLargest(int[] nums, int k) {
-		int n = nums.length, lo = 0, hi = n - 1;
-		k = n - k;
-		while (lo <= hi) {
-			int partition = partition(nums, lo, hi);
-			if (partition == k) {
-				return nums[k];
-			} else if (partition < k) {
-				lo = partition + 1;
+		List<Integer> list = new ArrayList<>();
+		for (int num : nums) {
+			list.add(num);
+		}
+		return findKthSmallest(list, list.size() - k + 1);
+	}
+	
+	private static int findKthSmallest(List<Integer> list, int k) {
+		int pivot = list.get(0), pivotCount = 0;
+		List<Integer> left = new ArrayList<>();
+		List<Integer> right = new ArrayList<>();
+		for (Integer num : list) {
+			if (num == pivot) {
+				pivotCount++;
+			} else if (num < pivot) {
+				left.add(num);
 			} else {
-				hi = partition - 1;
+				right.add(num);
 			}
 		}
-		return nums[lo];
-	}
-	
-	private static int partition(int[] nums, int lo, int hi) {
-		int pivot = nums[lo], start = lo;
-		while (lo <= hi) {
-			while (lo <= hi && nums[lo] <= pivot) {
-				lo++;
-			}
-			while (lo <= hi && nums[hi] > pivot) {
-				hi--;
-			}
-			if (lo >= hi) {
-				break;
-			}
-			swap(nums, lo, hi);
+		if (left.size() >= k) {
+			return findKthSmallest(left, k);
+		} else if (left.size() + pivotCount < k) {
+			return findKthSmallest(right, k - left.size() - pivotCount);
 		}
-		swap(nums, start, hi);
-		return hi;
-	}
-	
-	
-	private static void swap(int[] nums, int start, int end) {
-		int temp = nums[start];
-		nums[start] = nums[end];
-		nums[end] = temp;
+		return pivot;
 	}
 	
 	

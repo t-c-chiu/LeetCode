@@ -19,30 +19,30 @@ public class MakingALargeIsland {
 	static int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 	
 	public static int largestIsland(int[][] grid) {
-		int m = grid.length, n = grid.length, index = 2, res = 0;
+		int m = grid.length, n = grid[0].length, index = 2, res = 0;
 		Map<Integer, Integer> map = new HashMap<>();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				if (grid[i][j] == 1) {
 					int area = dfs(grid, i, j, m, n, index);
+					res = Math.max(res, area);
 					map.put(index, area);
 					index++;
-					res = Math.max(res, area);
 				}
 			}
 		}
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
+				Set<Integer> seen = new HashSet<>();
 				if (grid[i][j] == 0) {
-					Set<Integer> seen = new HashSet<>();
 					int area = 1;
 					for (int[] dir : dirs) {
-						int r = i + dir[0], c = j + dir[1];
-						if (r < 0 || r == m || c < 0 || c == n || grid[r][c] == 0 || seen.contains(grid[r][c])) {
+						int nx = i + dir[0], ny = j + dir[1];
+						if (nx < 0 || nx == m || ny < 0 || ny == n || grid[nx][ny] == 0 || seen.contains(grid[nx][ny])) {
 							continue;
 						}
-						seen.add(grid[r][c]);
-						area += map.get(grid[r][c]);
+						seen.add(grid[nx][ny]);
+						area += map.get(grid[nx][ny]);
 					}
 					res = Math.max(res, area);
 				}
@@ -62,4 +62,5 @@ public class MakingALargeIsland {
 		}
 		return area;
 	}
+	
 }

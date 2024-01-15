@@ -13,19 +13,19 @@ public class MergeKSortedLists {
 	}
 	
 	public static ListNode mergeKLists(ListNode[] lists) {
-		if (lists.length == 0) {
-			return null;
-		}
 		return mergeKLists(lists, 0, lists.length - 1);
 	}
 	
-	private static ListNode mergeKLists(ListNode[] lists, int lo, int hi) {
-		if (lo == hi) {
-			return lists[lo];
+	private static ListNode mergeKLists(ListNode[] lists, int start, int end) {
+		if (start > end) {
+			return null;
 		}
-		int mid = (lo + hi) / 2;
-		ListNode left = mergeKLists(lists, lo, mid);
-		ListNode right = mergeKLists(lists, mid + 1, hi);
+		if (start == end) {
+			return lists[start];
+		}
+		int mid = (start + end) / 2;
+		ListNode left = mergeKLists(lists, start, mid);
+		ListNode right = mergeKLists(lists, mid + 1, end);
 		return merge(left, right);
 	}
 	
@@ -49,4 +49,5 @@ public class MergeKSortedLists {
 		}
 		return dummy.next;
 	}
+	
 }

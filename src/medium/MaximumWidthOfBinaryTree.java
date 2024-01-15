@@ -4,6 +4,8 @@ import util.TreeNode;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MaximumWidthOfBinaryTree {
 	
@@ -13,21 +15,23 @@ public class MaximumWidthOfBinaryTree {
 	}
 	
 	public static int widthOfBinaryTree(TreeNode root) {
-		Deque<TreeNode> deque = new ArrayDeque<>();
-		root.val = 0;
-		deque.offer(root);
+		Map<TreeNode, Integer> map = new HashMap<>();
+		map.put(root, 0);
+		Deque<TreeNode> dq = new ArrayDeque<>();
+		dq.offer(root);
 		int res = 0;
-		while (!deque.isEmpty()) {
-			res = Math.max(res, deque.peekLast().val - deque.peekFirst().val + 1);
-			for (int i = deque.size(); i > 0; i--) {
-				TreeNode cur = deque.pollFirst();
-				if (cur.left != null) {
-					cur.left.val = cur.val * 2;
-					deque.offerLast(cur.left);
+		while (!dq.isEmpty()) {
+			res = Math.max(res, map.get(dq.peekLast()) - map.get(dq.peekFirst()) + 1);
+			for (int i = dq.size(); i > 0; i--) {
+				TreeNode node = dq.pollFirst();
+				int index = map.get(node);
+				if (node.left != null) {
+					dq.offerLast(node.left);
+					map.put(node.left, index * 2);
 				}
-				if (cur.right != null) {
-					cur.right.val = cur.val * 2 + 1;
-					deque.offerLast(cur.right);
+				if (node.right != null) {
+					dq.offerLast(node.right);
+					map.put(node.right, index * 2 + 1);
 				}
 			}
 		}

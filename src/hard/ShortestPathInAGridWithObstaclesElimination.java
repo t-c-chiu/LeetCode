@@ -21,38 +21,36 @@ public class ShortestPathInAGridWithObstaclesElimination {
 	
 	public static int shortestPath(int[][] grid, int k) {
 		int m = grid.length, n = grid[0].length, res = 0;
-		int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-		int[][] maxKLeft = new int[m][n];
-		for (int[] row : maxKLeft) {
+		int[][] dirs = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+		int[][] maxK = new int[m][n];
+		for (int[] row : maxK) {
 			Arrays.fill(row, -1);
 		}
-		maxKLeft[0][0] = k;
 		Queue<int[]> queue = new LinkedList<>();
 		queue.offer(new int[]{0, 0, k});
 		while (!queue.isEmpty()) {
 			for (int i = queue.size(); i > 0; i--) {
-				int[] cur = queue.poll();
-				int r = cur[0];
-				int c = cur[1];
-				if (r == m - 1 && c == n - 1) {
+				int[] poll = queue.poll();
+				int x = poll[0], y = poll[1];
+				if (x == m - 1 && y == n - 1) {
 					return res;
 				}
 				for (int[] dir : dirs) {
-					int nr = r + dir[0];
-					int nc = c + dir[1];
-					int kLeft = cur[2];
-					if (nr < 0 || nr == m || nc < 0 || nc == n || grid[nr][nc] == 1 && kLeft == 0 || maxKLeft[nr][nc] >= kLeft) {
+					int nx = x + dir[0], ny = y + dir[1], curK = poll[2];
+					if (nx < 0 || nx == m || ny < 0 || ny == n ||
+							maxK[nx][ny] >= curK || grid[nx][ny] == 1 && curK == 0) {
 						continue;
 					}
-					if (grid[nr][nc] == 1) {
-						kLeft--;
+					if (grid[nx][ny] == 1) {
+						curK--;
 					}
-					maxKLeft[nr][nc] = kLeft;
-					queue.offer(new int[]{nr, nc, kLeft});
+					maxK[nx][ny] = curK;
+					queue.offer(new int[]{nx, ny, curK});
 				}
 			}
 			res++;
 		}
 		return -1;
 	}
+	
 }

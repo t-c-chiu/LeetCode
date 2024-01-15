@@ -14,23 +14,23 @@ public class PathSumII {
 	
 	public static List<List<Integer>> pathSum(TreeNode root, int targetSum) {
 		List<List<Integer>> res = new ArrayList<>();
-		helper(res, root, targetSum, new ArrayList<>());
+		pathSum(root, targetSum, res, 0, new ArrayList<>());
 		return res;
 	}
 	
-	private static void helper(List<List<Integer>> res, TreeNode node, int targetSum, List<Integer> temp) {
+	private static void pathSum(TreeNode node, int targetSum, List<List<Integer>> res, int sum, List<Integer> temp) {
 		if (node == null) {
 			return;
 		}
-		targetSum -= node.val;
+		sum += node.val;
 		temp.add(node.val);
-		if (isLeaf(node) && targetSum == 0) {
+		if (sum == targetSum && isLeaf(node)) {
 			res.add(new ArrayList<>(temp));
 			temp.remove(temp.size() - 1);
 			return;
 		}
-		helper(res, node.left, targetSum, temp);
-		helper(res, node.right, targetSum, temp);
+		pathSum(node.left, targetSum, res, sum, temp);
+		pathSum(node.right, targetSum, res, sum, temp);
 		temp.remove(temp.size() - 1);
 	}
 	

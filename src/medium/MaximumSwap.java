@@ -1,8 +1,5 @@
 package medium;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MaximumSwap {
 	
 	public static void main(String[] args) {
@@ -11,18 +8,15 @@ public class MaximumSwap {
 	}
 	
 	public static int maximumSwap(int num) {
-		Map<Character, Integer> lastIndex = new HashMap<>();
+		int[] pos = new int[10];
 		char[] chars = String.valueOf(num).toCharArray();
-		int n = chars.length;
-		for (int i = n - 1; i >= 0; i--) {
-			char c = chars[i];
-			lastIndex.putIfAbsent(c, i);
+		for (int i = 0; i < chars.length; i++) {
+			pos[chars[i] - '0'] = i;
 		}
-		for (int i = 0; i < n; i++) {
-			char c = chars[i];
-			for (char k = '9'; k > c; k--) {
-				if (lastIndex.containsKey(k) && lastIndex.get(k) > i) {
-					swap(chars, i, lastIndex.get(k));
+		for (int i = 0; i < chars.length; i++) {
+			for (char j = 9; j > chars[i] - '0'; j--) {
+				if (pos[j] > i) {
+					swap(chars, i, pos[j]);
 					return Integer.parseInt(String.valueOf(chars));
 				}
 			}
@@ -30,7 +24,7 @@ public class MaximumSwap {
 		return num;
 	}
 	
-	private static void swap(char[] chars, int i, Integer j) {
+	private static void swap(char[] chars, int i, int j) {
 		char temp = chars[i];
 		chars[i] = chars[j];
 		chars[j] = temp;

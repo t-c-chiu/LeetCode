@@ -12,13 +12,14 @@ public class BasicCalculatorII {
 	public static int calculate(String s) {
 		Stack<Integer> stack = new Stack<>();
 		char op = '+';
-		int res = 0, i = 0, n = s.length();
+		int i = 0, n = s.length();
 		while (i < n) {
 			char c = s.charAt(i);
 			if (Character.isDigit(c)) {
 				int num = 0;
 				while (i < n && Character.isDigit(s.charAt(i))) {
-					num = num * 10 + s.charAt(i++) - '0';
+					num = num * 10 + s.charAt(i) - '0';
+					i++;
 				}
 				switch (op) {
 					case '+':
@@ -41,6 +42,7 @@ public class BasicCalculatorII {
 				i++;
 			}
 		}
+		int res = 0;
 		for (Integer num : stack) {
 			res += num;
 		}

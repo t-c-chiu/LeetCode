@@ -12,7 +12,6 @@ public class CustomSortString {
 		for (int i = 0; i < str.length(); i++) {
 			count[str.charAt(i) - 'a']++;
 		}
-		
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < order.length(); i++) {
 			char c = order.charAt(i);
@@ -21,13 +20,11 @@ public class CustomSortString {
 			}
 			count[c - 'a'] = 0;
 		}
-		
 		for (int i = 0; i < count.length; i++) {
 			for (int j = 0; j < count[i]; j++) {
-				builder.append((char) ('a' + i));
+				builder.append((char) (i + 'a'));
 			}
 		}
-		
 		return builder.toString();
 	}
 }

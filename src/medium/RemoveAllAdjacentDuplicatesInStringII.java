@@ -8,44 +8,42 @@ public class RemoveAllAdjacentDuplicatesInStringII {
 	}
 	
 	public static String removeDuplicates(String s, int k) {
-		StringBuilder sb = new StringBuilder();
-		int n = s.length();
-		int[] count = new int[n];
+		StringBuilder builder = new StringBuilder();
+		int[] count = new int[s.length()];
 		for (char c : s.toCharArray()) {
-			sb.append(c);
-			int last = sb.length() - 1;
-			if (sb.length() > 1 && sb.charAt(last) == sb.charAt(last - 1)) {
+			builder.append(c);
+			int last = builder.length() - 1;
+			if (builder.length() > 1 && builder.charAt(last) == builder.charAt(last - 1)) {
 				count[last] = count[last - 1] + 1;
 				if (count[last] == k) {
-					sb.delete(sb.length() - k, sb.length());
+					builder.delete(last - k + 1, last + 1);
 				}
 			} else {
 				count[last] = 1;
 			}
 		}
-		return sb.toString();
+		return builder.toString();
 	}
+
 //	public static String removeDuplicates(String s, int k) {
 //		Stack<int[]> stack = new Stack<>();
 //		for (int i = 0; i < s.length(); i++) {
 //			char c = s.charAt(i);
-//			if (stack.isEmpty()) {
+//			if (stack.isEmpty() || stack.peek()[0] != c) {
 //				stack.push(new int[]{c, 1});
-//				continue;
-//			}
-//			int[] peek = stack.peek();
-//			if (peek[0] == c && peek[1] + 1 == k) {
-//				stack.pop();
-//			} else if (peek[0] == c) {
-//				peek[1]++;
 //			} else {
-//				stack.push(new int[]{c, 1});
+//				int count = stack.peek()[1];
+//				if (count + 1 == k) {
+//					stack.pop();
+//				} else {
+//					stack.peek()[1]++;
+//				}
 //			}
 //		}
-//		StringBuilder sb = new StringBuilder();
+//		StringBuilder builder = new StringBuilder();
 //		for (int[] info : stack) {
-//			sb.append(String.valueOf((char) (info[0])).repeat(info[1]));
+//			builder.append(String.valueOf((char) info[0]).repeat(info[1]));
 //		}
-//		return sb.toString();
+//		return builder.toString();
 //	}
 }

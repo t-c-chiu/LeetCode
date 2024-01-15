@@ -10,27 +10,26 @@ public class CopyListWithRandomPointer {
 		head.next = new Node(3);
 		head.next.random = head;
 		head.next.next = new Node(3);
-		copyRandomList(head);
+		Node res = copyRandomList(head);
+		System.out.println(res);
 	}
 	
 	public static Node copyRandomList(Node head) {
-		Map<Node, Node> map = new HashMap<>();
-		return copyRandomList(head, map);
+		Map<Node, Node> memo = new HashMap<>();
+		return copyRandomList(head, memo);
 	}
 	
-	private static Node copyRandomList(Node node, Map<Node, Node> map) {
+	private static Node copyRandomList(Node node, Map<Node, Node> memo) {
 		if (node == null) {
 			return null;
 		}
-		if (map.containsKey(node)) {
-			return map.get(node);
+		if (memo.containsKey(node)) {
+			return memo.get(node);
 		}
 		Node newNode = new Node(node.val);
-		map.put(node, newNode);
-		newNode.next = copyRandomList(node.next, map);
-		if (node.random != null) {
-			newNode.random = map.get(node.random);
-		}
+		memo.put(node, newNode);
+		newNode.next = copyRandomList(node.next, memo);
+		newNode.random = copyRandomList(node.random, memo);
 		return newNode;
 	}
 	
@@ -44,5 +43,6 @@ public class CopyListWithRandomPointer {
 			this.next = null;
 			this.random = null;
 		}
+		
 	}
 }

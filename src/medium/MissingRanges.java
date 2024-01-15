@@ -26,9 +26,11 @@ public class MissingRanges {
 		return res;
 	}
 	
-	private static void helper(List<List<Integer>> res, int from, int to) {
-		if (from <= to) {
-			res.add(Arrays.asList(from, to));
+	private static void helper(List<List<Integer>> res, int lo, int hi) {
+		if (lo > hi) {
+			return;
 		}
+		res.add(Arrays.asList(lo, hi));
 	}
+	
 }

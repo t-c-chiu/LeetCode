@@ -12,26 +12,28 @@ public class GroupShiftedStrings {
 		System.out.println(res);
 	}
 	
-	/**
-	 * abc 012 bcd 123 xyz 23 24 25
-	 */
 	public static List<List<String>> groupStrings(String[] strings) {
 		Map<String, List<String>> map = new HashMap<>();
 		for (String string : strings) {
-			int offset = string.charAt(0) - 'a';
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < string.length(); i++) {
-				char c = (char) (string.charAt(i) - offset);
-				if (c < 'a') {
-					c += 26;
-				}
-				sb.append(c);
-			}
-			String key = sb.toString();
-			map.putIfAbsent(key, new ArrayList<>());
+			char c = string.charAt(0);
+			int shift = c - 'a';
+			String key = shift(string, shift);
+			map.putIfAbsent(key,new ArrayList<>());
 			map.get(key).add(string);
 		}
-		return new ArrayList<>(map.values());
+		List<List<String>> res = new ArrayList<>();
+		for (String key : map.keySet()) {
+			res.add(map.get(key));
+		}
+		return res;
 	}
 	
+	private static String shift(String s, int shift) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			builder.append((c - shift + 26) % 26);
+		}
+		return builder.toString();
+	}
 }

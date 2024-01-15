@@ -5,34 +5,32 @@ public class ConvertBinarySearchTreeToSortedDoublyLinkedList {
 	public static void main(String[] args) {
 	}
 	
-	Node first;
-	Node last;
+	Node first, last;
 	
 	public Node treeToDoublyList(Node root) {
 		if (root == null) {
 			return null;
 		}
-		
-		dfs(root);
+		helper(root);
 		first.left = last;
 		last.right = first;
 		return first;
 	}
 	
-	private void dfs(Node node) {
+	private void helper(Node node) {
 		if (node == null) {
 			return;
 		}
-		
-		dfs(node.left);
+		helper(node.left);
 		if (first == null) {
-			first = last = node;
-		} else {
+			first = node;
+		}
+		if (last != null) {
 			last.right = node;
 			node.left = last;
-			last = node;
 		}
-		dfs(node.right);
+		last = node;
+		helper(node.right);
 	}
 	
 	class Node {
@@ -54,5 +52,4 @@ public class ConvertBinarySearchTreeToSortedDoublyLinkedList {
 		}
 	}
 	
-	;
 }

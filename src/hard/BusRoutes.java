@@ -10,41 +10,49 @@ public class BusRoutes {
 	}
 	
 	public static int numBusesToDestination(int[][] routes, int source, int target) {
-		Map<Integer, Set<Integer>> stopToBus = new HashMap<>();
-		for (int i = 0; i < routes.length; i++) {
+		if (source == target) {
+			return 0;
+		}
+		int n = routes.length;
+		Map<Integer, Set<Integer>> map = new HashMap<>();
+		for (int i = 0; i < n; i++) {
 			for (int stop : routes[i]) {
-				stopToBus.putIfAbsent(stop, new HashSet<>());
-				stopToBus.get(stop).add(i);
+				map.putIfAbsent(stop, new HashSet<>());
+				map.get(stop).add(i);
 			}
 		}
-		Queue<Integer> queue = new LinkedList<>();
+		if (!map.containsKey(source) || !map.containsKey(target)) {
+			return -1;
+		}
+		Set<Integer> seenRoute = new HashSet<>();
 		Set<Integer> seenStop = new HashSet<>();
-		Set<Integer> seenBus = new HashSet<>();
-		queue.offer(source);
 		seenStop.add(source);
+		Queue<Integer> queue = new LinkedList<>();
+		queue.offer(source);
 		int res = 0;
 		while (!queue.isEmpty()) {
 			for (int i = queue.size(); i > 0; i--) {
-				int stop = queue.poll();
+				Integer stop = queue.poll();
 				if (stop == target) {
 					return res;
 				}
-				for (Integer bus : stopToBus.get(stop)) {
-					if (seenBus.contains(bus)) {
+				for (Integer route : map.get(stop)) {
+					if (seenRoute.contains(route)) {
 						continue;
 					}
-					seenBus.add(bus);
-					for (int nextStop : routes[bus]) {
-						if (seenStop.contains(nextStop)){
+					for (int next : routes[route]) {
+						if (seenStop.contains(next)) {
 							continue;
 						}
-						seenStop.add(nextStop);
-						queue.offer(nextStop);
+						queue.offer(next);
+						seenStop.add(next);
 					}
+					seenRoute.add(route);
 				}
 			}
 			res++;
 		}
 		return -1;
 	}
+	
 }

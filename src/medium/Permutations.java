@@ -12,24 +12,25 @@ public class Permutations {
 	
 	public static List<List<Integer>> permute(int[] nums) {
 		List<List<Integer>> res = new ArrayList<>();
-		helper(res, nums, new boolean[nums.length], new ArrayList<>());
+		helper(nums, res, new ArrayList<>(), new boolean[nums.length]);
 		return res;
 	}
 	
-	private static void helper(List<List<Integer>> res, int[] nums, boolean[] used, List<Integer> temp) {
+	private static void helper(int[] nums, List<List<Integer>> res, List<Integer> temp, boolean[] visited) {
 		if (temp.size() == nums.length) {
 			res.add(new ArrayList<>(temp));
 			return;
 		}
 		for (int i = 0; i < nums.length; i++) {
-			if (used[i]) {
+			if (visited[i]) {
 				continue;
 			}
-			used[i] = true;
 			temp.add(nums[i]);
-			helper(res, nums, used, temp);
+			visited[i] = true;
+			helper(nums, res, temp, visited);
+			visited[i] = false;
 			temp.remove(temp.size() - 1);
-			used[i] = false;
 		}
 	}
+	
 }
